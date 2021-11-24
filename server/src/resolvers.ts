@@ -4,7 +4,7 @@ const user = {
     email: 'email@example.com'
 }
 
-module.exports = {
+export const resolvers = {
     Query: {
         me: () => user
     }
