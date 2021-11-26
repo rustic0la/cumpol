@@ -13,6 +13,7 @@ import {
   Todo,
   TodosList,
   Border,
+  LogoStyled,
 } from './styles';
 
 // const domains = Array.from()
@@ -21,7 +22,11 @@ const App: FC = () => {
   return (
     <Layout>
       <Header>
-        <img src={logo} alt="logo" width="60px" /><h1>cumpol</h1>
+        <LogoStyled>
+          <img src={logo} alt="logo" width="60px" />
+          <h1>cumpol</h1>
+        </LogoStyled>
+        <div>username</div>
       </Header>
       <Grid>
         <Sidebar>
