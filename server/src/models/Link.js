@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const LinkSchema = new mongoose.Schema(
+const LinkSchema = new Schema(
   {
     url: String,
     title: { type: String, required: true },
@@ -8,11 +8,11 @@ const LinkSchema = new mongoose.Schema(
     isWatched: { type: Boolean, default: false },
     watchedAt: Date,
     dueDate: Date,
-    todo: { type: mongoose.Schema.Types.ObjectId, ref: 'Todo', required: true },
-    collection: { type: mongoose.Schema.Types.ObjectId, ref: 'Collection', required: true },
-    domain: { type: mongoose.Schema.Types.ObjectId, ref: 'Domain', required: true },
+    todoId: { type: String, required: true },
+    collectionId: { type: String, required: true },
+    domainId: { type: String, required: true },
   },
   { timestamps: true },
 );
 
-export default mongoose.model('Link', LinkSchema);
+export default model('Link', LinkSchema);

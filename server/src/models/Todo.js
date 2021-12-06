@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-const TodoSchema = new mongoose.Schema(
+const TodoSchema = new Schema(
   {
     title: String,
     createdAt: { type: Date, default: Date.now },
     dueDate: Date,
     links: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Links' }],
     collection: { type: mongoose.Schema.Types.ObjectId, ref: 'Collection', required: true },
-    domain: { type: mongoose.Schema.Types.ObjectId, ref: 'Domain', required: true },
+    domainId: { type: String, required: true },
   },
   { timestamps: true },
 );

@@ -7,12 +7,18 @@
     "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node --ignore client/ src/index.js"
   },
   "dependencies": {
-    "apollo-server": "^3.5.0",
+    "@prisma/client": "^3.6.0",
+    "apollo-server-core": "^3.5.0",
+    "apollo-server-express": "^3.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "graphql": "^16.0.1"
   },
   "devDependencies": {
+    "-": "^0.0.1",
     "dotenv": "^10.0.0",
     "mongoose": "^6.0.13",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prisma": "^3.6.0"
   }
 }

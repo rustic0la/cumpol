@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const CollectionSchema = new mongoose.Schema(
+const CollectionSchema = new Schema(
   {
     title: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     dueDate: Date,
-    todos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Todo' }],
-    domain: { type: mongoose.Schema.Types.ObjectId, ref: 'Domain', required: true },
+    todos: [{ type: Schema.Types.ObjectId, ref: 'Todo' }],
+    domainId: { type: String, required: true },
   },
   { timestamps: true },
 );
 
-export default mongoose.model('Collection', CollectionSchema);
+export default model('Collection', CollectionSchema);

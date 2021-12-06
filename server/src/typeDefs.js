@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from 'apollo-server-express';
 
 export default gql`
   type User {
@@ -20,7 +20,7 @@ export default gql`
     createdAt: String!
     dueDate: String
     todos: [Todo]!
-    domain: Domain
+    domainId: String!
   }
 
   type Todo {
@@ -29,8 +29,8 @@ export default gql`
     createdAt: String!
     dueDate: String
     links: [Link]!
-    collection: Collection
-    domain: Domain
+    collectionId: String!
+    domainId: String!
   }
 
   type Link {
@@ -41,16 +41,47 @@ export default gql`
     isWatched: Boolean!
     dueDate: String
     watchedAt: String
-    todo: Todo
-    collection: Collection
-    domain: Domain
+    todoId: String!
+    collectionId: String!
+    domainId: String!
+  }
+
+  input UserInput {
+    username: String!
+    email: String!
+  }
+
+  input DomainInput {
+    title: String!
+  }
+
+  input CollectionInput {
+    title: String!
+  }
+
+  input TodoInput {
+    title: String!
+  }
+
+  input LinkInput {
+    title: String!
   }
 
   type Query {
     me: User
+    # TODO edit
+    getUser(username: String!): User
     getDomains: [Domain]!
     getCollections(domainId: ID!): [Collection]!
     getTodos(collectionId: ID!): [Todo]!
     getLinks(todoId: ID!): [Link]!
+  }
+
+  type Mutation {
+    addUser(input: UserInput!): User
+    saveDomain(input: DomainInput!): Domain
+    saveCollection(input: CollectionInput!): Collection
+    saveTodo(input: TodoInput!): Todo
+    saveLink(input: LinkInput!): Link
   }
 `;

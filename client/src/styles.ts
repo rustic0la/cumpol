@@ -1,8 +1,18 @@
 import styled from 'styled-components';
 
+export const Wrapper = styled.div`
+  display: flex;
+	justify-content: center;
+	align-items: center;
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
 export const Layout = styled.div`
   background-color: #a0fffc;
-  min-height: 100vh;
   padding-top: 20px;
 `;
 
@@ -23,15 +33,14 @@ export const LogoStyled = styled.div`
 export const Grid = styled.div`
   margin: 30px 10rem;
   display: grid;
-  grid-template-columns: 20% 1fr;
+  grid-template-columns: 10% 1fr;
   height: 100%;
 `;
 
 export const Sidebar = styled.div`
-  div {
-    position: sticky;
-    top: 70px;
-  }
+  width: max-content;
+  position: sticky;
+  top: 70px;
 `;
 
 export const Domain = styled.h2`

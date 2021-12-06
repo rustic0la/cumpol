@@ -1,22 +1,21 @@
-import React, { FC } from 'react';
+import React, { FC, SyntheticEvent, useState } from 'react';
 
 import logo from './assets/logo.svg';
 import {
-  Layout,
+  Border,
+  Collection,
+  Content,
+  Domain,
   Grid,
   Header,
+  Layout,
+  LogoStyled,
   Sidebar,
-  Collection,
-  Domain,
-  Content,
   Title,
   Todo,
   TodosList,
-  Border,
-  LogoStyled,
+  Wrapper,
 } from './styles';
-
-// const domains = Array.from()
 
 const App: FC = () => {
   return (
