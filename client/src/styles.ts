@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
-	justify-content: center;
-	align-items: center;
+  justify-content: center;
+  align-items: center;
 
   form {
     display: flex;
@@ -33,7 +33,7 @@ export const LogoStyled = styled.div`
 export const Grid = styled.div`
   margin: 30px 10rem;
   display: grid;
-  grid-template-columns: 10% 1fr;
+  grid-template-columns: 25% 1fr;
   height: 100%;
 `;
 

@@ -16,6 +16,8 @@ import {
   TodosList,
   Wrapper,
 } from './styles';
+// ffffff-00fff6-1ba5ab-364b60
+// ffbda0-ffa780-ff7b40-ff4f00-ff0000-c00000-800000-400000-200000
 
 const App: FC = () => {
   return (
