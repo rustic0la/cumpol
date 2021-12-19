@@ -11,23 +11,50 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-model Link {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  description String
-  url         String
-}
-
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  posts Post[]
+  id       String   @id @default(cuid())
+  username String   @unique
+  password String
+  domains  Domain[]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
+model Domain {
+  id          String       @id @default(cuid())
+  title       String
+  createdAt   DateTime     @default(now())
+  userId      String
+  User        User         @relation(fields: [userId], references: [id])
+  collections Collection[]
+}
+
+model Collection {
+  id        String     @id @default(cuid())
   title     String
-  published Boolean @default(true)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+  createdAt DateTime   @default(now())
+  dueDate   DateTime?
+  todoLists TodoList[]
+  domain    Domain     @relation(fields: [domainId], references: [id])
+  domainId  String
+}
+
+model TodoList {
+  id           String     @id @default(cuid())
+  title        String
+  createdAt    DateTime   @default(now())
+  dueDate      DateTime?
+  todos        Todo[]
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String
+}
+
+model Todo {
+  id         String    @id @default(cuid())
+  url        String
+  title      String
+  createdAt  DateTime  @default(now())
+  isWatched  Boolean   @default(false)
+  watchedAt  DateTime?
+  dueDate    DateTime?
+  todoList   TodoList  @relation(fields: [todoListId], references: [id])
+  todoListId String
 }
