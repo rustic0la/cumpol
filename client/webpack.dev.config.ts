@@ -1,8 +1,8 @@
-import path from 'path';
-import { Configuration as WebpackConfiguration, HotModuleReplacementPlugin } from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+import path from 'path';
+import { Configuration as WebpackConfiguration, HotModuleReplacementPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 
@@ -69,7 +69,7 @@ const config: Configuration = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/public/index.html',
-      favicon: 'src/public/favicon.ico'
+      favicon: 'src/public/favicon.ico',
     }),
     new HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
