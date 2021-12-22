@@ -1,21 +1,20 @@
-import { ApolloServer } from 'apollo-server-express';
-import { config } from 'dotenv';
-import fs from 'fs';
-import path from 'path';
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
-import express from 'express';
-import http from 'http';
-import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
+import { ApolloServerPluginDrainHttpServer, AuthenticationError } from 'apollo-server-core';
+import { ApolloServer } from 'apollo-server-express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import fs from 'fs';
+import http from 'http';
+import path from 'path';
 
+// import resolvers from './resolvers';
 import { getUserId } from './utils';
 
 const prisma = new PrismaClient();
 
-const resolvers = {};
-
-(async function startApolloServer(resolvers) {
-  config();
+const startServer = async () => {
+  dotenv.config();
 
   const app = express();
 
@@ -50,13 +49,19 @@ const resolvers = {};
 
   const server = new ApolloServer({
     typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8'),
-    resolvers,
+    resolvers: {},
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     context: ({ req }) => {
+      const token = (req.headers.authentication || '') as string;
+      const userId = getUserId(token, '');
+      console.log('userId', userId);
+
+      if (!userId) throw new AuthenticationError('you must be logged in');
+
       return {
         ...req,
         prisma,
-        userId: req && req.headers.authorization ? getUserId(req, '') : null,
+        userId,
       };
     },
   });
@@ -67,4 +72,6 @@ const resolvers = {};
   httpServer.listen({ port: 4000 }, () =>
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`),
   );
-})(resolvers);
+};
+
+startServer();
