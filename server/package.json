@@ -4,7 +4,7 @@
   "main": ".src/index.js",
   "scripts": {
     "dev": "nodemon --exec 'ts-node' src/index.ts",
-    "gen": "graphql-codegen --config codegen.yml"
+    "lint": "eslint --ignore-path .gitignore \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@prisma/client": "^3.6.0",
@@ -12,24 +12,26 @@
     "apollo-server-express": "^3.5.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^16.0.1",
-    "graphql-cli": "^4.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "prisma-binding": "^2.3.16"
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "2.3.0",
-    "@graphql-codegen/introspection": "2.1.0",
-    "@graphql-codegen/typescript": "2.4.1",
-    "@graphql-codegen/typescript-operations": "2.2.1",
-    "@graphql-codegen/typescript-react-apollo": "3.2.2",
-    "@graphql-codegen/typescript-resolvers": "2.4.2",
+    "@graphql-codegen/cli": "^2.3.0",
+    "@graphql-codegen/typescript": "^2.4.1",
+    "@graphql-codegen/typescript-resolvers": "^2.4.2",
     "@types/bcryptjs": "^2.4.2",
+    "@types/dotenv-safe": "^8.1.2",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.12",
-    "dotenv": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "latest",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
     "nodemon": "^2.0.15",
     "prisma": "^3.6.0",
     "ts-node": "^10.4.0",
