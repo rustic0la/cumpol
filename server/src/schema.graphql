@@ -1,87 +1,67 @@
+scalar Date
+
 type User {
-  _id: ID!
+  id: ID!
   username: String!
-  email: String!
+  password: String!
+  domains: [Domain]!
 }
 
 type Domain {
-  _id: ID!
+  id: String!
   title: String!
-  createdAt: String!
+  createdAt: Date!
+  complPercent: Int!
+  userId: String!
   collections: [Collection]!
 }
 
 type Collection {
-  _id: ID!
+  id: ID!
   title: String!
-  createdAt: String!
-  dueDate: String
-  todos: [Todo]!
+  createdAt: Date!
+  dueDate: Date
   domainId: String!
+  duration: Date
+  complPercent: Int!
+  todoLists: [TodoList]!
+}
+
+type TodoList {
+  id: ID!
+  title: String!
+  createdAt: Date!
+  dueDate: Date
+  collectionId: String!
+  duration: Date
+  complPercent: Int!
+  todos: [Todo]!
+}
+
+type Meta {
+  url: String!
+  title: String
+  description: String
+  img: String
 }
 
 type Todo {
-  _id: ID!
+  id: ID!
+  url: String
   title: String!
-  createdAt: String!
-  dueDate: String
-  links: [Link]!
-  collectionId: String!
-  domainId: String!
-}
-
-# type Link {
-#   _id: ID!
-#   url: String
-#   title: String!
-#   createdAt: String!
-#   isWatched: Boolean!
-#   dueDate: String
-#   watchedAt: String
-#   todoId: String!
-#   collectionId: String!
-#   domainId: String!
-# }
-
-input UserInput {
-  username: String!
-  email: String!
-}
-
-input DomainInput {
-  title: String!
-}
-
-input CollectionInput {
-  title: String!
-}
-
-input TodoInput {
-  title: String!
-}
-
-input LinkInput {
-  title: String!
+  createdAt: Date!
+  isWatched: Boolean!
+  watchedAt: Date
+  dueDate: Date
+  todoListId: String!
+  duration: Date
+  meta: Meta
 }
 
 type Query {
-  me: User
-  # TODO edit
-  getUser(username: String!): User
   getDomains: [Domain]!
+  getDomain(domainId: ID!): Domain
   getCollections(domainId: ID!): [Collection]!
-  getTodos(collectionId: ID!): [Todo]!
-  getLinks(todoId: ID!): [Link]!
-
-  feed: [Link!]!
-}
-
-# ______________
-type Link {
-  id: ID!
-  description: String!
-  url: String!
-  postedBy: User
 }
 
 type AuthPayload {
@@ -89,23 +69,41 @@ type AuthPayload {
   user: User
 }
 
-type User {
-  id: ID!
-  name: String!
-  email: String!
-  links: [Link!]!
-}
-
-# _______________
-
 type Mutation {
-  addUser(input: UserInput!): User
-  saveDomain(input: DomainInput!): Domain
-  saveCollection(input: CollectionInput!): Collection
-  saveTodo(input: TodoInput!): Todo
-  saveLink(input: LinkInput!): Link
+  addDomain(title: String!): Domain!
+  addCollection(title: String!): Collection!
+  addTodoList(title: String!): TodoList!
+  addTodo(title: String!): Todo!
 
-  post(url: String!, description: String!): Link!
-  signup(email: String!, password: String!, name: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
+  updateDomain(domainId: String!, title: String): Domain!
+  updateCollection(
+    collectionId: String!
+    title: String
+    dueDate: Date
+    duration: Date
+    complPercent: Int
+  ): Collection!
+  updateTodoList(
+    todoListId: String!
+    title: String
+    dueDate: Date
+    duration: Date
+    complPercent: Int
+  ): TodoList!
+  updateTodo(
+    todoId: String!
+    title: String
+    dueDate: Date
+    duration: Date
+    complPercent: Int
+    isWatched: Boolean
+  ): Todo!
+
+  deleteDomain(domainId: String!): Boolean
+  deleteCollection(collectionId: String!): Boolean
+  deleteTodoList(todoListId: String!): Boolean
+  deleteTodo(todoId: String!): Boolean
+
+  signup(username: String!, password: String!): AuthPayload
+  login(username: String!, password: String!): AuthPayload
 }
