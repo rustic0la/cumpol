@@ -19,22 +19,25 @@ model User {
 }
 
 model Domain {
-  id          String       @id @default(cuid())
-  title       String
-  createdAt   DateTime     @default(now())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id])
-  collections Collection[]
+  id           String       @id @default(cuid())
+  title        String
+  createdAt    DateTime     @default(now())
+  complPercent Int          @default(0)
+  collections  Collection[]
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
 }
 
 model Collection {
-  id        String     @id @default(cuid())
-  title     String
-  createdAt DateTime   @default(now())
-  dueDate   DateTime?
-  todoLists TodoList[]
-  domain    Domain     @relation(fields: [domainId], references: [id])
-  domainId  String
+  id           String     @id @default(cuid())
+  title        String
+  createdAt    DateTime   @default(now())
+  dueDate      DateTime?
+  duration     DateTime?
+  complPercent Int        @default(0)
+  domain       Domain     @relation(fields: [domainId], references: [id])
+  domainId     String
+  todoLists    TodoList[]
 }
 
 model TodoList {
@@ -42,9 +45,21 @@ model TodoList {
   title        String
   createdAt    DateTime   @default(now())
   dueDate      DateTime?
-  todos        Todo[]
+  duration     DateTime?
+  complPercent Int        @default(0)
   collection   Collection @relation(fields: [collectionId], references: [id])
   collectionId String
+  todos        Todo[]
+}
+
+model Meta {
+  id          String  @id @default(cuid())
+  url         String
+  title       String?
+  description String?
+  img         String?
+  todo        Todo    @relation(fields: [todoId], references: [id])
+  todoId      String  @unique
 }
 
 model Todo {
@@ -55,6 +70,8 @@ model Todo {
   isWatched  Boolean   @default(false)
   watchedAt  DateTime?
   dueDate    DateTime?
+  duration   DateTime?
   todoList   TodoList  @relation(fields: [todoListId], references: [id])
   todoListId String
+  meta       Meta?
 }
