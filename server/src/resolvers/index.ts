@@ -73,6 +73,81 @@ const resolvers: Resolvers = {
         return { ...domain, collections: [] };
       },
     },
+    addCollection: {
+      resolve: async (_root, args, ctx: Context) => {
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: ctx.userId },
+          include: {
+            domains: {
+              where: { id: args.domainId },
+            },
+          },
+        });
+
+        const collection = await ctx.prisma.collection.create({
+          data: { title: args.title, domain: { connect: user?.domains[0] } },
+        });
+
+        return { ...collection, todoLists: [] };
+      },
+    },
+    addTodoList: {
+      resolve: async (_root, args, ctx: Context) => {
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: ctx.userId },
+          include: {
+            domains: {
+              where: { id: args.domainId },
+              include: {
+                collections: {
+                  where: { id: args.collectionId },
+                },
+              },
+            },
+          },
+        });
+
+        const todoList = await ctx.prisma.todoList.create({
+          data: {
+            title: args.title,
+            collection: { connect: user?.domains[0]?.collections[0] },
+          },
+        });
+
+        return { ...todoList, todos: [] };
+      },
+    },
+    addTodo: {
+      resolve: async (_root, args, ctx: Context) => {
+        const user = await ctx.prisma.user.findUnique({
+          where: { id: ctx.userId },
+          include: {
+            domains: {
+              where: { id: args.domainId },
+              include: {
+                collections: {
+                  where: { id: args.collectionId },
+                  include: {
+                    todoLists: {
+                      where: { id: args.todoListId },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        const todo = await ctx.prisma.todo.create({
+          data: {
+            title: args.title,
+            todoList: { connect: user?.domains[0]?.collections[0]?.todoLists[0] },
+          },
+        });
+
+        return todo;
+      },
+    },
     signup: {
       resolve: async (_root, args, ctx: Context) => {
         const password = await bcrypt.hash(args.password, 10);

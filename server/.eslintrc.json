@@ -23,6 +23,7 @@
   },
   "rules": {
     "wrap-iife": "off",
+    "function-paren-newline": "off",
     "implicit-arrow-linebreak": "off",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
