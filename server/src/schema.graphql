@@ -66,6 +66,7 @@ type Query {
 type AuthPayload {
   token: String
   user: User
+  error: String
 }
 
 type Mutation {

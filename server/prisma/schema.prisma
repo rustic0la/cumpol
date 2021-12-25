@@ -64,7 +64,6 @@ model Meta {
 
 model Todo {
   id         String    @id @default(cuid())
-  url        String
   title      String
   createdAt  DateTime  @default(now())
   isWatched  Boolean   @default(false)

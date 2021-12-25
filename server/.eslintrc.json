@@ -22,6 +22,8 @@
     }
   },
   "rules": {
+    "object-curly-newline": "off",
+    "indent": ["off", 2],
     "wrap-iife": "off",
     "function-paren-newline": "off",
     "implicit-arrow-linebreak": "off",
