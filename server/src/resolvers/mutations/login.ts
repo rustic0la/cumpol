@@ -18,8 +18,8 @@ const login: ResolverFn<
   {},
   any,
   RequireFields<MutationLoginArgs, 'password' | 'username'>
-> = async (_root, args, ctx: Context) => {
-  const user = await getUserByUsername(args.username, ctx);
+> = async (_root, args, context: Context) => {
+  const user = await getUserByUsername(args.username, context);
 
   if (!user) {
     return {

@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { Request } from 'express';
 
-export interface Context extends Request {
+import { Maybe } from './generated/types';
+
+export interface Context {
   prisma: PrismaClient;
-  userId: string;
+  userId?: Maybe<string>;
 }

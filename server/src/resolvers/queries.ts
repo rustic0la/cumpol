@@ -1,3 +1,5 @@
+import { ForbiddenError } from 'apollo-server-express';
+
 import {
   Collection,
   Domain,
@@ -14,10 +16,12 @@ import { Context } from '../interfaces';
 export const getDomains: ResolverFn<Maybe<ResolverTypeWrapper<Domain>>[], {}, any, {}> = (
   _root,
   _args,
-  ctx: Context,
-) =>
-  ctx.prisma.domain.findMany({
-    where: { userId: ctx.userId },
+  context: Context,
+) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
+
+  return context.prisma.domain.findMany({
+    where: { userId: context.userId },
     include: {
       collections: {
         include: {
@@ -30,14 +34,17 @@ export const getDomains: ResolverFn<Maybe<ResolverTypeWrapper<Domain>>[], {}, an
       },
     },
   });
+};
 
 export const getDomain: ResolverFn<
   Maybe<ResolverTypeWrapper<Domain>>,
   {},
   any,
   RequireFields<QueryGetDomainArgs, 'domainId'>
-> = (_root, args, ctx: Context) =>
-  ctx.prisma.domain.findUnique({
+> = (_root, args, context: Context) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
+
+  return context.prisma.domain.findUnique({
     where: { id: args.domainId },
     include: {
       collections: {
@@ -51,14 +58,17 @@ export const getDomain: ResolverFn<
       },
     },
   });
+};
 
 export const getCollections: ResolverFn<
   Maybe<ResolverTypeWrapper<Collection>>[],
   {},
   any,
   RequireFields<QueryGetCollectionsArgs, 'domainId'>
-> = (_root, args, ctx: Context) =>
-  ctx.prisma.collection.findMany({
+> = (_root, args, context: Context) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
+
+  return context.prisma.collection.findMany({
     where: { domainId: args.domainId },
     include: {
       todoLists: {
@@ -68,6 +78,7 @@ export const getCollections: ResolverFn<
       },
     },
   });
+};
 
 const Query: QueryResolvers<any, {}> = {
   getDomains: {

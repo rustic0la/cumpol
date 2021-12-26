@@ -1,3 +1,5 @@
+import { ForbiddenError } from 'apollo-server-express';
+
 import {
   MutationAddTodoArgs,
   RequireFields,
@@ -12,9 +14,11 @@ const addTodo: ResolverFn<
   {},
   any,
   RequireFields<MutationAddTodoArgs, 'title' | 'todoListId' | 'collectionId' | 'domainId'>
-> = async (_root, args, ctx: Context) => {
-  const user = await ctx.prisma.user.findUnique({
-    where: { id: ctx.userId },
+> = async (_root, args, context: Context) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
+
+  const user = await context.prisma.user.findUnique({
+    where: { id: context.userId },
     include: {
       domains: {
         where: { id: args.domainId },
@@ -32,7 +36,7 @@ const addTodo: ResolverFn<
     },
   });
 
-  const todo = await ctx.prisma.todo.create({
+  const todo = await context.prisma.todo.create({
     data: {
       title: args.title,
       todoList: { connect: user?.domains[0]?.collections[0]?.todoLists[0] },

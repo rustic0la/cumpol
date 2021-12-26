@@ -1,3 +1,5 @@
+import { ForbiddenError } from 'apollo-server-express';
+
 import {
   Domain,
   MutationAddDomainArgs,
@@ -12,12 +14,14 @@ const addDomain: ResolverFn<
   {},
   any,
   RequireFields<MutationAddDomainArgs, 'title'>
-> = async (_root, args, ctx: Context) => {
-  const user = await ctx.prisma.user.findUnique({
-    where: { id: ctx.userId },
+> = async (_root, args, context: Context) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
+
+  const user = await context.prisma.user.findUnique({
+    where: { id: context.userId },
   });
 
-  const domain = await ctx.prisma.domain.create({
+  const domain = await context.prisma.domain.create({
     data: { title: args.title, user: { connect: { username: user?.username } } },
     include: {
       collections: true,

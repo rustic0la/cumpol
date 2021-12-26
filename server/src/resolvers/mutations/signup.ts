@@ -18,6 +18,16 @@ const signup: ResolverFn<
   any,
   RequireFields<MutationSignupArgs, 'password' | 'username'>
 > = async (_root, args, context: Context) => {
+  const doesUserExist = await context.prisma.user.findUnique({
+    where: { username: args.username },
+  });
+
+  if (doesUserExist) {
+    return {
+      error: 'Username is alredy taken',
+    };
+  }
+
   const password = await bcrypt.hash(args.password, 10);
 
   const user = await context.prisma.user.create({

@@ -1,7 +1,7 @@
 import { Context } from '../interfaces';
 
-const getUserByUsername = async (username: string, ctx: Context) =>
-  ctx.prisma.user.findUnique({
+const getUserByUsername = async (username: string, context: Context) =>
+  context.prisma.user.findUnique({
     where: { username },
     include: {
       domains: {
