@@ -11,8 +11,6 @@ export const Login: FC = () => {
     password: '',
   });
 
-  const [, setToken] = useState('');
-
   const navigate = useNavigate();
 
   const [login] = useLoginMutation({
@@ -23,7 +21,6 @@ export const Login: FC = () => {
     onCompleted: ({ login }) => {
       if (login?.token) {
         localStorage.setItem(AUTH_TOKEN, login?.token);
-        setToken(login?.token);
       }
       navigate('/');
     },
@@ -37,7 +34,6 @@ export const Login: FC = () => {
     onCompleted: ({ signup }) => {
       if (signup?.token) {
         localStorage.setItem(AUTH_TOKEN, signup?.token);
-        setToken(signup?.token);
       }
       navigate('/');
     },
