@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
 
 import {
   GetDomainsDomainFragment,
@@ -10,33 +10,50 @@ import { DomainStyled } from './styles';
 interface DomainProps {
   domain: GetDomainsDomainFragment;
   onDeleteDomain?: (id: string) => void;
+  onUpdateDomain: (domain?: GetDomainsDomainFragment) => void;
 }
 
-const Domain: FC<DomainProps> = memo(({ domain, onDeleteDomain }) => {
+const Domain: FC<DomainProps> = memo(({ domain, onDeleteDomain, onUpdateDomain }) => {
   const { id, title } = domain;
   const [inputValue, setInputValue] = useState(() => title);
   const [deleteDomain] = useDeleteDomainMutation();
 
-  const handleDeleteDomainClick = (id: string) => {
-    deleteDomain({ variables: { domainId: id } });
-    onDeleteDomain?.(id);
-  };
+  const handleDeleteDomainClick = useCallback(
+    (e: BaseSyntheticEvent) => {
+      const domainId = e.target.id;
+      deleteDomain({ variables: { domainId } }).then(() => onDeleteDomain?.(domainId));
+    },
+    [deleteDomain, onDeleteDomain],
+  );
 
-  const [updateDomain] = useUpdateDomainMutation();
+  const [updateDomain] = useUpdateDomainMutation({
+    variables: { domainId: id, title: inputValue },
+  });
 
   const handleChangeDomain = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
-  const update = useCallback(() => {
-    updateDomain({ variables: { domainId: id, title: inputValue } });
-  }, [id, inputValue, updateDomain]);
+  const saveChange = useCallback(() => {
+    if (!inputValue) {
+      setInputValue(title);
+    } else {
+      updateDomain().then((res) => onUpdateDomain?.(res.data?.updateDomain));
+    }
+  }, [inputValue, title, updateDomain, onUpdateDomain]);
 
   return (
     // TODO: fix style
     <div style={{ display: 'flex' }}>
-      <DomainStyled type="text" onChange={handleChangeDomain} onBlur={update} value={inputValue} />
-      <button onClick={() => handleDeleteDomainClick(id)}>-</button>
+      <DomainStyled
+        type="text"
+        onChange={handleChangeDomain}
+        onBlur={saveChange}
+        value={inputValue}
+      />
+      <button id={id} onClick={handleDeleteDomainClick}>
+        -
+      </button>
     </div>
   );
 });

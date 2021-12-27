@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { GetDomainsDomainFragment, useGetDomainsQuery } from '../../../generated/types';
 import AddDomainButton from './AddDomainButton';
@@ -8,40 +8,54 @@ import { SidebarStyled } from './styles';
 const Sidebar: FC = memo(() => {
   const { data, loading } = useGetDomainsQuery();
 
-  const [domains, setDomains] = useState<GetDomainsDomainFragment[]>(() => []);
+  return (
+    <SidebarStyled>
+      {/* TODO: add loader */}
+      {loading ? 'Loading...' : <SidebarInner domains={data?.getDomains || []} />}
+    </SidebarStyled>
+  );
+});
 
-  useEffect(() => {
-    if (!loading) {
-      setDomains(data?.getDomains || []);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
+interface SidebarInnerProps {
+  domains: GetDomainsDomainFragment[];
+}
+
+const SidebarInner: FC<SidebarInnerProps> = memo(({ domains }) => {
+  const [domainsState, setDomainsState] = useState<GetDomainsDomainFragment[]>(() => domains);
 
   const onDeleteDomain = useCallback((id: string) => {
-    setDomains(domains.filter((domain) => domain.id !== id));
+    setDomainsState((prev) => prev.filter((domain) => domain.id !== id));
+  }, []);
+
+  const onUpdateDomain = useCallback((domain?: GetDomainsDomainFragment) => {
+    if (domain) {
+      setDomainsState((prev) => prev.map((d) => (d.id === domain.id ? domain : d)));
+    }
   }, []);
 
   const onAddDomain = useCallback((addedDomain: GetDomainsDomainFragment) => {
-    setDomains([...domains, addedDomain]);
+    setDomainsState((prev) => [...prev, addedDomain]);
   }, []);
 
   return (
-    <SidebarStyled>
-      {loading ? (
-        'Loading...'
-      ) : (
-        <>
-          {domains.map((domain) => (
-            <Domain key={domain.id} onDeleteDomain={onDeleteDomain} domain={domain} />
-          ))}
-          <AddDomainButton onAddDomain={onAddDomain} />
-        </>
-      )}
-    </SidebarStyled>
+    <>
+      {domainsState?.map((domain) => (
+        <Domain
+          key={domain.id}
+          onDeleteDomain={onDeleteDomain}
+          onUpdateDomain={onUpdateDomain}
+          domain={domain}
+        />
+      ))}
+      <AddDomainButton onAddDomain={onAddDomain} />
+    </>
   );
 });
 
 Sidebar.displayName = 'Sidebar';
 Sidebar.whyDidYouRender = true;
+
+SidebarInner.displayName = 'SidebarInner';
+SidebarInner.whyDidYouRender = true;
 
 export default Sidebar;

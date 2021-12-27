@@ -1,5 +1,4 @@
-import { ApolloQueryResult } from '@apollo/client';
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 // TODO: add alias
 import { GetDomainsDomainFragment, useAddDomainMutation } from '../../../../generated/types';
@@ -16,15 +15,16 @@ const AddDomainButton: FC<AddDomainButtonProps> = memo(({ onAddDomain }) => {
     },
   });
 
-  const handleAddDomainClick = () => {
+  const handleAddDomainClick = useCallback(() => {
     addDomain().then((res) => {
       if (!loading && res.data?.addDomain) {
         onAddDomain?.(res.data?.addDomain);
       }
     });
-  };
+  }, [addDomain, loading, onAddDomain]);
 
   return loading ? (
+    // TODO: add loader
     <p>Loading</p>
   ) : (
     <AddDomainButtonStyled onClick={handleAddDomainClick}>Add Domain</AddDomainButtonStyled>
