@@ -13,7 +13,7 @@ import {
 } from '../generated/types';
 import { Context } from '../interfaces';
 
-export const getDomains: ResolverFn<Maybe<ResolverTypeWrapper<Domain>>[], {}, any, {}> = (
+export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, any, {}> = (
   _root,
   _args,
   context: Context,
@@ -22,6 +22,7 @@ export const getDomains: ResolverFn<Maybe<ResolverTypeWrapper<Domain>>[], {}, an
 
   return context.prisma.domain.findMany({
     where: { userId: context.userId },
+    orderBy: { createdAt: 'asc' },
     include: {
       collections: {
         include: {

@@ -3,12 +3,20 @@ import addCollection from './addCollection';
 import addDomain from './addDomain';
 import addTodo from './addTodo';
 import addTodoList from './addTodoList';
+import deleteDomain from './deleteDomain';
 import login from './login';
 import signup from './signup';
+import updateDomain from './updateDomain';
 
 const Mutation: MutationResolvers<any, {}> = {
   addDomain: {
     resolve: addDomain,
+  },
+  updateDomain: {
+    resolve: updateDomain,
+  },
+  deleteDomain: {
+    resolve: deleteDomain,
   },
   addCollection: {
     resolve: addCollection,
@@ -19,6 +27,7 @@ const Mutation: MutationResolvers<any, {}> = {
   addTodo: {
     resolve: addTodo,
   },
+
   signup: {
     resolve: signup,
   },

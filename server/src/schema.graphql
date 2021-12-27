@@ -58,7 +58,7 @@ type Todo {
 }
 
 type Query {
-  getDomains: [Domain]!
+  getDomains: [Domain!]
   getDomain(domainId: ID!): Domain
   getCollections(domainId: ID!): [Collection]!
 }
@@ -75,24 +75,24 @@ type Mutation {
   addTodoList(title: String!, domainId: String!, collectionId: String!): TodoList!
   addTodo(title: String!, domainId: String!, collectionId: String!, todoListId: String!): Todo!
 
-  updateDomain(domainId: String!, title: String): Domain!
+  updateDomain(domainId: String!, title: String!): Domain!
   updateCollection(
     collectionId: String!
-    title: String
+    title: String!
     dueDate: Date
     duration: Date
     complPercent: Int
   ): Collection!
   updateTodoList(
     todoListId: String!
-    title: String
+    title: String!
     dueDate: Date
     duration: Date
     complPercent: Int
   ): TodoList!
   updateTodo(
     todoId: String!
-    title: String
+    title: String!
     dueDate: Date
     duration: Date
     complPercent: Int
