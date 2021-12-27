@@ -14,3 +14,21 @@ mutation login($username: String!, $password: String!) {
     }
   }
 }
+
+mutation addDomain($title: String!) {
+  addDomain(title: $title) {
+    id
+    title
+  }
+}
+
+mutation updateDomain($domainId: String!, $title: String!) {
+  updateDomain(domainId: $domainId, title: $title) {
+    id
+    title
+  }
+}
+
+mutation deleteDomain($domainId: String!) {
+  deleteDomain(domainId: $domainId)
+}

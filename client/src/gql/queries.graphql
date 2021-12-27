@@ -1,0 +1,10 @@
+query getDomains {
+  getDomains {
+    ...getDomainsDomain
+  }
+}
+
+fragment getDomainsDomain on Domain {
+  id
+  title
+}
