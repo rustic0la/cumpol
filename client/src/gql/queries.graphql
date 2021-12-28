@@ -8,3 +8,9 @@ fragment getDomainsDomain on Domain {
   id
   title
 }
+
+query getCollections($domainId: ID!) {
+  getCollections(domainId: $domainId) {
+    ...collection
+  }
+}

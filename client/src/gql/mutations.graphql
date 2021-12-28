@@ -32,3 +32,19 @@ mutation updateDomain($domainId: String!, $title: String!) {
 mutation deleteDomain($domainId: String!) {
   deleteDomain(domainId: $domainId)
 }
+
+mutation deleteCollection($collectionId: String!) {
+  deleteCollection(collectionId: $collectionId)
+}
+
+mutation updateCollection($collectionId: String!, $title: String!) {
+  updateCollection(collectionId: $collectionId, title: $title) {
+    ...collection
+  }
+}
+
+mutation addCollection($title: String!, $domainId: String!) {
+  addCollection(domainId: $domainId, title: $title) {
+    ...collection
+  }
+}

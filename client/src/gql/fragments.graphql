@@ -1,0 +1,20 @@
+fragment collection on Collection {
+  id
+  title
+  todoLists {
+    ...todoList
+  }
+}
+
+fragment todoList on TodoList {
+  id
+  title
+  todos {
+    ...todo
+  }
+}
+
+fragment todo on Todo {
+  id
+  title
+}
