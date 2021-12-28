@@ -12,9 +12,9 @@ import { Context } from '../../interfaces';
 const addCollection: ResolverFn<
   ResolverTypeWrapper<Collection>,
   {},
-  any,
+  Context,
   RequireFields<MutationAddCollectionArgs, 'domainId' | 'title'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const domain = await context.prisma.domain.findUnique({

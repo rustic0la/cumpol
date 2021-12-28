@@ -12,9 +12,9 @@ import { Context } from '../../interfaces';
 const deleteCollection: ResolverFn<
   Maybe<ResolverTypeWrapper<boolean>>,
   {},
-  any,
+  Context,
   RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const deletedCollection = await context.prisma.collection.delete({

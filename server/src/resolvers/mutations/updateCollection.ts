@@ -12,9 +12,9 @@ import { Context } from '../../interfaces';
 const updateCollection: ResolverFn<
   ResolverTypeWrapper<Collection>,
   {},
-  any,
+  Context,
   RequireFields<MutationUpdateCollectionArgs, 'title' | 'collectionId'>
-> = (_root, args, context: Context) => {
+> = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   return context.prisma.collection.update({

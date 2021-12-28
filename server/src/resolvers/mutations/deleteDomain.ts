@@ -12,9 +12,9 @@ import { Context } from '../../interfaces';
 const deletedomain: ResolverFn<
   Maybe<ResolverTypeWrapper<boolean>>,
   {},
-  any,
+  Context,
   RequireFields<MutationDeleteDomainArgs, 'domainId'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const deletedDomain = await context.prisma.domain.delete({ where: { id: args.domainId } });

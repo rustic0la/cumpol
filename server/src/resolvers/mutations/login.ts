@@ -16,9 +16,9 @@ import getUserByUsername from '../utils';
 const login: ResolverFn<
   Maybe<ResolverTypeWrapper<AuthPayload>>,
   {},
-  any,
+  Context,
   RequireFields<MutationLoginArgs, 'password' | 'username'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   const user = await getUserByUsername(args.username, context);
 
   if (!user) {

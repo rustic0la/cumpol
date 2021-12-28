@@ -12,9 +12,9 @@ import { Context } from '../../interfaces';
 const addTodo: ResolverFn<
   ResolverTypeWrapper<Todo>,
   {},
-  any,
+  Context,
   RequireFields<MutationAddTodoArgs, 'title' | 'todoListId' | 'collectionId' | 'domainId'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const user = await context.prisma.user.findUnique({

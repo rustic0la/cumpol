@@ -15,9 +15,9 @@ import { APP_SECRET } from '../../utils';
 const signup: ResolverFn<
   Maybe<ResolverTypeWrapper<AuthPayload>>,
   {},
-  any,
+  Context,
   RequireFields<MutationSignupArgs, 'password' | 'username'>
-> = async (_root, args, context: Context) => {
+> = async (_root, args, context) => {
   const doesUserExist = await context.prisma.user.findUnique({
     where: { username: args.username },
   });

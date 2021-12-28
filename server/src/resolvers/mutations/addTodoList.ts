@@ -12,7 +12,7 @@ import { Context } from '../../interfaces';
 const addTodoList: ResolverFn<
   ResolverTypeWrapper<TodoList>,
   {},
-  any,
+  Context,
   RequireFields<MutationAddTodoListArgs, 'collectionId' | 'domainId' | 'title'>
 > = async (_root, args, context: Context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');

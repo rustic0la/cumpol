@@ -13,10 +13,10 @@ import {
 } from '../generated/types';
 import { Context } from '../interfaces';
 
-export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, any, {}> = (
+export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
   _root,
   _args,
-  context: Context,
+  context,
 ) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
@@ -40,9 +40,9 @@ export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, any, {}> 
 export const getDomain: ResolverFn<
   Maybe<ResolverTypeWrapper<Domain>>,
   {},
-  any,
+  Context,
   RequireFields<QueryGetDomainArgs, 'domainId'>
-> = (_root, args, context: Context) => {
+> = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   return context.prisma.domain.findUnique({
@@ -64,9 +64,9 @@ export const getDomain: ResolverFn<
 export const getCollections: ResolverFn<
   ResolverTypeWrapper<Collection>[],
   {},
-  any,
+  Context,
   RequireFields<QueryGetCollectionsArgs, 'domainId'>
-> = (_root, args, context: Context) => {
+> = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   return context.prisma.collection.findMany({
