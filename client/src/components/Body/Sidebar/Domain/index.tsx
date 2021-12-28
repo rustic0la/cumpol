@@ -9,7 +9,7 @@ import { DomainStyled } from './styles';
 
 interface DomainProps {
   domain: GetDomainsDomainFragment;
-  onDeleteDomain?: (id: string) => void;
+  onDeleteDomain: (id: string) => void;
   onUpdateDomain: (domain?: GetDomainsDomainFragment) => void;
 }
 
@@ -21,24 +21,24 @@ const Domain: FC<DomainProps> = memo(({ domain, onDeleteDomain, onUpdateDomain }
   const handleDeleteDomainClick = useCallback(
     (e: BaseSyntheticEvent) => {
       const domainId = e.target.id;
-      deleteDomain({ variables: { domainId } }).then(() => onDeleteDomain?.(domainId));
+      deleteDomain({ variables: { domainId } }).then(() => onDeleteDomain(domainId));
     },
     [deleteDomain, onDeleteDomain],
   );
-
-  const [updateDomain] = useUpdateDomainMutation({
-    variables: { domainId: id, title: inputValue },
-  });
 
   const handleChangeDomain = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
+  const [updateDomain] = useUpdateDomainMutation({
+    variables: { domainId: id, title: inputValue },
+  });
+
   const saveChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateDomain().then((res) => onUpdateDomain?.(res.data?.updateDomain));
+      updateDomain().then((res) => onUpdateDomain(res.data?.updateDomain));
     }
   }, [inputValue, title, updateDomain, onUpdateDomain]);
 

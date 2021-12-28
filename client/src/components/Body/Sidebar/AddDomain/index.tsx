@@ -5,7 +5,7 @@ import { GetDomainsDomainFragment, useAddDomainMutation } from '../../../../gene
 import { AddDomainButtonStyled } from './styles';
 
 interface AddDomainButtonProps {
-  onAddDomain?: (domain: GetDomainsDomainFragment) => void;
+  onAddDomain: (domain: GetDomainsDomainFragment) => void;
 }
 
 const AddDomainButton: FC<AddDomainButtonProps> = memo(({ onAddDomain }) => {
@@ -18,7 +18,7 @@ const AddDomainButton: FC<AddDomainButtonProps> = memo(({ onAddDomain }) => {
   const handleAddDomainClick = useCallback(() => {
     addDomain().then((res) => {
       if (!loading && res.data?.addDomain) {
-        onAddDomain?.(res.data?.addDomain);
+        onAddDomain(res.data?.addDomain);
       }
     });
   }, [addDomain, loading, onAddDomain]);
