@@ -17,17 +17,12 @@ const addCollection: ResolverFn<
 > = async (_root, args, context: Context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const user = await context.prisma.user.findUnique({
-    where: { id: context.userId },
-    include: {
-      domains: {
-        where: { id: args.domainId },
-      },
-    },
+  const domain = await context.prisma.domain.findUnique({
+    where: { id: args.domainId },
   });
 
   const collection = await context.prisma.collection.create({
-    data: { title: args.title, domain: { connect: user?.domains[0] } },
+    data: { title: args.title, domain: { connect: { id: domain?.id } } },
   });
 
   return { ...collection, todoLists: [] };

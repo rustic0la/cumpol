@@ -62,7 +62,7 @@ export const getDomain: ResolverFn<
 };
 
 export const getCollections: ResolverFn<
-  Maybe<ResolverTypeWrapper<Collection>>[],
+  ResolverTypeWrapper<Collection>[],
   {},
   any,
   RequireFields<QueryGetCollectionsArgs, 'domainId'>

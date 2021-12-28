@@ -60,7 +60,7 @@ type Todo {
 type Query {
   getDomains: [Domain!]
   getDomain(domainId: ID!): Domain
-  getCollections(domainId: ID!): [Collection]!
+  getCollections(domainId: ID!): [Collection!]
 }
 
 type AuthPayload {
