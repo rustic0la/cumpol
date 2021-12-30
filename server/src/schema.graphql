@@ -72,8 +72,8 @@ type AuthPayload {
 type Mutation {
   addDomain(title: String!): Domain!
   addCollection(title: String!, domainId: String!): Collection!
-  addTodoList(title: String!, domainId: String!, collectionId: String!): TodoList!
-  addTodo(title: String!, domainId: String!, collectionId: String!, todoListId: String!): Todo!
+  addTodoList(title: String!, collectionId: String!): TodoList!
+  addTodo(title: String!, todoListId: String!): Todo!
 
   updateDomain(domainId: String!, title: String!): Domain!
   updateCollection(
