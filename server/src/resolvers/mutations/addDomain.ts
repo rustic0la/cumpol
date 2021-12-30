@@ -28,7 +28,10 @@ const addDomain: ResolverFn<
     },
   });
 
-  return { ...domain, collections: [] };
+  const domainAdded: Domain = { ...domain, collections: [] };
+  context.pubsub.publish('domainAdded', { domainAdded });
+
+  return domainAdded;
 };
 
 export default addDomain;
