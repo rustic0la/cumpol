@@ -1,11 +1,13 @@
+import { Domain, SubscriptionResolvers } from '../generated/types';
 import { Context } from '../interfaces';
 
-const domainAdded = (_root: any, _args: any, context: Context) =>
-  context.pubsub.asyncIterator('domainAdded');
-
-const Subscription = {
+const Subscription: SubscriptionResolvers<Context, {}> = {
   domainAdded: {
-    subscribe: domainAdded,
+    subscribe: (_root: any, _args: any, context: Context) =>
+      context.pubsub.asyncIterator('domainAdded'),
+    resolve: (payload: Domain) => {
+      return payload;
+    },
   },
 };
 

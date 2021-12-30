@@ -15,7 +15,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^16.0.1",
-    "graphql-subscriptions": "^2.0.0",
+    "graphql-subscriptions": "patch:graphql-subscriptions@^2.0.0#../.yarn/patches/graphql-subscriptions-npm-2.0.0-53564d1c84",
     "jsonwebtoken": "^8.5.1",
     "subscriptions-transport-ws": "^0.11.0"
   },

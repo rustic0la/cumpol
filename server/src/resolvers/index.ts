@@ -7,7 +7,6 @@ import Subscription from './subscriptions';
 const resolvers: Resolvers = {
   Query,
   Mutation,
-  // @ts-ignore
   Subscription,
 };
 

@@ -4,5 +4,8 @@
   "workspaces": [
     "client",
     "server"
-  ]
+  ],
+  "resolutions": {
+    "graphql-subscriptions@2.0.0": "patch:graphql-subscriptions@npm:2.0.0#.yarn/patches/graphql-subscriptions-npm-2.0.0-53564d1c84"
+  }
 }
