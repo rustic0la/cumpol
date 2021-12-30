@@ -1,0 +1,6 @@
+subscription domainAdded {
+  domainAdded {
+    id
+    title
+  }
+}
