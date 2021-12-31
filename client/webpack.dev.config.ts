@@ -2,6 +2,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration as WebpackConfiguration, HotModuleReplacementPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
@@ -22,7 +23,7 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(ts|js)x?$/i,
-        exclude: /node_modules/,
+        exclude: /^node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -32,7 +33,7 @@ const config: Configuration = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        exclude: /node_modules/,
+        exclude: /^node_modules/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -43,6 +44,7 @@ const config: Configuration = {
       },
       {
         test: /\.svg$/,
+        exclude: /^node_modules/,
         use: [
           {
             loader: 'svg-url-loader',
@@ -56,6 +58,14 @@ const config: Configuration = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: './tsconfig.json',
+        logLevel: 'INFO',
+        extensions: ['.ts', '.tsx'],
+        mainFields: ['browser', 'main'],
+      }),
+    ],
   },
   plugins: [
     new CopyWebpackPlugin({

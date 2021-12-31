@@ -1,6 +1,6 @@
+import { CollectionFragment, useGetCollectionsQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import { CollectionFragment, useGetCollectionsQuery } from '../../../generated/types';
 import AddCollectionButton from './AddCollection';
 import Collection from './Collection';
 import { MainContentStyled } from './styles';

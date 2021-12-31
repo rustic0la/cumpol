@@ -1,10 +1,10 @@
-import React, { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
-
 import {
   GetDomainsDomainFragment,
   useDeleteDomainMutation,
   useUpdateDomainMutation,
-} from '../../../../generated/types';
+} from '@gql/types';
+import React, { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
+
 import { DomainStyled } from './styles';
 
 interface DomainProps {

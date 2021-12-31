@@ -1,6 +1,5 @@
+import { CollectionFragment, useAddCollectionMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
-
-import { CollectionFragment, useAddCollectionMutation } from '../../../../generated/types';
 
 // TODO: get from useParams
 const domainID = 'ckxp0bztx154926szjy0hqjot';

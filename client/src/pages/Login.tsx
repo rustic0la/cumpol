@@ -1,8 +1,8 @@
+import { useLoginMutation, useSignupMutation } from '@gql/types';
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AUTH_TOKEN } from '../constants';
-import { useLoginMutation, useSignupMutation } from '../generated/types';
 
 export const Login: FC = () => {
   const [formState, setFormState] = useState({

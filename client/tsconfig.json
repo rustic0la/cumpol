@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -11,7 +10,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@gql/types": ["./src/generated/types"]
+    }
   },
   "include": ["src", "custom.d.ts"]
 }
