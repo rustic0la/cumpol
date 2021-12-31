@@ -1,7 +1,6 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Maybe,
   MutationDeleteCollectionArgs,
   RequireFields,
   ResolverFn,
@@ -17,12 +16,15 @@ const deleteCollection: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedCollection = await context.prisma.collection.delete({
-    where: { id: args.collectionId },
-    include: { todoLists: true },
+  const todoListsDeleted = await context.prisma.todoList.deleteMany({
+    where: { collectionId: args.collectionId },
   });
 
-  return !!deletedCollection;
+  const collectionDeleted = await context.prisma.collection.delete({
+    where: { id: args.collectionId },
+  });
+
+  return !!todoListsDeleted && !!collectionDeleted;
 };
 
 export default deleteCollection;
