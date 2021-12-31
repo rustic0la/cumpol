@@ -13,33 +13,16 @@ const addTodo: ResolverFn<
   ResolverTypeWrapper<Todo>,
   {},
   Context,
-  RequireFields<MutationAddTodoArgs, 'title' | 'todoListId' | 'collectionId' | 'domainId'>
+  RequireFields<MutationAddTodoArgs, 'title' | 'todoListId'>
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const user = await context.prisma.user.findUnique({
-    where: { id: context.userId },
-    include: {
-      domains: {
-        where: { id: args.domainId },
-        include: {
-          collections: {
-            where: { id: args.collectionId },
-            include: {
-              todoLists: {
-                where: { id: args.todoListId },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+  const todoList = await context.prisma.todoList.findUnique({ where: { id: args.todoListId } });
 
   const todo = await context.prisma.todo.create({
     data: {
       title: args.title,
-      todoList: { connect: user?.domains[0]?.collections[0]?.todoLists[0] },
+      todoList: { connect: { id: todoList?.id } },
     },
   });
 
