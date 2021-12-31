@@ -25,10 +25,14 @@ const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
     orderBy: { createdAt: 'asc' },
     include: {
       collections: {
+        orderBy: { createdAt: 'asc' },
         include: {
           todoLists: {
+            orderBy: { createdAt: 'asc' },
             include: {
-              todos: true,
+              todos: {
+                orderBy: { createdAt: 'asc' },
+              },
             },
           },
         },
@@ -49,10 +53,14 @@ const getDomain: ResolverFn<
     where: { id: args.domainId },
     include: {
       collections: {
+        orderBy: { createdAt: 'asc' },
         include: {
           todoLists: {
+            orderBy: { createdAt: 'asc' },
             include: {
-              todos: true,
+              todos: {
+                orderBy: { createdAt: 'asc' },
+              },
             },
           },
         },
@@ -71,10 +79,14 @@ const getCollections: ResolverFn<
 
   return context.prisma.collection.findMany({
     where: { domainId: args.domainId },
+    orderBy: { createdAt: 'asc' },
     include: {
       todoLists: {
+        orderBy: { createdAt: 'asc' },
         include: {
-          todos: true,
+          todos: {
+            orderBy: { createdAt: 'asc' },
+          },
         },
       },
     },
