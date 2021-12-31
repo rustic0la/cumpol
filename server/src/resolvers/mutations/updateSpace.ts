@@ -1,27 +1,27 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Domain,
-  MutationUpdateDomainArgs,
+  Space,
+  MutationUpdateSpaceArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const updateDomain: ResolverFn<
-  ResolverTypeWrapper<Domain>,
+const updateSpace: ResolverFn<
+  ResolverTypeWrapper<Space>,
   {},
   Context,
-  RequireFields<MutationUpdateDomainArgs, 'domainId' | 'title'>
+  RequireFields<MutationUpdateSpaceArgs, 'spaceId' | 'title'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.domain.update({
-    where: { id: args.domainId },
+  return context.prisma.space.update({
+    where: { id: args.spaceId },
     data: { title: args.title },
     include: {
-      collections: {
+      topics: {
         include: {
           todoLists: {
             include: {
@@ -34,4 +34,4 @@ const updateDomain: ResolverFn<
   });
 };
 
-export default updateDomain;
+export default updateSpace;

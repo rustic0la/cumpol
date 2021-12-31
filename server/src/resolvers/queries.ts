@@ -1,11 +1,11 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Collection,
-  Domain,
+  Topic,
+  Space,
   Maybe,
-  QueryGetCollectionsArgs,
-  QueryGetDomainArgs,
+  QueryGetTopicsArgs,
+  QueryGetSpaceArgs,
   QueryResolvers,
   RequireFields,
   ResolverFn,
@@ -13,18 +13,18 @@ import {
 } from '../generated/types';
 import { Context } from '../interfaces';
 
-const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
+const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
   _root,
   _args,
   context,
 ) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.domain.findMany({
+  return context.prisma.space.findMany({
     where: { userId: context.userId },
     orderBy: { createdAt: 'asc' },
     include: {
-      collections: {
+      topics: {
         orderBy: { createdAt: 'asc' },
         include: {
           todoLists: {
@@ -41,18 +41,18 @@ const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
   });
 };
 
-const getDomain: ResolverFn<
-  Maybe<ResolverTypeWrapper<Domain>>,
+const getSpace: ResolverFn<
+  Maybe<ResolverTypeWrapper<Space>>,
   {},
   Context,
-  RequireFields<QueryGetDomainArgs, 'domainId'>
+  RequireFields<QueryGetSpaceArgs, 'spaceId'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.domain.findUnique({
-    where: { id: args.domainId },
+  return context.prisma.space.findUnique({
+    where: { id: args.spaceId },
     include: {
-      collections: {
+      topics: {
         orderBy: { createdAt: 'asc' },
         include: {
           todoLists: {
@@ -69,16 +69,16 @@ const getDomain: ResolverFn<
   });
 };
 
-const getCollections: ResolverFn<
-  ResolverTypeWrapper<Collection>[],
+const getTopics: ResolverFn<
+  ResolverTypeWrapper<Topic>[],
   {},
   Context,
-  RequireFields<QueryGetCollectionsArgs, 'domainId'>
+  RequireFields<QueryGetTopicsArgs, 'spaceId'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.collection.findMany({
-    where: { domainId: args.domainId },
+  return context.prisma.topic.findMany({
+    where: { spaceId: args.spaceId },
     orderBy: { createdAt: 'asc' },
     include: {
       todoLists: {
@@ -94,14 +94,15 @@ const getCollections: ResolverFn<
 };
 
 const Query: QueryResolvers<Context, {}> = {
-  getDomains: {
-    resolve: getDomains,
+  // TODO: edit return only id + title
+  getSpaces: {
+    resolve: getSpaces,
   },
-  getDomain: {
-    resolve: getDomain,
+  getSpace: {
+    resolve: getSpace,
   },
-  getCollections: {
-    resolve: getCollections,
+  getTopics: {
+    resolve: getTopics,
   },
 };
 

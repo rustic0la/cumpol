@@ -38,7 +38,7 @@ const signup: ResolverFn<
 
   return {
     token,
-    user: { ...user, domains: [] },
+    user: { ...user, spaces: [] },
   };
 };
 

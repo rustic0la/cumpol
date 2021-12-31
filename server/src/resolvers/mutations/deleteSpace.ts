@@ -2,24 +2,24 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   Maybe,
-  MutationDeleteDomainArgs,
+  MutationDeleteSpaceArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const deletedomain: ResolverFn<
+const deleteSpace: ResolverFn<
   ResolverTypeWrapper<boolean>,
   {},
   Context,
-  RequireFields<MutationDeleteDomainArgs, 'domainId'>
+  RequireFields<MutationDeleteSpaceArgs, 'spaceId'>
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedDomain = await context.prisma.domain.delete({ where: { id: args.domainId } });
+  const deletedSpace = await context.prisma.space.delete({ where: { id: args.spaceId } });
 
-  return !!deletedDomain;
+  return !!deletedSpace;
 };
 
-export default deletedomain;
+export default deleteSpace;

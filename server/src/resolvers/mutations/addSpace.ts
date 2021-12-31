@@ -1,19 +1,19 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Domain,
-  MutationAddDomainArgs,
+  Space,
+  MutationAddSpaceArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const addDomain: ResolverFn<
-  ResolverTypeWrapper<Domain>,
+const addSpace: ResolverFn<
+  ResolverTypeWrapper<Space>,
   {},
   Context,
-  RequireFields<MutationAddDomainArgs, 'title'>
+  RequireFields<MutationAddSpaceArgs, 'title'>
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
@@ -21,17 +21,17 @@ const addDomain: ResolverFn<
     where: { id: context.userId },
   });
 
-  const domain = await context.prisma.domain.create({
+  const space = await context.prisma.space.create({
     data: { title: args.title, user: { connect: { username: user?.username } } },
     include: {
-      collections: true,
+      topics: true,
     },
   });
 
-  const domainAdded: Domain = { ...domain, collections: [] };
-  context.pubsub.publish('domainAdded', { domainAdded });
+  const spaceAdded: Space = { ...space, topics: [] };
+  context.pubsub.publish('spaceAdded', { spaceAdded });
 
-  return domainAdded;
+  return spaceAdded;
 };
 
-export default addDomain;
+export default addSpace;

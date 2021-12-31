@@ -4,9 +4,9 @@ const getUserByUsername = async (username: string, context: Context) =>
   context.prisma.user.findUnique({
     where: { username },
     include: {
-      domains: {
+      spaces: {
         include: {
-          collections: {
+          topics: {
             include: {
               todoLists: {
                 include: {

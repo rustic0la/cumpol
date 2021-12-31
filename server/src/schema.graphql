@@ -4,24 +4,24 @@ type User {
   id: ID!
   username: String!
   password: String!
-  domains: [Domain!]!
+  spaces: [Space!]!
 }
 
-type Domain {
+type Space {
   id: String!
   title: String!
   createdAt: Date!
   complPercent: Int!
   userId: String!
-  collections: [Collection!]!
+  topics: [Topic!]!
 }
 
-type Collection {
+type Topic {
   id: ID!
   title: String!
   createdAt: Date!
   dueDate: Date
-  domainId: String!
+  spaceId: String!
   duration: Date
   complPercent: Int!
   todoLists: [TodoList!]!
@@ -32,7 +32,7 @@ type TodoList {
   title: String!
   createdAt: Date!
   dueDate: Date
-  collectionId: String!
+  topicId: String!
   duration: Date
   complPercent: Int!
   todos: [Todo!]!
@@ -58,9 +58,9 @@ type Todo {
 }
 
 type Query {
-  getDomains: [Domain!]!
-  getDomain(domainId: ID!): Domain
-  getCollections(domainId: ID!): [Collection!]!
+  getSpaces: [Space!]!
+  getSpace(spaceId: ID!): Space
+  getTopics(spaceId: ID!): [Topic!]!
 }
 
 type AuthPayload {
@@ -70,19 +70,19 @@ type AuthPayload {
 }
 
 type Mutation {
-  addDomain(title: String!): Domain!
-  addCollection(title: String!, domainId: String!): Collection!
-  addTodoList(title: String!, collectionId: String!): TodoList!
+  addSpace(title: String!): Space!
+  addTopic(title: String!, spaceId: String!): Topic!
+  addTodoList(title: String!, topicId: String!): TodoList!
   addTodo(title: String!, todoListId: String!): Todo!
 
-  updateDomain(domainId: String!, title: String!): Domain!
-  updateCollection(
-    collectionId: String!
+  updateSpace(spaceId: String!, title: String!): Space!
+  updateTopic(
+    topicId: String!
     title: String!
     dueDate: Date
     duration: Date
     complPercent: Int
-  ): Collection!
+  ): Topic!
   updateTodoList(
     todoListId: String!
     title: String!
@@ -99,8 +99,8 @@ type Mutation {
     isWatched: Boolean
   ): Todo!
 
-  deleteDomain(domainId: String!): Boolean
-  deleteCollection(collectionId: String!): Boolean
+  deleteSpace(spaceId: String!): Boolean
+  deleteTopic(topicId: String!): Boolean
   deleteTodoList(todoListId: String!): Boolean
   deleteTodo(todoId: String!): Boolean
 
@@ -109,5 +109,5 @@ type Mutation {
 }
 
 type Subscription {
-  domainAdded: Domain
+  spaceAdded: Space
 }

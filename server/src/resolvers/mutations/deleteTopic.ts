@@ -1,30 +1,30 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  MutationDeleteCollectionArgs,
+  MutationDeleteTopicArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const deleteCollection: ResolverFn<
+const deleteTopic: ResolverFn<
   ResolverTypeWrapper<boolean>,
   {},
   Context,
-  RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
+  RequireFields<MutationDeleteTopicArgs, 'topicId'>
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const todoListsDeleted = await context.prisma.todoList.deleteMany({
-    where: { collectionId: args.collectionId },
+    where: { topicId: args.topicId },
   });
 
-  const collectionDeleted = await context.prisma.collection.delete({
-    where: { id: args.collectionId },
+  const topicDeleted = await context.prisma.topic.delete({
+    where: { id: args.topicId },
   });
 
-  return !!todoListsDeleted && !!collectionDeleted;
+  return !!todoListsDeleted && !!topicDeleted;
 };
 
-export default deleteCollection;
+export default deleteTopic;

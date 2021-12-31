@@ -1,24 +1,24 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Collection,
-  MutationUpdateCollectionArgs,
+  Topic,
+  MutationUpdateTopicArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const updateCollection: ResolverFn<
-  ResolverTypeWrapper<Collection>,
+const updateTopic: ResolverFn<
+  ResolverTypeWrapper<Topic>,
   {},
   Context,
-  RequireFields<MutationUpdateCollectionArgs, 'title' | 'collectionId'>
+  RequireFields<MutationUpdateTopicArgs, 'title' | 'topicId'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.collection.update({
-    where: { id: args.collectionId },
+  return context.prisma.topic.update({
+    where: { id: args.topicId },
     data: { title: args.title },
     include: {
       todoLists: {
@@ -30,4 +30,4 @@ const updateCollection: ResolverFn<
   });
 };
 
-export default updateCollection;
+export default updateTopic;

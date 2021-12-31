@@ -12,43 +12,43 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  username String   @unique
+  id       String  @id @default(cuid())
+  username String  @unique
   password String
-  domains  Domain[]
+  spaces   Space[]
 }
 
-model Domain {
-  id           String       @id @default(cuid())
+model Space {
+  id           String   @id @default(cuid())
   title        String
-  createdAt    DateTime     @default(now())
-  complPercent Int          @default(0)
-  collections  Collection[]
+  createdAt    DateTime @default(now())
+  complPercent Int      @default(0)
+  topics       Topic[]
   userId       String
-  user         User         @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
 }
 
-model Collection {
+model Topic {
   id           String     @id @default(cuid())
   title        String
   createdAt    DateTime   @default(now())
   dueDate      DateTime?
   duration     DateTime?
   complPercent Int        @default(0)
-  domain       Domain     @relation(fields: [domainId], references: [id])
-  domainId     String
+  space        Space      @relation(fields: [spaceId], references: [id])
+  spaceId      String
   todoLists    TodoList[]
 }
 
 model TodoList {
-  id           String     @id @default(cuid())
+  id           String    @id @default(cuid())
   title        String
-  createdAt    DateTime   @default(now())
+  createdAt    DateTime  @default(now())
   dueDate      DateTime?
   duration     DateTime?
-  complPercent Int        @default(0)
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
+  complPercent Int       @default(0)
+  topic        Topic     @relation(fields: [topicId], references: [id])
+  topicId      String
   todos        Todo[]
 }
 

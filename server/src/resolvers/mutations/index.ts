@@ -1,37 +1,37 @@
 import { MutationResolvers } from '../../generated/types';
-import addCollection from './addCollection';
-import addDomain from './addDomain';
+import addTopic from './addTopic';
+import addSpace from './addSpace';
 import addTodo from './addTodo';
 import addTodoList from './addTodoList';
-import deleteCollection from './deleteCollection';
-import deleteDomain from './deleteDomain';
+import deleteTopic from './deleteTopic';
+import deleteSpace from './deleteSpace';
 import deleteTodo from './deleteTodo';
 import deleteTodoList from './deleteTodoList';
 import login from './login';
 import signup from './signup';
-import updateCollection from './updateCollection';
-import updateDomain from './updateDomain';
+import updateTopic from './updateTopic';
+import updateSpace from './updateSpace';
 import updateTodo from './updateTodo';
 import updateTodoList from './updateTodoList';
 
 const Mutation: MutationResolvers<any, {}> = {
-  addDomain: {
-    resolve: addDomain,
+  addSpace: {
+    resolve: addSpace,
   },
-  updateDomain: {
-    resolve: updateDomain,
+  updateSpace: {
+    resolve: updateSpace,
   },
-  deleteDomain: {
-    resolve: deleteDomain,
+  deleteSpace: {
+    resolve: deleteSpace,
   },
-  addCollection: {
-    resolve: addCollection,
+  addTopic: {
+    resolve: addTopic,
   },
-  deleteCollection: {
-    resolve: deleteCollection,
+  deleteTopic: {
+    resolve: deleteTopic,
   },
-  updateCollection: {
-    resolve: updateCollection,
+  updateTopic: {
+    resolve: updateTopic,
   },
   addTodoList: {
     resolve: addTodoList,
