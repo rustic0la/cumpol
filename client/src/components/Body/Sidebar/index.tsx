@@ -1,87 +1,77 @@
-import { SubscribeToMoreOptions } from '@apollo/client';
-import {
-  DomainAddedDocument,
-  DomainAddedSubscription,
-  Exact,
-  GetDomainsDomainFragment,
-  GetDomainsQuery,
-  useGetDomainsQuery,
-} from '@gql/types';
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { GetSpacesSpaceFragment, useGetSpacesQuery } from '@gql/types';
+import React, { FC, memo, useCallback, useState } from 'react';
 
-import AddDomainButton from './AddDomain';
-import Domain from './Domain';
+import AddSpace from './AddSpace';
+import Space from './Space';
 import { SidebarStyled } from './styles';
 
 const Sidebar: FC = memo(() => {
-  const { data, loading, subscribeToMore } = useGetDomainsQuery();
+  const { data, loading } = useGetSpacesQuery();
 
   // useEffect(
   //   () =>
   //     subscribeToMore({
-  //       document: DomainAddedDocument,
+  //       document: SpaceAddedDocument,
   //       updateQuery: (prev, { subscriptionData }) => {
   //         console.log('subscriptionData', subscriptionData, 'prev', prev);
 
   //         if (!subscriptionData.data) return prev;
-  //         const { domainAdded } = subscriptionData.data;
-  //         const doesExist = prev.getDomains?.find(({ id }) => id === domainAdded?.id);
+  //         const { spaceAdded } = subscriptionData.data;
+  //         const doesExist = prev.getSpaces?.find(({ id }) => id === spaceAdded?.id);
   //         if (doesExist) return prev;
 
-  //         console.log('!!!!', [...(prev.getDomains || []), domainAdded]);
+  //         console.log('!!!!', [...(prev.getSpaces || []), spaceAdded]);
   //         return {
   //           ...prev,
-  //           getDomains: [...(prev.getDomains || []), domainAdded],
+  //           getSpaces: [...(prev.getSpaces || []), spaceAdded],
   //         };
   //       },
   //     }),
   //   [subscribeToMore],
   // );
 
-  console.log('data', data);
-
   return (
     <SidebarStyled>
       {/* TODO: add loader */}
-      {loading ? 'Loading...' : <SidebarInner domains={data?.getDomains || []} />}
+      {loading ? 'Loading...' : <SidebarInner spaces={data?.getSpaces || []} />}
     </SidebarStyled>
   );
 });
 Sidebar.displayName = 'Sidebar';
 Sidebar.whyDidYouRender = true;
 interface SidebarInnerProps {
-  domains: GetDomainsDomainFragment[];
+  spaces: GetSpacesSpaceFragment[];
 }
 
-const SidebarInner: FC<SidebarInnerProps> = memo(({ domains }) => {
-  const [domainsState, setDomainsState] = useState(() => domains);
-  console.log('domainsState', domainsState);
+const SidebarInner: FC<SidebarInnerProps> = memo(({ spaces }) => {
+  const [spacesState, setSpacesState] = useState(() => spaces);
+  console.log('spacesState', spacesState);
 
-  const handleDeleteDomain = useCallback((id: string) => {
-    setDomainsState((prev) => prev.filter((domain) => domain.id !== id));
+  const handleDeleteSpace = useCallback((id: string) => {
+    setSpacesState((prev) => prev.filter((space) => space.id !== id));
   }, []);
 
-  const handleUpdateDomains = useCallback((domain?: GetDomainsDomainFragment) => {
-    if (domain) {
-      setDomainsState((prev) => prev.map((d) => (d.id === domain.id ? domain : d)));
+  const handleUpdateSpace = useCallback((space?: GetSpacesSpaceFragment) => {
+    if (space) {
+      setSpacesState((prev) => prev.map((d) => (d.id === space.id ? space : d)));
     }
   }, []);
 
-  const handleAddDomain = useCallback((addedDomain: GetDomainsDomainFragment) => {
-    setDomainsState((prev) => [...prev, addedDomain]);
+  const handleAddSpace = useCallback((addedSpace: GetSpacesSpaceFragment) => {
+    setSpacesState((prev) => [...prev, addedSpace]);
   }, []);
 
   return (
     <>
-      {domainsState.map((domain) => (
-        <Domain
-          key={domain.id}
-          onDeleteDomain={handleDeleteDomain}
-          onUpdateDomain={handleUpdateDomains}
-          domain={domain}
+      {spacesState.map((space) => (
+        <Space
+          key={space.id}
+          onDeleteSpace={handleDeleteSpace}
+          onUpdateSpace={handleUpdateSpace}
+          space={space}
         />
       ))}
-      <AddDomainButton onAddDomain={handleAddDomain} />
+      <AddSpace onAddSpace={handleAddSpace} />
     </>
   );
 });

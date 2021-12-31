@@ -1,15 +1,15 @@
-import { CollectionFragment, useGetCollectionsQuery } from '@gql/types';
+import { TopicFragment, useGetTopicsQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import AddCollection from './AddCollection';
-import Collection from './Collection';
+import AddTopic from './AddTopic';
 import { MainContentStyled } from './styles';
+import Topic from './Topic';
 
 const MainContent: FC = memo(() => {
   // TODO: get from useParams
-  const domainId = 'ckxp0bztx154926szjy0hqjot';
+  const spaceId = 'ckxv0r33d0034n8sz9oluhfdg';
 
-  const { data, loading } = useGetCollectionsQuery({ variables: { domainId } });
+  const { data, loading } = useGetTopicsQuery({ variables: { spaceId } });
 
   return (
     <MainContentStyled>
@@ -17,7 +17,7 @@ const MainContent: FC = memo(() => {
       {loading ? (
         'Loading...'
       ) : (
-        <MainContentInner domainId={domainId} collections={data?.getCollections || []} />
+        <MainContentInner spaceId={spaceId} topics={data?.getTopics || []} />
       )}
     </MainContentStyled>
   );
@@ -26,38 +26,38 @@ MainContent.displayName = 'MainContent';
 MainContent.whyDidYouRender = true;
 
 interface MainContentInnerProps {
-  domainId: string;
-  collections: CollectionFragment[];
+  spaceId: string;
+  topics: TopicFragment[];
 }
 
-const MainContentInner: FC<MainContentInnerProps> = memo(({ domainId, collections }) => {
-  const [collectionsState, setCollectionsState] = useState(() => collections);
+const MainContentInner: FC<MainContentInnerProps> = memo(({ spaceId, topics }) => {
+  const [topicsState, setTopicsState] = useState(() => topics);
 
-  const handleDeleteCollection = useCallback((id: string) => {
-    setCollectionsState((prev) => prev.filter((collection) => collection.id !== id));
+  const handleDeleteTopic = useCallback((id: string) => {
+    setTopicsState((prev) => prev.filter((topic) => topic.id !== id));
   }, []);
 
-  const handleUpdateCollections = useCallback((collection?: CollectionFragment) => {
-    if (collection) {
-      setCollectionsState((prev) => prev.map((c) => (c.id === collection.id ? collection : c)));
+  const handleUpdateTopic = useCallback((topic?: TopicFragment) => {
+    if (topic) {
+      setTopicsState((prev) => prev.map((c) => (c.id === topic.id ? topic : c)));
     }
   }, []);
 
-  const handleAddCollection = useCallback((collection: CollectionFragment) => {
-    setCollectionsState((prev) => [...prev, collection]);
+  const handleAddTopic = useCallback((topic: TopicFragment) => {
+    setTopicsState((prev) => [...prev, topic]);
   }, []);
 
   return (
     <>
-      {collectionsState.map((collection) => (
-        <Collection
-          key={collection.id}
-          collection={collection}
-          onDeleteCollection={handleDeleteCollection}
-          onUpdateCollection={handleUpdateCollections}
+      {topicsState.map((topic) => (
+        <Topic
+          key={topic.id}
+          topic={topic}
+          onDeleteTopic={handleDeleteTopic}
+          onUpdateTopic={handleUpdateTopic}
         />
       ))}
-      <AddCollection domainId={domainId} onAddCollection={handleAddCollection} />
+      <AddTopic spaceId={spaceId} onAddTopic={handleAddTopic} />
     </>
   );
 });

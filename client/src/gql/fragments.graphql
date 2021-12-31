@@ -1,4 +1,4 @@
-fragment collection on Collection {
+fragment topic on Topic {
   id
   title
   todoLists {

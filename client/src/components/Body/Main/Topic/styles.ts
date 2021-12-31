@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const CollectionStyled = styled.div`
+export const TopicStyled = styled.div`
   display: grid;
 `;
 
@@ -11,14 +11,14 @@ export const Border = styled.div`
   opacity: 0.5;
 `;
 
-export const CollectionInnerStyled = styled.div`
+export const TopicInnerStyled = styled.div`
   display: -webkit-box;
   overflow-x: scroll;
   margin: 10px;
 `;
 
 /**
- * collection title
+ * topic title
  * 
  * border: 0;
   font-family: "Signika", sans-serif;

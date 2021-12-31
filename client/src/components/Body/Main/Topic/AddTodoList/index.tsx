@@ -3,13 +3,13 @@ import React, { useCallback } from 'react';
 import { FC } from 'react';
 
 interface AddTodoListProps {
-  collectionId: string;
+  topicId: string;
   onAddTodoList: (todoList: TodoListFragment) => void;
 }
 
-const AddTodoList: FC<AddTodoListProps> = ({ collectionId, onAddTodoList }) => {
+const AddTodoList: FC<AddTodoListProps> = ({ topicId, onAddTodoList }) => {
   const [addTodoList, { loading }] = useAddTodoListMutation({
-    variables: { collectionId, title: 'New TodoList' },
+    variables: { topicId, title: 'New TodoList' },
   });
 
   const handleAddTodoList = useCallback(() => {

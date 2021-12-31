@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DomainStyled = styled.input`
+export const SpaceStyled = styled.input`
   padding: 10px 20px;
   margin: 10px 0;
   background: none;

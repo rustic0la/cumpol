@@ -15,42 +15,42 @@ mutation login($username: String!, $password: String!) {
   }
 }
 
-mutation addDomain($title: String!) {
-  addDomain(title: $title) {
+mutation addSpace($title: String!) {
+  addSpace(title: $title) {
     id
     title
   }
 }
 
-mutation updateDomain($domainId: String!, $title: String!) {
-  updateDomain(domainId: $domainId, title: $title) {
+mutation updateSpace($spaceId: String!, $title: String!) {
+  updateSpace(spaceId: $spaceId, title: $title) {
     id
     title
   }
 }
 
-mutation deleteDomain($domainId: String!) {
-  deleteDomain(domainId: $domainId)
+mutation deleteSpace($spaceId: String!) {
+  deleteSpace(spaceId: $spaceId)
 }
 
-mutation deleteCollection($collectionId: String!) {
-  deleteCollection(collectionId: $collectionId)
+mutation deleteTopic($topicId: String!) {
+  deleteTopic(topicId: $topicId)
 }
 
-mutation updateCollection($collectionId: String!, $title: String!) {
-  updateCollection(collectionId: $collectionId, title: $title) {
-    ...collection
+mutation updateTopic($topicId: String!, $title: String!) {
+  updateTopic(topicId: $topicId, title: $title) {
+    ...topic
   }
 }
 
-mutation addCollection($title: String!, $domainId: String!) {
-  addCollection(domainId: $domainId, title: $title) {
-    ...collection
+mutation addTopic($title: String!, $spaceId: String!) {
+  addTopic(spaceId: $spaceId, title: $title) {
+    ...topic
   }
 }
 
-mutation addTodoList($title: String!, $collectionId: String!) {
-  addTodoList(title: $title, collectionId: $collectionId) {
+mutation addTodoList($title: String!, $topicId: String!) {
+  addTodoList(title: $title, topicId: $topicId) {
     ...todoList
   }
 }

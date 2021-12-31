@@ -93,7 +93,6 @@ const TodoListInner: FC<TodoListInnerProps> = memo(({ todos, todoListId }) => {
     </>
   );
 });
-
 TodoListInner.displayName = 'TodoListInner';
 
 export default TodoList;

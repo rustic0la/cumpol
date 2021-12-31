@@ -1,16 +1,16 @@
-query getDomains {
-  getDomains {
-    ...getDomainsDomain
+query getSpaces {
+  getSpaces {
+    ...getSpacesSpace
   }
 }
 
-fragment getDomainsDomain on Domain {
+fragment getSpacesSpace on Space {
   id
   title
 }
 
-query getCollections($domainId: ID!) {
-  getCollections(domainId: $domainId) {
-    ...collection
+query getTopics($spaceId: ID!) {
+  getTopics(spaceId: $spaceId) {
+    ...topic
   }
 }
