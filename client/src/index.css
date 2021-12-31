@@ -1,18 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Signika&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Signika&display=swap');
 
 body {
-  font-family: "Signika", sans-serif;
+  font-family: 'Signika', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   height: 100vh;
-  color: #364B60;
+  color: #364b60;
 }
 
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Signika', sans-serif;
 }
