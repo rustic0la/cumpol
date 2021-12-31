@@ -1,12 +1,14 @@
+import {
+  CollectionFragment,
+  TodoListFragment,
+  useDeleteCollectionMutation,
+  useUpdateCollectionMutation,
+} from '@gql/types';
 import React, { BaseSyntheticEvent, memo, useCallback, useState } from 'react';
 import { FC } from 'react';
 
-import {
-  CollectionFragment,
-  useDeleteCollectionMutation,
-  useUpdateCollectionMutation,
-} from '../../../../generated/types';
-import { Border, CollectionStyled } from './styles';
+import AddTodoList from './AddTodoList';
+import { Border, CollectionInnerStyled, CollectionStyled } from './styles';
 import TodoList from './TodoList';
 
 interface CollectionProps {
@@ -17,7 +19,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = memo(
   ({ collection, onDeleteCollection, onUpdateCollection }) => {
-    const { id, title } = collection;
+    const { id, title, todoLists } = collection;
     const [inputValue, setInputValue] = useState(() => title);
 
     const [deleteCollection] = useDeleteCollectionMutation();
@@ -32,13 +34,13 @@ const Collection: FC<CollectionProps> = memo(
       [deleteCollection, onDeleteCollection],
     );
 
+    const handleChangeCollection = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+    }, []);
+
     const [updateCollection] = useUpdateCollectionMutation({
       variables: { collectionId: id, title: inputValue },
     });
-
-    const handleChangeCollection = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-    };
 
     const saveChange = useCallback(() => {
       if (!inputValue) {
@@ -63,11 +65,53 @@ const Collection: FC<CollectionProps> = memo(
           </button>
         </div>
         <Border />
-        <TodoList />
+        <CollectionInner collectionId={id} todoLists={todoLists} />
       </CollectionStyled>
     );
   },
 );
 Collection.displayName = 'Collection';
 Collection.whyDidYouRender = true;
+
+interface CollectionInnerProps {
+  collectionId: string;
+  todoLists: TodoListFragment[];
+}
+
+const CollectionInner: FC<CollectionInnerProps> = memo(({ collectionId, todoLists }) => {
+  const [todoListsState, setTodoListsState] = useState(() => todoLists);
+
+  const handleUpdateTodoList = useCallback((todoList?: TodoListFragment) => {
+    if (todoList) {
+      setTodoListsState((prev) =>
+        prev.map((tdLst) => (tdLst.id === todoList.id ? todoList : tdLst)),
+      );
+    }
+  }, []);
+
+  const handleDeleteTodoList = useCallback((todoListId: string) => {
+    setTodoListsState((prev) => prev.filter((todoList) => todoList.id !== todoListId));
+  }, []);
+
+  const handleAddTodoList = useCallback((todoList: TodoListFragment) => {
+    setTodoListsState((prev) => [...prev, todoList]);
+  }, []);
+
+  return (
+    <CollectionInnerStyled>
+      {todoListsState.map((todoList) => (
+        <TodoList
+          key={todoList?.id}
+          todoList={todoList}
+          onUpdateTodoList={handleUpdateTodoList}
+          onDeleteTodoList={handleDeleteTodoList}
+        />
+      ))}
+      <AddTodoList collectionId={collectionId} onAddTodoList={handleAddTodoList} />
+    </CollectionInnerStyled>
+  );
+});
+CollectionInner.displayName = 'CollectionInner';
+CollectionInner.whyDidYouRender = true;
+
 export default Collection;

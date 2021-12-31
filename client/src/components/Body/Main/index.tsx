@@ -1,19 +1,24 @@
 import { CollectionFragment, useGetCollectionsQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useState } from 'react';
 
-import AddCollectionButton from './AddCollection';
+import AddCollection from './AddCollection';
 import Collection from './Collection';
 import { MainContentStyled } from './styles';
 
-// TODO: get from useParams
-const domainID = 'ckxp0bztx154926szjy0hqjot';
 const MainContent: FC = memo(() => {
-  const { data, loading } = useGetCollectionsQuery({ variables: { domainId: domainID } });
+  // TODO: get from useParams
+  const domainId = 'ckxp0bztx154926szjy0hqjot';
+
+  const { data, loading } = useGetCollectionsQuery({ variables: { domainId } });
 
   return (
     <MainContentStyled>
       {/* TODO: add loader */}
-      {loading ? 'Loading...' : <MainContentInner collections={data?.getCollections || []} />}
+      {loading ? (
+        'Loading...'
+      ) : (
+        <MainContentInner domainId={domainId} collections={data?.getCollections || []} />
+      )}
     </MainContentStyled>
   );
 });
@@ -21,14 +26,15 @@ MainContent.displayName = 'MainContent';
 MainContent.whyDidYouRender = true;
 
 interface MainContentInnerProps {
+  domainId: string;
   collections: CollectionFragment[];
 }
 
-const MainContentInner: FC<MainContentInnerProps> = memo(({ collections }) => {
+const MainContentInner: FC<MainContentInnerProps> = memo(({ domainId, collections }) => {
   const [collectionsState, setCollectionsState] = useState(() => collections);
 
-  const handleAddCollection = useCallback((collection: CollectionFragment) => {
-    setCollectionsState((prev) => [...prev, collection]);
+  const handleDeleteCollection = useCallback((id: string) => {
+    setCollectionsState((prev) => prev.filter((collection) => collection.id !== id));
   }, []);
 
   const handleUpdateCollections = useCallback((collection?: CollectionFragment) => {
@@ -37,8 +43,8 @@ const MainContentInner: FC<MainContentInnerProps> = memo(({ collections }) => {
     }
   }, []);
 
-  const handleDeleteCollection = useCallback((id: string) => {
-    setCollectionsState((prev) => prev.filter((collection) => collection.id !== id));
+  const handleAddCollection = useCallback((collection: CollectionFragment) => {
+    setCollectionsState((prev) => [...prev, collection]);
   }, []);
 
   return (
@@ -51,7 +57,7 @@ const MainContentInner: FC<MainContentInnerProps> = memo(({ collections }) => {
           onUpdateCollection={handleUpdateCollections}
         />
       ))}
-      <AddCollectionButton onAddCollection={handleAddCollection} />
+      <AddCollection domainId={domainId} onAddCollection={handleAddCollection} />
     </>
   );
 });

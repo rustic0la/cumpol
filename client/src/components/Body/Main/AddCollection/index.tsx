@@ -1,17 +1,15 @@
 import { CollectionFragment, useAddCollectionMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
 
-// TODO: get from useParams
-const domainID = 'ckxp0bztx154926szjy0hqjot';
-
 interface AddCollectionButtonProps {
+  domainId: string;
   onAddCollection: (collection: CollectionFragment) => void;
 }
 
-const AddCollectionButton: FC<AddCollectionButtonProps> = memo(({ onAddCollection }) => {
+const AddCollection: FC<AddCollectionButtonProps> = memo(({ domainId, onAddCollection }) => {
   const [addCollection, { loading }] = useAddCollectionMutation({
     variables: {
-      domainId: domainID,
+      domainId,
       title: 'New Collection',
     },
   });
@@ -31,7 +29,7 @@ const AddCollectionButton: FC<AddCollectionButtonProps> = memo(({ onAddCollectio
     <button onClick={handleAddCollectionClick}>Add Collection</button>
   );
 });
-AddCollectionButton.displayName = 'AddCollectionButton';
-AddCollectionButton.whyDidYouRender = true;
+AddCollection.displayName = 'AddCollectionButton';
+AddCollection.whyDidYouRender = true;
 
-export default AddCollectionButton;
+export default AddCollection;

@@ -1,6 +1,4 @@
 import { SubscribeToMoreOptions } from '@apollo/client';
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-
 import {
   DomainAddedDocument,
   DomainAddedSubscription,
@@ -8,7 +6,9 @@ import {
   GetDomainsDomainFragment,
   GetDomainsQuery,
   useGetDomainsQuery,
-} from '../../../generated/types';
+} from '@gql/types';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+
 import AddDomainButton from './AddDomain';
 import Domain from './Domain';
 import { SidebarStyled } from './styles';
@@ -16,34 +16,34 @@ import { SidebarStyled } from './styles';
 const Sidebar: FC = memo(() => {
   const { data, loading, subscribeToMore } = useGetDomainsQuery();
 
-  useEffect(
-    () =>
-      subscribeToMore({
-        document: DomainAddedDocument,
-        updateQuery: (prev, { subscriptionData }) => {
-          console.log('subscriptionData', subscriptionData, 'prev', prev);
+  // useEffect(
+  //   () =>
+  //     subscribeToMore({
+  //       document: DomainAddedDocument,
+  //       updateQuery: (prev, { subscriptionData }) => {
+  //         console.log('subscriptionData', subscriptionData, 'prev', prev);
 
-          if (!subscriptionData.data) return prev;
-          const { domainAdded } = subscriptionData.data;
-          const doesExist = prev.getDomains?.find(({ id }) => id === domainAdded?.id);
-          if (doesExist) return prev;
+  //         if (!subscriptionData.data) return prev;
+  //         const { domainAdded } = subscriptionData.data;
+  //         const doesExist = prev.getDomains?.find(({ id }) => id === domainAdded?.id);
+  //         if (doesExist) return prev;
 
-          console.log('!!!!', [...(prev.getDomains || []), domainAdded]);
-          return {
-            ...prev,
-            getDomains: [...(prev.getDomains || []), domainAdded],
-          };
-        },
-      }),
-    [subscribeToMore],
-  );
+  //         console.log('!!!!', [...(prev.getDomains || []), domainAdded]);
+  //         return {
+  //           ...prev,
+  //           getDomains: [...(prev.getDomains || []), domainAdded],
+  //         };
+  //       },
+  //     }),
+  //   [subscribeToMore],
+  // );
 
   console.log('data', data);
 
   return (
     <SidebarStyled>
       {/* TODO: add loader */}
-      <SidebarInner domains={data?.getDomains || []} />
+      {loading ? 'Loading...' : <SidebarInner domains={data?.getDomains || []} />}
     </SidebarStyled>
   );
 });
@@ -67,9 +67,9 @@ const SidebarInner: FC<SidebarInnerProps> = memo(({ domains }) => {
     }
   }, []);
 
-  // const handleAddDomain = useCallback((addedDomain: GetDomainsDomainFragment) => {
-  //   setDomainsState((prev) => [...prev, addedDomain]);
-  // }, []);
+  const handleAddDomain = useCallback((addedDomain: GetDomainsDomainFragment) => {
+    setDomainsState((prev) => [...prev, addedDomain]);
+  }, []);
 
   return (
     <>
@@ -81,7 +81,7 @@ const SidebarInner: FC<SidebarInnerProps> = memo(({ domains }) => {
           domain={domain}
         />
       ))}
-      <AddDomainButton />
+      <AddDomainButton onAddDomain={handleAddDomain} />
     </>
   );
 });
