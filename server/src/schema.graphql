@@ -4,7 +4,7 @@ type User {
   id: ID!
   username: String!
   password: String!
-  domains: [Domain]!
+  domains: [Domain!]!
 }
 
 type Domain {
@@ -13,7 +13,7 @@ type Domain {
   createdAt: Date!
   complPercent: Int!
   userId: String!
-  collections: [Collection]!
+  collections: [Collection!]!
 }
 
 type Collection {
@@ -24,7 +24,7 @@ type Collection {
   domainId: String!
   duration: Date
   complPercent: Int!
-  todoLists: [TodoList]!
+  todoLists: [TodoList!]!
 }
 
 type TodoList {
@@ -35,7 +35,7 @@ type TodoList {
   collectionId: String!
   duration: Date
   complPercent: Int!
-  todos: [Todo]!
+  todos: [Todo!]!
 }
 
 type Meta {
@@ -58,9 +58,9 @@ type Todo {
 }
 
 type Query {
-  getDomains: [Domain!]
+  getDomains: [Domain!]!
   getDomain(domainId: ID!): Domain
-  getCollections(domainId: ID!): [Collection!]
+  getCollections(domainId: ID!): [Collection!]!
 }
 
 type AuthPayload {

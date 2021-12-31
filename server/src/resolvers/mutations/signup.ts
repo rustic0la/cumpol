@@ -13,7 +13,7 @@ import { Context } from '../../interfaces';
 import { APP_SECRET } from '../../utils';
 
 const signup: ResolverFn<
-  Maybe<ResolverTypeWrapper<AuthPayload>>,
+  ResolverTypeWrapper<AuthPayload>,
   {},
   Context,
   RequireFields<MutationSignupArgs, 'password' | 'username'>

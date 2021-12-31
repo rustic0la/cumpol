@@ -13,7 +13,7 @@ import {
 } from '../generated/types';
 import { Context } from '../interfaces';
 
-export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
+const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, {}> = (
   _root,
   _args,
   context,
@@ -37,7 +37,7 @@ export const getDomains: ResolverFn<ResolverTypeWrapper<Domain>[], {}, Context, 
   });
 };
 
-export const getDomain: ResolverFn<
+const getDomain: ResolverFn<
   Maybe<ResolverTypeWrapper<Domain>>,
   {},
   Context,
@@ -61,7 +61,7 @@ export const getDomain: ResolverFn<
   });
 };
 
-export const getCollections: ResolverFn<
+const getCollections: ResolverFn<
   ResolverTypeWrapper<Collection>[],
   {},
   Context,
@@ -81,7 +81,7 @@ export const getCollections: ResolverFn<
   });
 };
 
-const Query: QueryResolvers<any, {}> = {
+const Query: QueryResolvers<Context, {}> = {
   getDomains: {
     resolve: getDomains,
   },

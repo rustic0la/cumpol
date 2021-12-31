@@ -10,7 +10,7 @@ import {
 import { Context } from '../../interfaces';
 
 const deletedomain: ResolverFn<
-  Maybe<ResolverTypeWrapper<boolean>>,
+  ResolverTypeWrapper<boolean>,
   {},
   Context,
   RequireFields<MutationDeleteDomainArgs, 'domainId'>

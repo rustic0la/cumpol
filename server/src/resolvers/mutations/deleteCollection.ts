@@ -10,7 +10,7 @@ import {
 import { Context } from '../../interfaces';
 
 const deleteCollection: ResolverFn<
-  Maybe<ResolverTypeWrapper<boolean>>,
+  ResolverTypeWrapper<boolean>,
   {},
   Context,
   RequireFields<MutationDeleteCollectionArgs, 'collectionId'>
@@ -19,6 +19,7 @@ const deleteCollection: ResolverFn<
 
   const deletedCollection = await context.prisma.collection.delete({
     where: { id: args.collectionId },
+    include: { todoLists: true },
   });
 
   return !!deletedCollection;

@@ -14,7 +14,7 @@ import { APP_SECRET } from '../../utils';
 import getUserByUsername from '../utils';
 
 const login: ResolverFn<
-  Maybe<ResolverTypeWrapper<AuthPayload>>,
+  ResolverTypeWrapper<AuthPayload>,
   {},
   Context,
   RequireFields<MutationLoginArgs, 'password' | 'username'>
