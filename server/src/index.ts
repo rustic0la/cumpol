@@ -15,9 +15,6 @@ import { Context } from './interfaces';
 import resolvers from './resolvers';
 import { getUserId } from './utils';
 
-const prisma = new PrismaClient();
-const pubsub = new PubSub();
-
 const startServer = async () => {
   dotenv.config();
 
@@ -53,6 +50,9 @@ const startServer = async () => {
       path: '/graphql',
     },
   );
+
+  const prisma = new PrismaClient();
+  const pubsub = new PubSub();
 
   const server = new ApolloServer({
     schema,
