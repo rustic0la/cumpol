@@ -5,6 +5,7 @@ import {
   useUpdateTodoListMutation,
 } from '@gql/types';
 import React, { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
+import useCollectionHandlers from 'src/hooks/useCollectionHandlers';
 
 import AddTodo from './AddTodo';
 import { TodoListStyled } from './styles';
@@ -65,31 +66,17 @@ interface TodoListInnerProps {
 const TodoListInner: FC<TodoListInnerProps> = memo(({ todos, todoListId }) => {
   const [todosState, setTodosState] = useState(() => todos);
 
-  const handleUpdateTodo = useCallback((todo?: TodoFragment) => {
-    if (todo) {
-      setTodosState((prev) => prev.map((td) => (td.id === todo.id ? todo : td)));
-    }
-  }, []);
-
-  const handleDeleteTodo = useCallback((todoId: string) => {
-    setTodosState((prev) => prev.filter((todo) => todo.id !== todoId));
-  }, []);
-
-  const handleAddTodo = useCallback((todo: TodoFragment) => {
-    setTodosState((prev) => [...prev, todo]);
-  }, []);
+  const { handleUpdate, handleDelete, handleAdd } = useCollectionHandlers({
+    // @ts-ignore
+    setState: setTodosState,
+  });
 
   return (
     <>
       {todosState.map((todo) => (
-        <Todo
-          key={todo.id}
-          todo={todo}
-          onUpdateTodo={handleUpdateTodo}
-          onDeleteTodo={handleDeleteTodo}
-        />
+        <Todo key={todo.id} todo={todo} onUpdateTodo={handleUpdate} onDeleteTodo={handleDelete} />
       ))}
-      <AddTodo todoListId={todoListId} onAddTodo={handleAddTodo} />
+      <AddTodo todoListId={todoListId} onAddTodo={handleAdd} />
     </>
   );
 });

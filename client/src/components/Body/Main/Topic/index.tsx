@@ -6,6 +6,7 @@ import {
 } from '@gql/types';
 import React, { BaseSyntheticEvent, memo, useCallback, useState } from 'react';
 import { FC } from 'react';
+import useCollectionHandlers from 'src/hooks/useCollectionHandlers';
 
 import AddTodoList from './AddTodoList';
 import { Border, TopicInnerStyled, TopicStyled } from './styles';
@@ -72,21 +73,10 @@ interface TopicInnerProps {
 const TopicInner: FC<TopicInnerProps> = memo(({ topicId, todoLists }) => {
   const [todoListsState, setTodoListsState] = useState(() => todoLists);
 
-  const handleUpdateTodoList = useCallback((todoList?: TodoListFragment) => {
-    if (todoList) {
-      setTodoListsState((prev) =>
-        prev.map((tdLst) => (tdLst.id === todoList.id ? todoList : tdLst)),
-      );
-    }
-  }, []);
-
-  const handleDeleteTodoList = useCallback((todoListId: string) => {
-    setTodoListsState((prev) => prev.filter((todoList) => todoList.id !== todoListId));
-  }, []);
-
-  const handleAddTodoList = useCallback((todoList: TodoListFragment) => {
-    setTodoListsState((prev) => [...prev, todoList]);
-  }, []);
+  const { handleUpdate, handleDelete, handleAdd } = useCollectionHandlers({
+    // @ts-ignore
+    setState: setTodoListsState,
+  });
 
   return (
     <TopicInnerStyled>
@@ -94,11 +84,11 @@ const TopicInner: FC<TopicInnerProps> = memo(({ topicId, todoLists }) => {
         <TodoList
           key={todoList?.id}
           todoList={todoList}
-          onUpdateTodoList={handleUpdateTodoList}
-          onDeleteTodoList={handleDeleteTodoList}
+          onUpdateTodoList={handleUpdate}
+          onDeleteTodoList={handleDelete}
         />
       ))}
-      <AddTodoList topicId={topicId} onAddTodoList={handleAddTodoList} />
+      <AddTodoList topicId={topicId} onAddTodoList={handleAdd} />
     </TopicInnerStyled>
   );
 });

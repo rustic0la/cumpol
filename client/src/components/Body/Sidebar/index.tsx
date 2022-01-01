@@ -1,5 +1,6 @@
 import { GetSpacesSpaceFragment, useGetSpacesQuery } from '@gql/types';
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useState } from 'react';
+import useCollectionHandlers from 'src/hooks/useCollectionHandlers';
 
 import AddSpace from './AddSpace';
 import Space from './Space';
@@ -45,33 +46,23 @@ interface SidebarInnerProps {
 
 const SidebarInner: FC<SidebarInnerProps> = memo(({ spaces }) => {
   const [spacesState, setSpacesState] = useState(() => spaces);
-  console.log('spacesState', spacesState);
 
-  const handleDeleteSpace = useCallback((id: string) => {
-    setSpacesState((prev) => prev.filter((space) => space.id !== id));
-  }, []);
-
-  const handleUpdateSpace = useCallback((space?: GetSpacesSpaceFragment) => {
-    if (space) {
-      setSpacesState((prev) => prev.map((d) => (d.id === space.id ? space : d)));
-    }
-  }, []);
-
-  const handleAddSpace = useCallback((addedSpace: GetSpacesSpaceFragment) => {
-    setSpacesState((prev) => [...prev, addedSpace]);
-  }, []);
+  const { handleUpdate, handleDelete, handleAdd } = useCollectionHandlers({
+    // @ts-ignore
+    setState: setSpacesState,
+  });
 
   return (
     <>
       {spacesState.map((space) => (
         <Space
           key={space.id}
-          onDeleteSpace={handleDeleteSpace}
-          onUpdateSpace={handleUpdateSpace}
+          onDeleteSpace={handleDelete}
+          onUpdateSpace={handleUpdate}
           space={space}
         />
       ))}
-      <AddSpace onAddSpace={handleAddSpace} />
+      <AddSpace onAddSpace={handleAdd} />
     </>
   );
 });

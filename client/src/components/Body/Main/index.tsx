@@ -1,5 +1,6 @@
 import { TopicFragment, useGetTopicsQuery } from '@gql/types';
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useState } from 'react';
+import useCollectionHandlers from 'src/hooks/useCollectionHandlers';
 
 import AddTopic from './AddTopic';
 import { MainContentStyled } from './styles';
@@ -33,19 +34,9 @@ interface MainContentInnerProps {
 const MainContentInner: FC<MainContentInnerProps> = memo(({ spaceId, topics }) => {
   const [topicsState, setTopicsState] = useState(() => topics);
 
-  const handleDeleteTopic = useCallback((id: string) => {
-    setTopicsState((prev) => prev.filter((topic) => topic.id !== id));
-  }, []);
-
-  const handleUpdateTopic = useCallback((topic?: TopicFragment) => {
-    if (topic) {
-      setTopicsState((prev) => prev.map((c) => (c.id === topic.id ? topic : c)));
-    }
-  }, []);
-
-  const handleAddTopic = useCallback((topic: TopicFragment) => {
-    setTopicsState((prev) => [...prev, topic]);
-  }, []);
+  const { handleUpdate, handleDelete, handleAdd } = useCollectionHandlers({
+    setState: setTopicsState,
+  });
 
   return (
     <>
@@ -53,11 +44,11 @@ const MainContentInner: FC<MainContentInnerProps> = memo(({ spaceId, topics }) =
         <Topic
           key={topic.id}
           topic={topic}
-          onDeleteTopic={handleDeleteTopic}
-          onUpdateTopic={handleUpdateTopic}
+          onDeleteTopic={handleDelete}
+          onUpdateTopic={handleUpdate}
         />
       ))}
-      <AddTopic spaceId={spaceId} onAddTopic={handleAddTopic} />
+      <AddTopic spaceId={spaceId} onAddTopic={handleAdd} />
     </>
   );
 });
