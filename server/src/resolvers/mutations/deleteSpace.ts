@@ -1,7 +1,6 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Maybe,
   MutationDeleteSpaceArgs,
   RequireFields,
   ResolverFn,
@@ -17,9 +16,20 @@ const deleteSpace: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
+  const deletedTopics = await context.prisma.topic.deleteMany({
+    where: { spaceId: args.spaceId },
+  });
+
   const deletedSpace = await context.prisma.space.delete({ where: { id: args.spaceId } });
 
-  return !!deletedSpace;
+  const updatedSpaces = await context.prisma.space.findMany({
+    where: { userId: context.userId },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  context.pubsub.publish('spacesUpdated', updatedSpaces);
+
+  return !!deletedSpace && !!deletedTopics;
 };
 
 export default deleteSpace;

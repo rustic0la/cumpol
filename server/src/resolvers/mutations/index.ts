@@ -13,8 +13,9 @@ import updateTopic from './updateTopic';
 import updateSpace from './updateSpace';
 import updateTodo from './updateTodo';
 import updateTodoList from './updateTodoList';
+import { Context } from '../../interfaces';
 
-const Mutation: MutationResolvers<any, {}> = {
+const Mutation: MutationResolvers<Context, {}> = {
   addSpace: {
     resolve: addSpace,
   },

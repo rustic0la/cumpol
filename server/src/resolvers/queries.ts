@@ -20,6 +20,7 @@ const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
 ) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
+  // TODO reduce to id+title
   return context.prisma.space.findMany({
     where: { userId: context.userId },
     orderBy: { createdAt: 'asc' },

@@ -14,10 +14,10 @@ const updateSpace: ResolverFn<
   {},
   Context,
   RequireFields<MutationUpdateSpaceArgs, 'spaceId' | 'title'>
-> = (_root, args, context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.space.update({
+  const updatedSpace = await context.prisma.space.update({
     where: { id: args.spaceId },
     data: { title: args.title },
     include: {
@@ -32,6 +32,15 @@ const updateSpace: ResolverFn<
       },
     },
   });
+
+  const updatedSpaces = await context.prisma.space.findMany({
+    where: { userId: context.userId },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  context.pubsub.publish('spacesUpdated', updatedSpaces);
+
+  return updatedSpace;
 };
 
 export default updateSpace;

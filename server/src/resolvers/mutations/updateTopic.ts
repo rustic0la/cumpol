@@ -14,10 +14,10 @@ const updateTopic: ResolverFn<
   {},
   Context,
   RequireFields<MutationUpdateTopicArgs, 'title' | 'topicId'>
-> = (_root, args, context) => {
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.topic.update({
+  const updatedTopic = await context.prisma.topic.update({
     where: { id: args.topicId },
     data: { title: args.title },
     include: {
@@ -28,6 +28,22 @@ const updateTopic: ResolverFn<
       },
     },
   });
+
+  const updatedTopics = await context.prisma.topic.findMany({
+    where: { spaceId: args.spaceId },
+    include: {
+      todoLists: {
+        include: {
+          todos: true,
+        },
+      },
+    },
+    orderBy: { createdAt: 'asc' },
+  });
+
+  context.pubsub.publish('topicsUpdated', updatedTopics);
+
+  return updatedTopic;
 };
 
 export default updateTopic;

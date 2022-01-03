@@ -31,6 +31,7 @@ const startServer = async () => {
   });
 
   const PORT = 4000;
+  const pubsub = new PubSub();
 
   const subscriptionServer = new SubscriptionServer(
     {
@@ -42,6 +43,7 @@ const startServer = async () => {
 
         return {
           userId: authToken ? getUserId(authToken, '') : null,
+          pubsub,
         };
       },
     },
@@ -52,7 +54,6 @@ const startServer = async () => {
   );
 
   const prisma = new PrismaClient();
-  const pubsub = new PubSub();
 
   const server = new ApolloServer({
     schema,

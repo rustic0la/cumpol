@@ -77,6 +77,7 @@ type Mutation {
 
   updateSpace(spaceId: String!, title: String!): Space!
   updateTopic(
+    spaceId: String!
     topicId: String!
     title: String!
     dueDate: Date
@@ -84,6 +85,7 @@ type Mutation {
     complPercent: Int
   ): Topic!
   updateTodoList(
+    topicId: String!
     todoListId: String!
     title: String!
     dueDate: Date
@@ -91,6 +93,7 @@ type Mutation {
     complPercent: Int
   ): TodoList!
   updateTodo(
+    todoListId: String!
     todoId: String!
     title: String!
     dueDate: Date
@@ -100,14 +103,16 @@ type Mutation {
   ): Todo!
 
   deleteSpace(spaceId: String!): Boolean
-  deleteTopic(topicId: String!): Boolean
-  deleteTodoList(todoListId: String!): Boolean
-  deleteTodo(todoId: String!): Boolean
+  deleteTopic(spaceId: String!, topicId: String!): Boolean
+  deleteTodoList(topicId: String!, todoListId: String!): Boolean
+  deleteTodo(todoListId: String!, todoId: String!): Boolean
 
   signup(username: String!, password: String!): AuthPayload
   login(username: String!, password: String!): AuthPayload
 }
 
 type Subscription {
-  spaceAdded: Space
+  spacesUpdated: [Space!]!
+  topicsUpdated: [Topic!]!
+  todoListsUpdated: [TodoList!]!
 }

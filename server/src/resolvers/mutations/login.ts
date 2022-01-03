@@ -11,7 +11,6 @@ import {
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 import { APP_SECRET } from '../../utils';
-import getUserByUsername from '../utils';
 
 const login: ResolverFn<
   ResolverTypeWrapper<AuthPayload>,
@@ -19,13 +18,30 @@ const login: ResolverFn<
   Context,
   RequireFields<MutationLoginArgs, 'password' | 'username'>
 > = async (_root, args, context) => {
-  const user = await getUserByUsername(args.username, context);
+  const user = await context.prisma.user.findUnique({
+    where: { username: args.username },
+    include: {
+      spaces: {
+        include: {
+          topics: {
+            include: {
+              todoLists: {
+                include: {
+                  todos: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
 
   if (!user) {
     return {
       token: null,
       user: null,
-      error: 'No such user found',
+      error: 'No user found',
     };
   }
 

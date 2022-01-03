@@ -17,21 +17,18 @@ const addSpace: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const user = await context.prisma.user.findUnique({
-    where: { id: context.userId },
-  });
-
   const space = await context.prisma.space.create({
-    data: { title: args.title, user: { connect: { username: user?.username } } },
-    include: {
-      topics: true,
-    },
+    data: { title: args.title, user: { connect: { id: context.userId } } },
   });
 
-  const spaceAdded: Space = { ...space, topics: [] };
-  context.pubsub.publish('spaceAdded', { spaceAdded });
+  const updatedSpaces = await context.prisma.space.findMany({
+    where: { userId: context.userId },
+    orderBy: { createdAt: 'asc' },
+  });
 
-  return spaceAdded;
+  context.pubsub.publish('spacesUpdated', updatedSpaces);
+
+  return { ...space, topics: [] };
 };
 
 export default addSpace;

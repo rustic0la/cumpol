@@ -12,11 +12,11 @@ const updateTodoList: ResolverFn<
   ResolverTypeWrapper<TodoList>,
   {},
   Context,
-  RequireFields<MutationUpdateTodoListArgs, 'title' | 'todoListId'>
-> = (_root, args, context) => {
+  RequireFields<MutationUpdateTodoListArgs, 'title' | 'todoListId' | 'topicId'>
+> = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.todoList.update({
+  const updatedTodoList = await context.prisma.todoList.update({
     where: {
       id: args.todoListId,
     },
@@ -25,6 +25,12 @@ const updateTodoList: ResolverFn<
       todos: true,
     },
   });
+
+  // const updatedTodoLists = await context.prisma.todoList.findMany({});
+
+  // context.pubsub.publish('topicsUpdated', updatedTodoLists);
+
+  return updatedTodoList;
 };
 
 export default updateTodoList;
