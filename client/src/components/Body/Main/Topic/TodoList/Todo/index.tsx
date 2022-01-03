@@ -5,11 +5,10 @@ import { TodoStyled } from './styles';
 
 interface TodoProps {
   todo: TodoFragment;
-  onUpdateTodo: (todo?: TodoFragment) => void;
-  onDeleteTodo: (todoId: string) => void;
+  todoListId: string;
 }
 
-const Todo: FC<TodoProps> = ({ todo, onUpdateTodo, onDeleteTodo }) => {
+const Todo: FC<TodoProps> = ({ todo, todoListId }) => {
   const { id, title } = todo;
   const [inputValue, setInputValue] = useState(() => title);
 
@@ -18,33 +17,27 @@ const Todo: FC<TodoProps> = ({ todo, onUpdateTodo, onDeleteTodo }) => {
   }, []);
 
   const [updateTodo] = useUpdateTodoMutation({
-    variables: { todoId: id, title: inputValue },
+    variables: { todoId: id, title: inputValue, todoListId },
   });
 
   const saveChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateTodo().then((res) => onUpdateTodo(res.data?.updateTodo));
+      updateTodo();
     }
-  }, [inputValue, onUpdateTodo, title, updateTodo]);
+  }, [inputValue, title, updateTodo]);
 
-  const [deleteTodo] = useDeleteTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation({ variables: { todoId: id, todoListId } });
 
-  const handleDeleteTodoClick = useCallback(
-    (e: BaseSyntheticEvent) => {
-      const todoId = e.target.id;
-      deleteTodo({ variables: { todoId } }).then(() => onDeleteTodo(todoId));
-    },
-    [deleteTodo, onDeleteTodo],
-  );
+  const handleDeleteTodoClick = useCallback(() => {
+    deleteTodo();
+  }, [deleteTodo]);
 
   return (
     <TodoStyled>
       <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
-      <button id={id} onClick={handleDeleteTodoClick}>
-        -
-      </button>
+      <button onClick={handleDeleteTodoClick}>-</button>
     </TodoStyled>
   );
 };

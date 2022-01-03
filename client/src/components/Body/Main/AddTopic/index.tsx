@@ -1,12 +1,11 @@
-import { TopicFragment, useAddTopicMutation } from '@gql/types';
+import { useAddTopicMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
 
 interface AddTopicButtonProps {
   spaceId: string;
-  onAddTopic: (topic: TopicFragment) => void;
 }
 
-const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId, onAddTopic }) => {
+const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId }) => {
   const [addTopic, { loading }] = useAddTopicMutation({
     variables: {
       spaceId,
@@ -15,12 +14,8 @@ const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId, onAddTopic }) => {
   });
 
   const handleAddTopicClick = useCallback(() => {
-    addTopic().then((res) => {
-      if (!loading && res.data?.addTopic) {
-        onAddTopic(res.data?.addTopic);
-      }
-    });
-  }, [addTopic, loading, onAddTopic]);
+    addTopic();
+  }, [addTopic]);
 
   return loading ? (
     // TODO: add loader

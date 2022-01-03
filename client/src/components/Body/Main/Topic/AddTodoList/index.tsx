@@ -1,24 +1,19 @@
-import { TodoListFragment, useAddTodoListMutation } from '@gql/types';
+import { useAddTodoListMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 
 interface AddTodoListProps {
   topicId: string;
-  onAddTodoList: (todoList: TodoListFragment) => void;
 }
 
-const AddTodoList: FC<AddTodoListProps> = ({ topicId, onAddTodoList }) => {
+const AddTodoList: FC<AddTodoListProps> = ({ topicId }) => {
   const [addTodoList, { loading }] = useAddTodoListMutation({
     variables: { topicId, title: 'New TodoList' },
   });
 
   const handleAddTodoList = useCallback(() => {
-    addTodoList().then((res) => {
-      if (!loading && res.data?.addTodoList) {
-        onAddTodoList(res.data?.addTodoList);
-      }
-    });
-  }, [addTodoList, loading, onAddTodoList]);
+    addTodoList();
+  }, [addTodoList]);
 
   return loading ? (
     // TODO: add loader

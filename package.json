@@ -10,9 +10,6 @@
     "client": "cd client && yarn start",
     "start": "concurrently -n 'server,client' -c 'red,green' \"yarn server\" \"yarn client\""
   },
-  "resolutions": {
-    "graphql-subscriptions@2.0.0": "patch:graphql-subscriptions@npm:2.0.0#.yarn/patches/graphql-subscriptions-npm-2.0.0-53564d1c84"
-  },
   "dependencies": {
     "concurrently": "^6.5.1"
   }

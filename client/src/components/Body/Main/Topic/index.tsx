@@ -4,9 +4,8 @@ import {
   useDeleteTopicMutation,
   useUpdateTopicMutation,
 } from '@gql/types';
-import React, { BaseSyntheticEvent, memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { FC } from 'react';
-import useCollectionHandlers from 'src/hooks/useCollectionHandlers';
 
 import AddTodoList from './AddTodoList';
 import { Border, TopicInnerStyled, TopicStyled } from './styles';
@@ -14,48 +13,41 @@ import TodoList from './TodoList';
 
 interface TopicProps {
   topic: TopicFragment;
-  onUpdateTopic: (topic?: TopicFragment) => void;
-  onDeleteTopic: (id: string) => void;
+  spaceId: string;
 }
 
-const Topic: FC<TopicProps> = memo(({ topic, onDeleteTopic, onUpdateTopic }) => {
+const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
   const { id, title, todoLists } = topic;
   const [inputValue, setInputValue] = useState(() => title);
 
-  const [deleteTopic] = useDeleteTopicMutation();
+  const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
 
-  const handleDeleteTopicClick = useCallback(
-    (e: BaseSyntheticEvent) => {
-      const topicId = e.target.id;
-      deleteTopic({ variables: { topicId } }).then(() => onDeleteTopic(topicId));
-    },
-    [deleteTopic, onDeleteTopic],
-  );
+  const handleDeleteTopicClick = useCallback(() => {
+    deleteTopic();
+  }, [deleteTopic]);
 
   const handleChangeTopic = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
   const [updateTopic] = useUpdateTopicMutation({
-    variables: { topicId: id, title: inputValue },
+    variables: { topicId: id, title: inputValue, spaceId },
   });
 
   const saveChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateTopic().then((res) => onUpdateTopic(res.data?.updateTopic));
+      updateTopic();
     }
-  }, [inputValue, onUpdateTopic, title, updateTopic]);
+  }, [inputValue, title, updateTopic]);
 
   return (
     <TopicStyled>
       {/* TODO: add styles */}
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <input type="text" onChange={handleChangeTopic} onBlur={saveChange} value={inputValue} />
-        <button id={id} onClick={handleDeleteTopicClick}>
-          -
-        </button>
+        <button onClick={handleDeleteTopicClick}>-</button>
       </div>
       <Border />
       <TopicInner topicId={id} todoLists={todoLists} />
@@ -71,24 +63,12 @@ interface TopicInnerProps {
 }
 
 const TopicInner: FC<TopicInnerProps> = memo(({ topicId, todoLists }) => {
-  const [todoListsState, setTodoListsState] = useState(() => todoLists);
-
-  const { handleUpdate, handleDelete, handleAdd } = useCollectionHandlers({
-    // @ts-ignore
-    setState: setTodoListsState,
-  });
-
   return (
     <TopicInnerStyled>
-      {todoListsState.map((todoList) => (
-        <TodoList
-          key={todoList?.id}
-          todoList={todoList}
-          onUpdateTodoList={handleUpdate}
-          onDeleteTodoList={handleDelete}
-        />
+      {todoLists.map((todoList) => (
+        <TodoList key={todoList?.id} todoList={todoList} topicId={topicId} />
       ))}
-      <AddTodoList topicId={topicId} onAddTodoList={handleAdd} />
+      <AddTodoList topicId={topicId} />
     </TopicInnerStyled>
   );
 });

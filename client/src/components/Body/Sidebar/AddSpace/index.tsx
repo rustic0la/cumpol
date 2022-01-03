@@ -1,13 +1,9 @@
-import { GetSpacesSpaceFragment, useAddSpaceMutation } from '@gql/types';
-import React, { FC, memo, useCallback } from 'react';
+import { useAddSpaceMutation } from '@gql/types';
+import React, { memo, useCallback } from 'react';
 
 import { AddSpaceStyled } from './styles';
 
-interface AddSpaceProps {
-  onAddSpace: (space: GetSpacesSpaceFragment) => void;
-}
-
-const AddSpace: FC<AddSpaceProps> = memo(({ onAddSpace }) => {
+const AddSpace = memo(() => {
   const [addSpace, { loading }] = useAddSpaceMutation({
     variables: {
       title: 'New Space',
@@ -15,12 +11,8 @@ const AddSpace: FC<AddSpaceProps> = memo(({ onAddSpace }) => {
   });
 
   const handleAddSpaceClick = useCallback(() => {
-    addSpace().then((res) => {
-      if (!loading && res.data?.addSpace) {
-        onAddSpace(res.data?.addSpace);
-      }
-    });
-  }, [addSpace, loading, onAddSpace]);
+    addSpace();
+  }, [addSpace]);
 
   return loading ? (
     // TODO: add loader

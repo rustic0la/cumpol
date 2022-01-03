@@ -1,24 +1,19 @@
-import { TodoFragment, useAddTodoMutation } from '@gql/types';
+import { useAddTodoMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 
 interface AddTodoProps {
   todoListId: string;
-  onAddTodo: (todo: TodoFragment) => void;
 }
 
-const AddTodo: FC<AddTodoProps> = ({ todoListId, onAddTodo }) => {
+const AddTodo: FC<AddTodoProps> = ({ todoListId }) => {
   const [addTodo, { loading }] = useAddTodoMutation({
     variables: { todoListId, title: 'New Todo' },
   });
 
   const handleAddTodo = useCallback(() => {
-    addTodo().then((res) => {
-      if (!loading && res.data?.addTodo) {
-        onAddTodo(res.data?.addTodo);
-      }
-    });
-  }, [addTodo, loading, onAddTodo]);
+    addTodo();
+  }, [addTodo]);
 
   return loading ? (
     // TODO: add loader

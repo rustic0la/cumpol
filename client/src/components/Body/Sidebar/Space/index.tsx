@@ -1,42 +1,36 @@
 import { GetSpacesSpaceFragment, useDeleteSpaceMutation, useUpdateSpaceMutation } from '@gql/types';
-import React, { BaseSyntheticEvent, FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { SpaceStyled } from './styles';
 
 interface SpaceProps {
   space: GetSpacesSpaceFragment;
-  onDeleteSpace: (id: string) => void;
-  onUpdateSpace: (space?: GetSpacesSpaceFragment) => void;
 }
 
-const Space: FC<SpaceProps> = memo(({ space, onDeleteSpace, onUpdateSpace }) => {
+const Space: FC<SpaceProps> = memo(({ space }) => {
   const { id, title } = space;
   const [inputValue, setInputValue] = useState(() => title);
+
+  const [updateSpace] = useUpdateSpaceMutation({
+    variables: { spaceId: id, title: inputValue },
+  });
   const [deleteSpace] = useDeleteSpaceMutation();
 
-  const handleDeleteSpaceClick = useCallback(
-    (e: BaseSyntheticEvent) => {
-      const spaceId = e.target.id;
-      deleteSpace({ variables: { spaceId } }).then(() => onDeleteSpace(spaceId));
-    },
-    [deleteSpace, onDeleteSpace],
-  );
+  const handleDeleteSpaceClick = useCallback(() => {
+    deleteSpace({ variables: { spaceId: id } });
+  }, [deleteSpace, id]);
 
   const handleChangeSpace = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
-  const [updateSpace] = useUpdateSpaceMutation({
-    variables: { spaceId: id, title: inputValue },
-  });
-
   const saveChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateSpace().then((res) => onUpdateSpace(res.data?.updateSpace));
+      updateSpace();
     }
-  }, [inputValue, title, updateSpace, onUpdateSpace]);
+  }, [inputValue, title, updateSpace]);
 
   return (
     // TODO: fix style
@@ -47,9 +41,7 @@ const Space: FC<SpaceProps> = memo(({ space, onDeleteSpace, onUpdateSpace }) => 
         onBlur={saveChange}
         value={inputValue}
       />
-      <button id={id} onClick={handleDeleteSpaceClick}>
-        -
-      </button>
+      <button onClick={handleDeleteSpaceClick}>-</button>
     </div>
   );
 });
