@@ -15,5 +15,5 @@ index 58fa1b1d43427edadded1337532dac0123101400..08e56bd4bf13cf349f32d5c557544035
 +    options: Object
 +  ): Promise<number>;
 +  abstract unsubscribe(subId: number): any;
-+  asyncIterator<T>(triggers: string | string[]): AsyncIterable<T>;
++  asyncIterator<T>(triggers: string | string[]): AsyncIterableIterator<T>;
  }
