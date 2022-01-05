@@ -17,22 +17,17 @@ const addTopic: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const space = await context.prisma.space.findUnique({
-    where: { id: args.spaceId },
-  });
-
   const topic = await context.prisma.topic.create({
-    data: { title: args.title, space: { connect: { id: space?.id } } },
+    data: { title: args.title, space: { connect: { id: args.spaceId } } },
   });
 
   const updatedTopics = await context.prisma.topic.findMany({
     where: { spaceId: args.spaceId },
     orderBy: { createdAt: 'asc' },
   });
-
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
-  return { ...topic, todoLists: [] };
+  return topic;
 };
 
 export default addTopic;

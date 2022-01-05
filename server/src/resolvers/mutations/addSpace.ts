@@ -25,7 +25,6 @@ const addSpace: ResolverFn<
     where: { userId: context.userId },
     orderBy: { createdAt: 'asc' },
   });
-
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
   return space;

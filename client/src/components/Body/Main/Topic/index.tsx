@@ -1,4 +1,6 @@
 import {
+  TodoListsUpdatedDocument,
+  TodoListsUpdatedSubscription,
   TopicFragment,
   useDeleteTopicMutation,
   useGetTodoListsLazyQuery,
@@ -75,6 +77,30 @@ const TopicInner: FC<TopicInnerProps> = memo(({ topicId }) => {
       getTodoLists();
     }
   }, [getTodoLists, isVisible, data]);
+
+  useEffect(
+    () =>
+      subscribeToMore({
+        document: TodoListsUpdatedDocument,
+        updateQuery: (prev, { subscriptionData }) => {
+          console.log('subscriptionData', subscriptionData);
+
+          const newData = subscriptionData.data as unknown as TodoListsUpdatedSubscription;
+          if (!newData) return prev;
+          const { todoListsUpdated } = newData;
+
+          if (todoListsUpdated[0].topicId === topicId) {
+            return {
+              getTodoLists: todoListsUpdated,
+            };
+          }
+          return {
+            getTodoLists: prev.getTodoLists,
+          };
+        },
+      }),
+    [subscribeToMore, topicId],
+  );
 
   return (
     <TopicInnerStyled ref={ref}>

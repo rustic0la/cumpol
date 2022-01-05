@@ -10,3 +10,10 @@ subscription topicsUpdated {
     ...topic
   }
 }
+
+subscription todoListsUpdated {
+  todoListsUpdated {
+    ...todoList
+    topicId
+  }
+}

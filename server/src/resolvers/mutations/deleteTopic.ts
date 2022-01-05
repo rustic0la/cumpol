@@ -25,11 +25,9 @@ const deleteTopic: ResolverFn<
   const deletedTodos = await context.prisma.todo.deleteMany({
     where: { todoListId: { in: todoListsIds } },
   });
-
   const deletedTodoLists = await context.prisma.todoList.deleteMany({
-    where: { topicId: args.topicId },
+    where: { id: { in: todoListsIds } },
   });
-
   const deletedTopic = await context.prisma.topic.delete({
     where: { id: args.topicId },
   });
@@ -38,7 +36,6 @@ const deleteTopic: ResolverFn<
     where: { spaceId: args.spaceId },
     orderBy: { createdAt: 'asc' },
   });
-
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
   return !!deletedTodos && !!deletedTodoLists && !!deletedTopic;

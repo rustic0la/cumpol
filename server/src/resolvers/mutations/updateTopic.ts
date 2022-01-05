@@ -20,20 +20,12 @@ const updateTopic: ResolverFn<
   const updatedTopic = await context.prisma.topic.update({
     where: { id: args.topicId },
     data: { title: args.title },
-    include: {
-      todoLists: {
-        include: {
-          todos: true,
-        },
-      },
-    },
   });
 
   const updatedTopics = await context.prisma.topic.findMany({
     where: { spaceId: args.spaceId },
     orderBy: { createdAt: 'asc' },
   });
-
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
   return updatedTopic;

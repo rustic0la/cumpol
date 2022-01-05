@@ -17,18 +17,20 @@ const addTodoList: ResolverFn<
 > = async (_root, args, context: Context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const topic = await context.prisma.topic.findUnique({
-    where: { id: args.topicId },
-  });
-
   const todoList = await context.prisma.todoList.create({
     data: {
       title: args.title,
-      topic: { connect: { id: topic?.id } },
+      topic: { connect: { id: args.topicId } },
     },
   });
 
-  return { ...todoList, todos: [] };
+  const todoLists = await context.prisma.todoList.findMany({
+    where: { topicId: args.topicId },
+    orderBy: { createdAt: 'asc' },
+  });
+  context.pubsub.publish('todoListsUpdated', todoLists);
+
+  return todoList;
 };
 
 export default addTodoList;

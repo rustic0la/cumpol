@@ -1,9 +1,4 @@
-import {
-  SpacesUpdatedDocument,
-  SpacesUpdatedSubscription,
-  useGetSpacesLazyQuery,
-  useGetSpacesQuery,
-} from '@gql/types';
+import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
 import React, { FC, memo, useEffect } from 'react';
 
 import AddSpace from './AddSpace';

@@ -20,21 +20,6 @@ const login: ResolverFn<
 > = async (_root, args, context) => {
   const user = await context.prisma.user.findUnique({
     where: { username: args.username },
-    include: {
-      spaces: {
-        include: {
-          topics: {
-            include: {
-              todoLists: {
-                include: {
-                  todos: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
   });
 
   if (!user) {

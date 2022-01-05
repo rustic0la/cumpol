@@ -20,24 +20,12 @@ const updateSpace: ResolverFn<
   const updatedSpace = await context.prisma.space.update({
     where: { id: args.spaceId },
     data: { title: args.title },
-    include: {
-      topics: {
-        include: {
-          todoLists: {
-            include: {
-              todos: true,
-            },
-          },
-        },
-      },
-    },
   });
 
   const updatedSpaces = await context.prisma.space.findMany({
     where: { userId: context.userId },
     orderBy: { createdAt: 'asc' },
   });
-
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
   return updatedSpace;

@@ -4,7 +4,6 @@ type User {
   id: ID!
   username: String!
   password: String!
-  spaces: [Space!]!
 }
 
 type Space {
@@ -13,7 +12,6 @@ type Space {
   createdAt: Date!
   complPercent: Int!
   userId: String!
-  topics: [Topic!]!
 }
 
 type Topic {
@@ -24,7 +22,6 @@ type Topic {
   spaceId: String!
   duration: Date
   complPercent: Int!
-  todoLists: [TodoList!]!
 }
 
 type TodoList {
@@ -35,7 +32,6 @@ type TodoList {
   topicId: String!
   duration: Date
   complPercent: Int!
-  todos: [Todo!]!
 }
 
 type Meta {
@@ -59,8 +55,9 @@ type Todo {
 
 type Query {
   getSpaces: [Space!]!
-  getSpace(spaceId: ID!): Space
   getTopics(spaceId: ID!): [Topic!]!
+  getTodoLists(topicId: ID!): [TodoList!]!
+  getTodos(todoListId: ID!): [Todo!]!
 }
 
 type AuthPayload {
@@ -115,4 +112,5 @@ type Subscription {
   spacesUpdated: [Space!]!
   topicsUpdated: [Topic!]!
   todoListsUpdated: [TodoList!]!
+  todosUpdated: [Todo!]!
 }

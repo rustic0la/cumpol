@@ -21,14 +21,10 @@ const updateTodoList: ResolverFn<
       id: args.todoListId,
     },
     data: { title: args.title },
-    include: {
-      todos: true,
-    },
   });
 
-  // const updatedTodoLists = await context.prisma.todoList.findMany({});
-
-  // context.pubsub.publish('topicsUpdated', updatedTodoLists);
+  const todoLists = await context.prisma.todoList.findMany({ where: { topicId: args.topicId } });
+  context.pubsub.publish('todoListsUpdated', todoLists);
 
   return updatedTodoList;
 };
