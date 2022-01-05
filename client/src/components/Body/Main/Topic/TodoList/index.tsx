@@ -1,10 +1,20 @@
 import {
-  TodoFragment,
   TodoListFragment,
   useDeleteTodoListMutation,
+  useGetTodosLazyQuery,
   useUpdateTodoListMutation,
 } from '@gql/types';
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  memo,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import useOnScreen from 'src/hooks/useOnScreen';
 
 import AddTodo from './AddTodo';
 import { TodoListStyled } from './styles';
@@ -14,12 +24,12 @@ interface TodoListProps {
   todoList: TodoListFragment;
   topicId: string;
 }
-const TodoList: FC<TodoListProps> = memo(({ todoList, topicId }) => {
-  const { id, title, todos } = todoList;
 
+const TodoList: FC<TodoListProps> = memo(({ todoList, topicId }) => {
+  const { id, title } = todoList;
   const [inputValue, setInputValue] = useState(() => title);
 
-  const handleChangeTodoList = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTodoList = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -45,27 +55,40 @@ const TodoList: FC<TodoListProps> = memo(({ todoList, topicId }) => {
     <TodoListStyled>
       <input type="text" onChange={handleChangeTodoList} onBlur={applyChange} value={inputValue} />
       <button onClick={handleDeleteTodoListClick}>-</button>
-      <TodoListInner todoListId={id} todos={todos} />
+      <TodoListInner todoListId={id} />
     </TodoListStyled>
   );
 });
 TodoList.displayName = 'TodoList';
 
 interface TodoListInnerProps {
-  todos: TodoFragment[];
   todoListId: string;
 }
 
-const TodoListInner: FC<TodoListInnerProps> = memo(({ todos, todoListId }) => {
+const TodoListInner: FC<TodoListInnerProps> = memo(({ todoListId }) => {
+  const ref = useRef() as RefObject<HTMLDivElement>;
+  const isVisible = useOnScreen(ref);
+
+  const [getTodos, { data, subscribeToMore }] = useGetTodosLazyQuery({
+    variables: { todoListId },
+  });
+
+  useEffect(() => {
+    if (isVisible && !data) {
+      getTodos();
+    }
+  }, [getTodos, isVisible, data]);
+
   return (
-    <>
-      {todos.map((todo) => (
+    <div ref={ref}>
+      {(data?.getTodos || []).map((todo) => (
         <Todo key={todo.id} todo={todo} todoListId={todoListId} />
       ))}
       <AddTodo todoListId={todoListId} />
-    </>
+    </div>
   );
 });
 TodoListInner.displayName = 'TodoListInner';
+TodoListInner.whyDidYouRender = true;
 
 export default TodoList;

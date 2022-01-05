@@ -1,5 +1,5 @@
 import { TodoFragment, useDeleteTodoMutation, useUpdateTodoMutation } from '@gql/types';
-import React, { BaseSyntheticEvent, FC, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 
 import { TodoStyled } from './styles';
 
@@ -8,11 +8,11 @@ interface TodoProps {
   todoListId: string;
 }
 
-const Todo: FC<TodoProps> = ({ todo, todoListId }) => {
+const Todo: FC<TodoProps> = memo(({ todo, todoListId }) => {
   const { id, title } = todo;
   const [inputValue, setInputValue] = useState(() => title);
 
-  const handleChangeTodo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTodo = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -40,6 +40,8 @@ const Todo: FC<TodoProps> = ({ todo, todoListId }) => {
       <button onClick={handleDeleteTodoClick}>-</button>
     </TodoStyled>
   );
-};
+});
+Todo.displayName = 'Todo';
+Todo.whyDidYouRender = true;
 
 export default Todo;

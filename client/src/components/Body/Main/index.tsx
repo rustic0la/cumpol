@@ -5,12 +5,6 @@ import AddTopic from './AddTopic';
 import { MainContentStyled } from './styles';
 import Topic from './Topic';
 
-interface SubscriptionData {
-  subscriptionData: {
-    data: TopicsUpdatedSubscription;
-  };
-}
-
 const MainContent: FC = memo(() => {
   // TODO: get from useParams
   const spaceId = 'ckxv0r33d0034n8sz9oluhfdg';
@@ -21,11 +15,10 @@ const MainContent: FC = memo(() => {
     () =>
       subscribeToMore({
         document: TopicsUpdatedDocument,
-        updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
-          console.log('subscriptionData', subscriptionData);
-
-          if (!subscriptionData.data) return prev;
-          const { topicsUpdated } = subscriptionData.data;
+        updateQuery: (prev, { subscriptionData }) => {
+          const newData = subscriptionData.data as unknown as TopicsUpdatedSubscription;
+          if (!newData) return prev;
+          const { topicsUpdated } = newData;
 
           return {
             getTopics: topicsUpdated,

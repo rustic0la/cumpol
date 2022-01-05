@@ -1,10 +1,10 @@
-import { GetSpacesSpaceFragment, useDeleteSpaceMutation, useUpdateSpaceMutation } from '@gql/types';
+import { SpaceFragment, useDeleteSpaceMutation, useUpdateSpaceMutation } from '@gql/types';
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import { SpaceStyled } from './styles';
 
 interface SpaceProps {
-  space: GetSpacesSpaceFragment;
+  space: SpaceFragment;
 }
 
 const Space: FC<SpaceProps> = memo(({ space }) => {

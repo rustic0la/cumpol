@@ -1,17 +1,16 @@
+fragment space on Space {
+  id
+  title
+}
+
 fragment topic on Topic {
   id
   title
-  todoLists {
-    ...todoList
-  }
 }
 
 fragment todoList on TodoList {
   id
   title
-  todos {
-    ...todo
-  }
 }
 
 fragment todo on Todo {

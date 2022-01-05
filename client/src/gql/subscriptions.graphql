@@ -1,6 +1,12 @@
-subscription spaceAdded {
-  spaceAdded {
+subscription spacesUpdated {
+  spacesUpdated {
     id
     title
+  }
+}
+
+subscription topicsUpdated {
+  topicsUpdated {
+    ...topic
   }
 }

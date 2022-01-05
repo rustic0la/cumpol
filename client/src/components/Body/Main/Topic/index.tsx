@@ -1,11 +1,12 @@
 import {
-  TodoListFragment,
   TopicFragment,
   useDeleteTopicMutation,
+  useGetTodoListsLazyQuery,
   useUpdateTopicMutation,
 } from '@gql/types';
-import React, { memo, useCallback, useState } from 'react';
-import { FC } from 'react';
+import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC } from 'react';
+import useOnScreen from 'src/hooks/useOnScreen';
 
 import AddTodoList from './AddTodoList';
 import { Border, TopicInnerStyled, TopicStyled } from './styles';
@@ -17,7 +18,7 @@ interface TopicProps {
 }
 
 const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
-  const { id, title, todoLists } = topic;
+  const { id, title } = topic;
   const [inputValue, setInputValue] = useState(() => title);
 
   const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
@@ -26,7 +27,7 @@ const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
     deleteTopic();
   }, [deleteTopic]);
 
-  const handleChangeTopic = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTopic = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -50,7 +51,7 @@ const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
         <button onClick={handleDeleteTopicClick}>-</button>
       </div>
       <Border />
-      <TopicInner topicId={id} todoLists={todoLists} />
+      <TopicInner topicId={id} />
     </TopicStyled>
   );
 });
@@ -59,14 +60,26 @@ Topic.whyDidYouRender = true;
 
 interface TopicInnerProps {
   topicId: string;
-  todoLists: TodoListFragment[];
 }
 
-const TopicInner: FC<TopicInnerProps> = memo(({ topicId, todoLists }) => {
+const TopicInner: FC<TopicInnerProps> = memo(({ topicId }) => {
+  const ref = useRef() as RefObject<HTMLDivElement>;
+  const isVisible = useOnScreen(ref);
+
+  const [getTodoLists, { data, subscribeToMore }] = useGetTodoListsLazyQuery({
+    variables: { topicId },
+  });
+
+  useEffect(() => {
+    if (isVisible && !data) {
+      getTodoLists();
+    }
+  }, [getTodoLists, isVisible, data]);
+
   return (
-    <TopicInnerStyled>
-      {todoLists.map((todoList) => (
-        <TodoList key={todoList?.id} todoList={todoList} topicId={topicId} />
+    <TopicInnerStyled ref={ref}>
+      {(data?.getTodoLists || []).map((todoList) => (
+        <TodoList key={todoList.id} todoList={todoList} topicId={topicId} />
       ))}
       <AddTodoList topicId={topicId} />
     </TopicInnerStyled>

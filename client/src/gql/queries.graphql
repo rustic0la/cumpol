@@ -1,16 +1,23 @@
 query getSpaces {
   getSpaces {
-    ...getSpacesSpace
+    ...space
   }
-}
-
-fragment getSpacesSpace on Space {
-  id
-  title
 }
 
 query getTopics($spaceId: ID!) {
   getTopics(spaceId: $spaceId) {
     ...topic
+  }
+}
+
+query getTodoLists($topicId: ID!) {
+  getTodoLists(topicId: $topicId) {
+    ...todoList
+  }
+}
+
+query getTodos($todoListId: ID!) {
+  getTodos(todoListId: $todoListId) {
+    ...todo
   }
 }

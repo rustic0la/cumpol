@@ -17,15 +17,13 @@ mutation login($username: String!, $password: String!) {
 
 mutation addSpace($title: String!) {
   addSpace(title: $title) {
-    id
-    title
+    ...space
   }
 }
 
 mutation updateSpace($spaceId: String!, $title: String!) {
   updateSpace(spaceId: $spaceId, title: $title) {
-    id
-    title
+    ...space
   }
 }
 
@@ -33,12 +31,12 @@ mutation deleteSpace($spaceId: String!) {
   deleteSpace(spaceId: $spaceId)
 }
 
-mutation deleteTopic($topicId: String!) {
-  deleteTopic(topicId: $topicId)
+mutation deleteTopic($spaceId: String!, $topicId: String!) {
+  deleteTopic(spaceId: $spaceId, topicId: $topicId)
 }
 
-mutation updateTopic($topicId: String!, $title: String!) {
-  updateTopic(topicId: $topicId, title: $title) {
+mutation updateTopic($spaceId: String!, $topicId: String!, $title: String!) {
+  updateTopic(spaceId: $spaceId, topicId: $topicId, title: $title) {
     ...topic
   }
 }
@@ -55,14 +53,14 @@ mutation addTodoList($title: String!, $topicId: String!) {
   }
 }
 
-mutation updateTodoList($title: String!, $todoListId: String!) {
-  updateTodoList(title: $title, todoListId: $todoListId) {
+mutation updateTodoList($topicId: String!, $title: String!, $todoListId: String!) {
+  updateTodoList(topicId: $topicId, title: $title, todoListId: $todoListId) {
     ...todoList
   }
 }
 
-mutation deleteTodoList($todoListId: String!) {
-  deleteTodoList(todoListId: $todoListId)
+mutation deleteTodoList($topicId: String!, $todoListId: String!) {
+  deleteTodoList(topicId: $topicId, todoListId: $todoListId)
 }
 
 mutation addTodo($title: String!, $todoListId: String!) {
@@ -71,12 +69,12 @@ mutation addTodo($title: String!, $todoListId: String!) {
   }
 }
 
-mutation updateTodo($title: String!, $todoId: String!) {
-  updateTodo(title: $title, todoId: $todoId) {
+mutation updateTodo($todoListId: String!, $title: String!, $todoId: String!) {
+  updateTodo(todoListId: $todoListId, title: $title, todoId: $todoId) {
     ...todo
   }
 }
 
-mutation deleteTodo($todoId: String!) {
-  deleteTodo(todoId: $todoId)
+mutation deleteTodo($todoListId: String!, $todoId: String!) {
+  deleteTodo(todoListId: $todoListId, todoId: $todoId)
 }
