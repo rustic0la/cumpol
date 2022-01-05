@@ -31,13 +31,6 @@ const updateTopic: ResolverFn<
 
   const updatedTopics = await context.prisma.topic.findMany({
     where: { spaceId: args.spaceId },
-    include: {
-      todoLists: {
-        include: {
-          todos: true,
-        },
-      },
-    },
     orderBy: { createdAt: 'asc' },
   });
 

@@ -28,7 +28,7 @@ const addSpace: ResolverFn<
 
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
-  return { ...space, topics: [] };
+  return space;
 };
 
 export default addSpace;

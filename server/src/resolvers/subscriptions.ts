@@ -1,4 +1,4 @@
-import { Space, SubscriptionResolvers, Topic, TodoList } from '../generated/types';
+import { Space, SubscriptionResolvers, Topic } from '../generated/types';
 import { Context } from '../interfaces';
 
 const Subscription: SubscriptionResolvers<Context, {}> = {
@@ -11,11 +11,6 @@ const Subscription: SubscriptionResolvers<Context, {}> = {
     subscribe: (_root: any, _args: any, context: Context) =>
       context.pubsub.asyncIterator('topicsUpdated'),
     resolve: (payload: Topic[]) => payload,
-  },
-  todoListsUpdated: {
-    subscribe: (_root: any, _args: any, context: Context) =>
-      context.pubsub.asyncIterator('todoListsUpdated'),
-    resolve: (payload: TodoList[]) => payload,
   },
 };
 
