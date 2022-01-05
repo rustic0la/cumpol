@@ -83,8 +83,6 @@ const TopicInner: FC<TopicInnerProps> = memo(({ topicId }) => {
       subscribeToMore({
         document: TodoListsUpdatedDocument,
         updateQuery: (prev, { subscriptionData }) => {
-          console.log('subscriptionData', subscriptionData);
-
           const newData = subscriptionData.data as unknown as TodoListsUpdatedSubscription;
           if (!newData) return prev;
           const { todoListsUpdated } = newData;

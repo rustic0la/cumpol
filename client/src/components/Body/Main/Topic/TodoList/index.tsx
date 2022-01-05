@@ -1,5 +1,7 @@
 import {
   TodoListFragment,
+  TodosUpdatedDocument,
+  TodosUpdatedSubscription,
   useDeleteTodoListMutation,
   useGetTodosLazyQuery,
   useUpdateTodoListMutation,
@@ -78,6 +80,28 @@ const TodoListInner: FC<TodoListInnerProps> = memo(({ todoListId }) => {
       getTodos();
     }
   }, [getTodos, isVisible, data]);
+
+  useEffect(
+    () =>
+      subscribeToMore({
+        document: TodosUpdatedDocument,
+        updateQuery: (prev, { subscriptionData }) => {
+          const newData = subscriptionData.data as unknown as TodosUpdatedSubscription;
+          if (!newData) return prev;
+          const { todosUpdated } = newData;
+
+          if (todosUpdated[0].todoListId === todoListId) {
+            return {
+              getTodos: todosUpdated,
+            };
+          }
+          return {
+            getTodos: prev.getTodos,
+          };
+        },
+      }),
+    [subscribeToMore, todoListId],
+  );
 
   return (
     <div ref={ref}>

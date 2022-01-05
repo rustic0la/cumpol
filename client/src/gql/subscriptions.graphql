@@ -17,3 +17,10 @@ subscription todoListsUpdated {
     topicId
   }
 }
+
+subscription todosUpdated {
+  todosUpdated {
+    ...todo
+    todoListId
+  }
+}
