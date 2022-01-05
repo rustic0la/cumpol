@@ -16,19 +16,19 @@ const deleteTodoList: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const todosDeleted = await context.prisma.todo.deleteMany({
+  const deletedTodos = await context.prisma.todo.deleteMany({
     where: { todoListId: args.todoListId },
   });
-  const todoListDeleted = await context.prisma.todoList.delete({
+  const deletedTodoList = await context.prisma.todoList.delete({
     where: { id: args.todoListId },
   });
 
-  const todoLists = await context.prisma.todoList.findMany({ where: { topicId: args.topicId } });
-  console.log('todoLists', todoLists);
+  const updatedTodoLists = await context.prisma.todoList.findMany({
+    where: { topicId: args.topicId },
+  });
+  context.pubsub.publish('todoListsUpdated', updatedTodoLists);
 
-  context.pubsub.publish('todoListsUpdated', todoLists);
-
-  return !!todosDeleted && !!todoListDeleted;
+  return !!deletedTodos && !!deletedTodoList;
 };
 
 export default deleteTodoList;

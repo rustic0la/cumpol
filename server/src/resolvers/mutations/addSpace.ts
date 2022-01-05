@@ -17,7 +17,7 @@ const addSpace: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const space = await context.prisma.space.create({
+  const addedSpace = await context.prisma.space.create({
     data: { title: args.title, user: { connect: { id: context.userId } } },
   });
 
@@ -27,7 +27,7 @@ const addSpace: ResolverFn<
   });
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
-  return space;
+  return addedSpace;
 };
 
 export default addSpace;

@@ -17,7 +17,7 @@ const addTopic: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const topic = await context.prisma.topic.create({
+  const addedTopic = await context.prisma.topic.create({
     data: { title: args.title, space: { connect: { id: args.spaceId } } },
   });
 
@@ -27,7 +27,7 @@ const addTopic: ResolverFn<
   });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
-  return topic;
+  return addedTopic;
 };
 
 export default addTopic;

@@ -23,8 +23,10 @@ const updateTodoList: ResolverFn<
     data: { title: args.title },
   });
 
-  const todoLists = await context.prisma.todoList.findMany({ where: { topicId: args.topicId } });
-  context.pubsub.publish('todoListsUpdated', todoLists);
+  const updatedTodoLists = await context.prisma.todoList.findMany({
+    where: { topicId: args.topicId },
+  });
+  context.pubsub.publish('todoListsUpdated', updatedTodoLists);
 
   return updatedTodoList;
 };
