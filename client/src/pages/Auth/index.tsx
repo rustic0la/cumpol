@@ -1,54 +1,27 @@
-import { useLoginMutation, useSignupMutation } from '@gql/types';
 import React, { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'src/AuthContext';
 
-import { AUTH_TOKEN } from '../constants';
+import { Wrapper } from './styles';
 
-export const Login: FC = () => {
+const Auth: FC = () => {
   const [formState, setFormState] = useState({
     login: true,
     username: '',
     password: '',
   });
 
-  const navigate = useNavigate();
-
-  const [login] = useLoginMutation({
-    variables: {
-      username: formState.username,
-      password: formState.password,
-    },
-    onCompleted: ({ login }) => {
-      if (login?.token) {
-        localStorage.setItem(AUTH_TOKEN, login?.token);
-      }
-      navigate('/');
-    },
-  });
-
-  const [signup] = useSignupMutation({
-    variables: {
-      username: formState.username,
-      password: formState.password,
-    },
-    onCompleted: ({ signup }) => {
-      if (signup?.token) {
-        localStorage.setItem(AUTH_TOKEN, signup?.token);
-      }
-      navigate('/');
-    },
-  });
+  const { login, signup } = useAuth();
 
   const submitForm = () => {
     if (formState.login) {
-      login();
+      login?.({ variables: { username: formState.username, password: formState.password } });
     } else {
-      signup();
+      signup?.({ variables: { username: formState.username, password: formState.password } });
     }
   };
 
   return (
-    <div style={{ height: '100vh' }}>
+    <Wrapper>
       <h4>{formState.login ? 'Login' : 'Sign Up'}</h4>
       <div>
         <input
@@ -78,7 +51,7 @@ export const Login: FC = () => {
       <div>
         <button onClick={submitForm}>{formState.login ? 'login' : 'create account'}</button>
         <button
-          onClick={(e) =>
+          onClick={() =>
             setFormState({
               ...formState,
               login: !formState.login,
@@ -88,6 +61,8 @@ export const Login: FC = () => {
           {formState.login ? 'need to create an account?' : 'already have an account?'}
         </button>
       </div>
-    </div>
+    </Wrapper>
   );
 };
+
+export default Auth;
