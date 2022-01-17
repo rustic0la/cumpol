@@ -17,3 +17,12 @@ fragment todo on Todo {
   id
   title
 }
+
+fragment authPayload on AuthPayload {
+  token
+  error
+  user {
+    id
+    username
+  }
+}
