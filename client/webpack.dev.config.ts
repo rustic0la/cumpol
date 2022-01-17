@@ -78,8 +78,8 @@ const config: Configuration = {
       ],
     }),
     new HtmlWebpackPlugin({
-      template: 'src/public/index.html',
-      favicon: 'src/public/favicon.ico',
+      template: 'public/index.html',
+      favicon: 'public/favicon.ico',
     }),
     new HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
