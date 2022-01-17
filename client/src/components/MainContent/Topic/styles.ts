@@ -11,12 +11,6 @@ export const Border = styled.div`
   opacity: 0.5;
 `;
 
-export const TopicInnerStyled = styled.div`
-  display: -webkit-box;
-  overflow-x: scroll;
-  margin: 10px;
-`;
-
 /**
  * topic title
  * 

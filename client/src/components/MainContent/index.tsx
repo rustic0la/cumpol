@@ -1,22 +1,31 @@
 import { TopicsUpdatedDocument, TopicsUpdatedSubscription, useGetTopicsQuery } from '@gql/types';
 import React, { FC, memo, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import AddTopic from './AddTopic';
 import { MainContentStyled } from './styles';
 import Topic from './Topic';
 
-const MainContent: FC = memo(() => {
-  // TODO: get from useParams
-  const spaceId = 'ckxv0r33d0034n8sz9oluhfdg';
+interface SubscriptionData {
+  subscriptionData: {
+    data: TopicsUpdatedSubscription;
+  };
+}
 
-  const { data, loading, subscribeToMore } = useGetTopicsQuery({ variables: { spaceId } });
+const MainContent: FC = memo(() => {
+  const { spaceId = '' } = useParams();
+
+  const { data, loading, subscribeToMore } = useGetTopicsQuery({
+    variables: { spaceId },
+    skip: !spaceId,
+  });
 
   useEffect(
     () =>
       subscribeToMore({
         document: TopicsUpdatedDocument,
-        updateQuery: (prev, { subscriptionData }) => {
-          const newData = subscriptionData.data as unknown as TopicsUpdatedSubscription;
+        updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
+          const newData = subscriptionData.data;
           if (!newData) return prev;
           const { topicsUpdated } = newData;
 

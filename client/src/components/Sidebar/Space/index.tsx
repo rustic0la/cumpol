@@ -1,13 +1,14 @@
 import { SpaceFragment, useDeleteSpaceMutation, useUpdateSpaceMutation } from '@gql/types';
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 
 import { SpaceStyled } from './styles';
 
 interface SpaceProps {
   space: SpaceFragment;
+  onSelect: (id: string) => void;
 }
 
-const Space: FC<SpaceProps> = memo(({ space }) => {
+const Space: FC<SpaceProps> = memo(({ space, onSelect }) => {
   const { id, title } = space;
   const [inputValue, setInputValue] = useState(() => title);
 
@@ -20,7 +21,7 @@ const Space: FC<SpaceProps> = memo(({ space }) => {
     deleteSpace({ variables: { spaceId: id } });
   }, [deleteSpace, id]);
 
-  const handleChangeSpace = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSpace = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -40,6 +41,7 @@ const Space: FC<SpaceProps> = memo(({ space }) => {
         onChange={handleChangeSpace}
         onBlur={saveChange}
         value={inputValue}
+        onClick={() => onSelect(id)}
       />
       <button onClick={handleDeleteSpaceClick}>-</button>
     </div>
