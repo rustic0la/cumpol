@@ -16,9 +16,9 @@ import resolvers from './resolvers';
 import { getUserId } from './utils';
 
 const startServer = async () => {
-  dotenv.config();
-
   const app = express();
+
+  dotenv.config();
 
   app.use(cors());
   app.use(express.json());
