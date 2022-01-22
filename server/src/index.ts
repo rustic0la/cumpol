@@ -13,7 +13,7 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import { Context } from './interfaces';
 import resolvers from './resolvers';
-import { getUserId } from './utils';
+import { getUserId } from './utils/getUserId';
 
 const startServer = async () => {
   const app = express();

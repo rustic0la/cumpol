@@ -19,4 +19,6 @@ export const getUserId = (authHeader: string, authToken: string): string | undef
     const { userId } = getTokenPayload(authToken);
     return userId;
   }
+
+  return undefined;
 };

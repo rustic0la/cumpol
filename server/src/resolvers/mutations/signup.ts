@@ -3,14 +3,13 @@ import jwt from 'jsonwebtoken';
 
 import {
   AuthPayload,
-  Maybe,
   MutationSignupArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
-import { APP_SECRET } from '../../utils';
+import { APP_SECRET } from '../../utils/getUserId';
 
 const signup: ResolverFn<
   ResolverTypeWrapper<AuthPayload>,
