@@ -1,26 +1,26 @@
-import { useAddTodoListMutation } from '@gql/types';
+import { useAddCheckListMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 
-interface AddTodoListProps {
+interface AddCheckListProps {
   topicId: string;
 }
 
-const AddTodoList: FC<AddTodoListProps> = ({ topicId }) => {
-  const [addTodoList, { loading }] = useAddTodoListMutation({
-    variables: { topicId, title: 'New TodoList' },
+const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
+  const [addCheckList, { loading }] = useAddCheckListMutation({
+    variables: { topicId, title: 'New CheckList' },
   });
 
-  const handleAddTodoList = useCallback(() => {
-    addTodoList();
-  }, [addTodoList]);
+  const handleAddCheckList = useCallback(() => {
+    addCheckList();
+  }, [addCheckList]);
 
   return loading ? (
     // TODO: add loader
     <p>Loading</p>
   ) : (
-    <button onClick={handleAddTodoList}>Add Todo List</button>
+    <button onClick={handleAddCheckList}>Add Todo List</button>
   );
 };
 
-export default AddTodoList;
+export default AddCheckList;

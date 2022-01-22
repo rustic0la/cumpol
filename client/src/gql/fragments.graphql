@@ -8,7 +8,7 @@ fragment topic on Topic {
   title
 }
 
-fragment todoList on TodoList {
+fragment checkList on CheckList {
   id
   title
 }

@@ -5,10 +5,10 @@ import { TodoStyled } from './styles';
 
 interface TodoProps {
   todo: TodoFragment;
-  todoListId: string;
+  checkListId: string;
 }
 
-const Todo: FC<TodoProps> = memo(({ todo, todoListId }) => {
+const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
   const { id, title } = todo;
   const [inputValue, setInputValue] = useState(() => title);
 
@@ -17,7 +17,7 @@ const Todo: FC<TodoProps> = memo(({ todo, todoListId }) => {
   }, []);
 
   const [updateTodo] = useUpdateTodoMutation({
-    variables: { todoId: id, title: inputValue, todoListId },
+    variables: { todoId: id, title: inputValue, checkListId },
   });
 
   const saveChange = useCallback(() => {
@@ -28,7 +28,7 @@ const Todo: FC<TodoProps> = memo(({ todo, todoListId }) => {
     }
   }, [inputValue, title, updateTodo]);
 
-  const [deleteTodo] = useDeleteTodoMutation({ variables: { todoId: id, todoListId } });
+  const [deleteTodo] = useDeleteTodoMutation({ variables: { todoId: id, checkListId } });
 
   const handleDeleteTodoClick = useCallback(() => {
     deleteTodo();

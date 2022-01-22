@@ -1,48 +1,52 @@
-import { TodoListFragment, useDeleteTodoListMutation, useUpdateTodoListMutation } from '@gql/types';
+import {
+  CheckListFragment,
+  useDeleteCheckListMutation,
+  useUpdateCheckListMutation,
+} from '@gql/types';
 import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 
-import { TodoListStyled } from './styles';
+import { CheckListStyled } from './styles';
 import Todos from './Todos';
 
-interface TodoListProps {
-  todoList: TodoListFragment;
+interface CheckListProps {
+  checkList: CheckListFragment;
   topicId: string;
 }
 
-const TodoList: FC<TodoListProps> = memo(({ todoList, topicId }) => {
-  const { id, title } = todoList;
+const CheckList: FC<CheckListProps> = memo(({ checkList, topicId }) => {
+  const { id, title } = checkList;
   const [inputValue, setInputValue] = useState(() => title);
 
-  const handleChangeTodoList = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCheckList = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
-  const [updateTodoList] = useUpdateTodoListMutation({
-    variables: { todoListId: id, title: inputValue, topicId },
+  const [updateCheckList] = useUpdateCheckListMutation({
+    variables: { checkListId: id, title: inputValue, topicId },
   });
 
   const applyChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateTodoList();
+      updateCheckList();
     }
-  }, [inputValue, title, updateTodoList]);
+  }, [inputValue, title, updateCheckList]);
 
-  const [deleteTodoList] = useDeleteTodoListMutation({ variables: { todoListId: id, topicId } });
+  const [deleteCheckList] = useDeleteCheckListMutation({ variables: { checkListId: id, topicId } });
 
-  const handleDeleteTodoListClick = useCallback(() => {
-    deleteTodoList();
-  }, [deleteTodoList]);
+  const handleDeleteCheckListClick = useCallback(() => {
+    deleteCheckList();
+  }, [deleteCheckList]);
 
   return (
-    <TodoListStyled>
-      <input type="text" onChange={handleChangeTodoList} onBlur={applyChange} value={inputValue} />
-      <button onClick={handleDeleteTodoListClick}>-</button>
-      <Todos todoListId={id} />
-    </TodoListStyled>
+    <CheckListStyled>
+      <input type="text" onChange={handleChangeCheckList} onBlur={applyChange} value={inputValue} />
+      <button onClick={handleDeleteCheckListClick}>-</button>
+      <Todos checkListId={id} />
+    </CheckListStyled>
   );
 });
-TodoList.displayName = 'TodoList';
+CheckList.displayName = 'CheckList';
 
-export default TodoList;
+export default CheckList;

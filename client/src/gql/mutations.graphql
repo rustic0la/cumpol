@@ -42,34 +42,34 @@ mutation addTopic($title: String!, $spaceId: String!) {
   }
 }
 
-mutation addTodoList($title: String!, $topicId: String!) {
-  addTodoList(title: $title, topicId: $topicId) {
-    ...todoList
+mutation addCheckList($title: String!, $topicId: String!) {
+  addCheckList(title: $title, topicId: $topicId) {
+    ...checkList
   }
 }
 
-mutation updateTodoList($topicId: String!, $title: String!, $todoListId: String!) {
-  updateTodoList(topicId: $topicId, title: $title, todoListId: $todoListId) {
-    ...todoList
+mutation updateCheckList($topicId: String!, $title: String!, $checkListId: String!) {
+  updateCheckList(topicId: $topicId, title: $title, checkListId: $checkListId) {
+    ...checkList
   }
 }
 
-mutation deleteTodoList($topicId: String!, $todoListId: String!) {
-  deleteTodoList(topicId: $topicId, todoListId: $todoListId)
+mutation deleteCheckList($topicId: String!, $checkListId: String!) {
+  deleteCheckList(topicId: $topicId, checkListId: $checkListId)
 }
 
-mutation addTodo($title: String!, $todoListId: String!) {
-  addTodo(title: $title, todoListId: $todoListId) {
+mutation addTodo($title: String!, $checkListId: String!) {
+  addTodo(title: $title, checkListId: $checkListId) {
     ...todo
   }
 }
 
-mutation updateTodo($todoListId: String!, $title: String!, $todoId: String!) {
-  updateTodo(todoListId: $todoListId, title: $title, todoId: $todoId) {
+mutation updateTodo($checkListId: String!, $title: String!, $todoId: String!) {
+  updateTodo(checkListId: $checkListId, title: $title, todoId: $todoId) {
     ...todo
   }
 }
 
-mutation deleteTodo($todoListId: String!, $todoId: String!) {
-  deleteTodo(todoListId: $todoListId, todoId: $todoId)
+mutation deleteTodo($checkListId: String!, $todoId: String!) {
+  deleteTodo(checkListId: $checkListId, todoId: $todoId)
 }

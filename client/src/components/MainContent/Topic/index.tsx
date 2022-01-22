@@ -3,7 +3,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
 
 import { Border, TopicStyled } from './styles';
-import TodoLists from './TodoLists';
+import CheckLists from './CheckLists';
 
 interface TopicProps {
   topic: TopicFragment;
@@ -44,7 +44,7 @@ const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
         <button onClick={handleDeleteTopicClick}>-</button>
       </div>
       <Border />
-      <TodoLists topicId={id} />
+      <CheckLists topicId={id} />
     </TopicStyled>
   );
 });

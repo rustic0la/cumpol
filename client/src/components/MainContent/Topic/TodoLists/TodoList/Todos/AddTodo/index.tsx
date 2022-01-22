@@ -3,12 +3,12 @@ import React, { useCallback } from 'react';
 import { FC } from 'react';
 
 interface AddTodoProps {
-  todoListId: string;
+  checkListId: string;
 }
 
-const AddTodo: FC<AddTodoProps> = ({ todoListId }) => {
+const AddTodo: FC<AddTodoProps> = ({ checkListId }) => {
   const [addTodo, { loading }] = useAddTodoMutation({
-    variables: { todoListId, title: 'New Todo' },
+    variables: { checkListId, title: 'New Todo' },
   });
 
   const handleAddTodo = useCallback(() => {

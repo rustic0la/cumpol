@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const TodoListStyled = styled.div`
+export const CheckListStyled = styled.div`
   width: 350px;
   height: 400px;
   background-color: pink;

@@ -1,55 +1,55 @@
 import {
-  TodoListsUpdatedDocument,
-  TodoListsUpdatedSubscription,
-  useGetTodoListsLazyQuery,
+  CheckListsUpdatedDocument,
+  CheckListsUpdatedSubscription,
+  useGetCheckListsLazyQuery,
 } from '@gql/types';
 import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
-import AddTodoList from './AddTodoList';
-import { TodoListsStyled } from './styles';
-import TodoList from './TodoList';
+import AddCheckList from './AddCheckList';
+import { CheckListsStyled } from './styles';
+import CheckList from './CheckList';
 
-interface TodoListsProps {
+interface CheckListsProps {
   topicId: string;
 }
 
 interface SubscriptionData {
   subscriptionData: {
-    data: TodoListsUpdatedSubscription;
+    data: CheckListsUpdatedSubscription;
   };
 }
 
-const TodoLists: FC<TodoListsProps> = memo(({ topicId }) => {
+const CheckLists: FC<CheckListsProps> = memo(({ topicId }) => {
   const ref = useRef() as RefObject<HTMLDivElement>;
   const isVisible = useOnScreen(ref);
 
-  const [getTodoLists, { data, subscribeToMore }] = useGetTodoListsLazyQuery({
+  const [getCheckLists, { data, subscribeToMore }] = useGetCheckListsLazyQuery({
     variables: { topicId },
   });
 
   useEffect(() => {
     if (isVisible && !data) {
-      getTodoLists();
+      getCheckLists();
     }
-  }, [getTodoLists, isVisible, data]);
+  }, [getCheckLists, isVisible, data]);
 
   useEffect(
     () =>
       subscribeToMore({
-        document: TodoListsUpdatedDocument,
+        document: CheckListsUpdatedDocument,
         updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
           const newData = subscriptionData.data;
           if (!newData) return prev;
-          const { todoListsUpdated } = newData;
+          const { checkListsUpdated } = newData;
 
-          if (todoListsUpdated[0].topicId === topicId) {
+          if (checkListsUpdated[0].topicId === topicId) {
             return {
-              getTodoLists: todoListsUpdated,
+              getCheckLists: checkListsUpdated,
             };
           }
           return {
-            getTodoLists: prev.getTodoLists,
+            getCheckLists: prev.getCheckLists,
           };
         },
       }),
@@ -57,16 +57,16 @@ const TodoLists: FC<TodoListsProps> = memo(({ topicId }) => {
   );
 
   return (
-    <TodoListsStyled ref={ref}>
-      {(data?.getTodoLists || []).map((todoList) => (
-        <TodoList key={todoList.id} todoList={todoList} topicId={topicId} />
+    <CheckListsStyled ref={ref}>
+      {(data?.getCheckLists || []).map((checkList) => (
+        <CheckList key={checkList.id} checkList={checkList} topicId={topicId} />
       ))}
-      <AddTodoList topicId={topicId} />
-    </TodoListsStyled>
+      <AddCheckList topicId={topicId} />
+    </CheckListsStyled>
   );
 });
 
-TodoLists.displayName = 'TodoLists';
-TodoLists.whyDidYouRender = true;
+CheckLists.displayName = 'CheckLists';
+CheckLists.whyDidYouRender = true;
 
-export default TodoLists;
+export default CheckLists;

@@ -11,9 +11,9 @@ subscription topicsUpdated {
   }
 }
 
-subscription todoListsUpdated {
-  todoListsUpdated {
-    ...todoList
+subscription checkListsUpdated {
+  checkListsUpdated {
+    ...checkList
     topicId
   }
 }
@@ -21,6 +21,6 @@ subscription todoListsUpdated {
 subscription todosUpdated {
   todosUpdated {
     ...todo
-    todoListId
+    checkListId
   }
 }

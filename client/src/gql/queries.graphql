@@ -10,14 +10,14 @@ query getTopics($spaceId: ID!) {
   }
 }
 
-query getTodoLists($topicId: ID!) {
-  getTodoLists(topicId: $topicId) {
-    ...todoList
+query getCheckLists($topicId: ID!) {
+  getCheckLists(topicId: $topicId) {
+    ...checkList
   }
 }
 
-query getTodos($todoListId: ID!) {
-  getTodos(todoListId: $todoListId) {
+query getTodos($checkListId: ID!) {
+  getTodos(checkListId: $checkListId) {
     ...todo
   }
 }

@@ -6,7 +6,7 @@ import AddTodo from './AddTodo';
 import Todo from './Todo';
 
 interface TodosProps {
-  todoListId: string;
+  checkListId: string;
 }
 
 interface SubscriptionData {
@@ -15,12 +15,12 @@ interface SubscriptionData {
   };
 }
 
-const Todos: FC<TodosProps> = memo(({ todoListId }) => {
+const Todos: FC<TodosProps> = memo(({ checkListId }) => {
   const ref = useRef() as RefObject<HTMLDivElement>;
   const isVisible = useOnScreen(ref);
 
   const [getTodos, { data, subscribeToMore }] = useGetTodosLazyQuery({
-    variables: { todoListId },
+    variables: { checkListId },
   });
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Todos: FC<TodosProps> = memo(({ todoListId }) => {
           if (!newData) return prev;
           const { todosUpdated } = newData;
 
-          if (todosUpdated[0].todoListId === todoListId) {
+          if (todosUpdated[0].checkListId === checkListId) {
             return {
               getTodos: todosUpdated,
             };
@@ -48,15 +48,15 @@ const Todos: FC<TodosProps> = memo(({ todoListId }) => {
           };
         },
       }),
-    [subscribeToMore, todoListId],
+    [subscribeToMore, checkListId],
   );
 
   return (
     <div ref={ref}>
       {(data?.getTodos || []).map((todo) => (
-        <Todo key={todo.id} todo={todo} todoListId={todoListId} />
+        <Todo key={todo.id} todo={todo} checkListId={checkListId} />
       ))}
-      <AddTodo todoListId={todoListId} />
+      <AddTodo checkListId={checkListId} />
     </div>
   );
 });
