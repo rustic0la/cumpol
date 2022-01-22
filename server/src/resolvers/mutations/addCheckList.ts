@@ -1,36 +1,36 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  MutationAddTodoListArgs,
+  CheckList,
+  MutationAddCheckListArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
-  TodoList,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
-const addTodoList: ResolverFn<
-  ResolverTypeWrapper<TodoList>,
+const addCheckList: ResolverFn<
+  ResolverTypeWrapper<CheckList>,
   {},
   Context,
-  RequireFields<MutationAddTodoListArgs, 'topicId' | 'title'>
+  RequireFields<MutationAddCheckListArgs, 'topicId' | 'title'>
 > = async (_root, args, context: Context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const addedTodoList = await context.prisma.todoList.create({
+  const addedCheckList = await context.prisma.checkList.create({
     data: {
       title: args.title,
       topic: { connect: { id: args.topicId } },
     },
   });
 
-  const updatedTodoLists = await context.prisma.todoList.findMany({
+  const updatedCheckLists = await context.prisma.checkList.findMany({
     where: { topicId: args.topicId },
     orderBy: { createdAt: 'asc' },
   });
-  context.pubsub.publish('todoListsUpdated', updatedTodoLists);
+  context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return addedTodoList;
+  return addedCheckList;
 };
 
-export default addTodoList;
+export default addCheckList;

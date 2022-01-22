@@ -1,4 +1,5 @@
 import { ForbiddenError } from 'apollo-server-express';
+
 import {
   MutationUpdateTodoArgs,
   RequireFields,
@@ -24,7 +25,7 @@ const updateTodo: ResolverFn<
   });
 
   const updatedTodos = await context.prisma.todo.findMany({
-    where: { todoListId: args.todoListId },
+    where: { checkListId: args.checkListId },
     orderBy: { createdAt: 'asc' },
   });
   context.pubsub.publish('todosUpdated', updatedTodos);

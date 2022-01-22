@@ -13,19 +13,19 @@ const addTodo: ResolverFn<
   ResolverTypeWrapper<Todo>,
   {},
   Context,
-  RequireFields<MutationAddTodoArgs, 'title' | 'todoListId'>
+  RequireFields<MutationAddTodoArgs, 'title' | 'checkListId'>
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const addedTodo = await context.prisma.todo.create({
     data: {
       title: args.title,
-      todoList: { connect: { id: args.todoListId } },
+      checkList: { connect: { id: args.checkListId } },
     },
   });
 
   const updatedTodos = await context.prisma.todo.findMany({
-    where: { todoListId: args.todoListId },
+    where: { checkListId: args.checkListId },
     orderBy: { createdAt: 'asc' },
   });
   context.pubsub.publish('todosUpdated', updatedTodos);

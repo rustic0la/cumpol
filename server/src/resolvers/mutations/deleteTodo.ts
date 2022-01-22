@@ -21,7 +21,7 @@ const deleteTodo: ResolverFn<
   });
 
   const updatedTodos = await context.prisma.todo.findMany({
-    where: { todoListId: args.todoListId },
+    where: { checkListId: args.checkListId },
     orderBy: { createdAt: 'asc' },
   });
   context.pubsub.publish('todosUpdated', updatedTodos);

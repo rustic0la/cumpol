@@ -1,19 +1,19 @@
 import { MutationResolvers } from '../../generated/types';
-import addTopic from './addTopic';
+import { Context } from '../../interfaces';
+import addCheckList from './addCheckList';
 import addSpace from './addSpace';
 import addTodo from './addTodo';
-import addTodoList from './addTodoList';
-import deleteTopic from './deleteTopic';
+import addTopic from './addTopic';
+import deleteCheckList from './deleteCheckList';
 import deleteSpace from './deleteSpace';
 import deleteTodo from './deleteTodo';
-import deleteTodoList from './deleteTodoList';
+import deleteTopic from './deleteTopic';
 import login from './login';
 import signup from './signup';
-import updateTopic from './updateTopic';
+import updateCheckList from './updateCheckList';
 import updateSpace from './updateSpace';
 import updateTodo from './updateTodo';
-import updateTodoList from './updateTodoList';
-import { Context } from '../../interfaces';
+import updateTopic from './updateTopic';
 
 const Mutation: MutationResolvers<Context, {}> = {
   addSpace: {
@@ -34,14 +34,14 @@ const Mutation: MutationResolvers<Context, {}> = {
   updateTopic: {
     resolve: updateTopic,
   },
-  addTodoList: {
-    resolve: addTodoList,
+  addCheckList: {
+    resolve: addCheckList,
   },
-  updateTodoList: {
-    resolve: updateTodoList,
+  updateCheckList: {
+    resolve: updateCheckList,
   },
-  deleteTodoList: {
-    resolve: deleteTodoList,
+  deleteCheckList: {
+    resolve: deleteCheckList,
   },
   addTodo: {
     resolve: addTodo,

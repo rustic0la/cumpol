@@ -26,18 +26,18 @@ model Space {
 }
 
 model Topic {
-  id           String     @id @default(cuid())
+  id           String      @id @default(cuid())
   title        String
-  createdAt    DateTime   @default(now())
+  createdAt    DateTime    @default(now())
   dueDate      DateTime?
   duration     DateTime?
-  complPercent Int        @default(0)
+  complPercent Int         @default(0)
   spaceId      String
-  space        Space      @relation(fields: [spaceId], references: [id])
-  todoLists    TodoList[]
+  space        Space       @relation(fields: [spaceId], references: [id])
+  checkLists   CheckList[]
 }
 
-model TodoList {
+model CheckList {
   id           String    @id @default(cuid())
   complPercent Int       @default(0)
   createdAt    DateTime  @default(now())
@@ -60,14 +60,14 @@ model Meta {
 }
 
 model Todo {
-  id         String    @id @default(cuid())
-  title      String
-  createdAt  DateTime  @default(now())
-  isWatched  Boolean   @default(false)
-  watchedAt  DateTime?
-  dueDate    DateTime?
-  duration   DateTime?
-  todoListId String
-  todoList   TodoList  @relation(fields: [todoListId], references: [id])
-  meta       Meta?
+  id          String    @id @default(cuid())
+  title       String
+  createdAt   DateTime  @default(now())
+  isWatched   Boolean   @default(false)
+  watchedAt   DateTime?
+  dueDate     DateTime?
+  duration    DateTime?
+  checkListId String
+  checkList   CheckList @relation(fields: [checkListId], references: [id])
+  meta        Meta?
 }

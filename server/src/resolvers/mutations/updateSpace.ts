@@ -1,11 +1,11 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Space,
   MutationUpdateSpaceArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
+  Space,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 

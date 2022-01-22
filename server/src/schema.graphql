@@ -24,7 +24,7 @@ type Topic {
   complPercent: Int!
 }
 
-type TodoList {
+type CheckList {
   id: ID!
   title: String!
   createdAt: Date!
@@ -48,7 +48,7 @@ type Todo {
   isWatched: Boolean!
   watchedAt: Date
   dueDate: Date
-  todoListId: String!
+  checkListId: String!
   duration: Date
   meta: Meta
 }
@@ -56,8 +56,8 @@ type Todo {
 type Query {
   getSpaces: [Space!]!
   getTopics(spaceId: ID!): [Topic!]!
-  getTodoLists(topicId: ID!): [TodoList!]!
-  getTodos(todoListId: ID!): [Todo!]!
+  getCheckLists(topicId: ID!): [CheckList!]!
+  getTodos(checkListId: ID!): [Todo!]!
 }
 
 type AuthPayload {
@@ -69,8 +69,8 @@ type AuthPayload {
 type Mutation {
   addSpace(title: String!): Space!
   addTopic(title: String!, spaceId: String!): Topic!
-  addTodoList(title: String!, topicId: String!): TodoList!
-  addTodo(title: String!, todoListId: String!): Todo!
+  addCheckList(title: String!, topicId: String!): CheckList!
+  addTodo(title: String!, checkListId: String!): Todo!
 
   updateSpace(spaceId: String!, title: String!): Space!
   updateTopic(
@@ -81,16 +81,16 @@ type Mutation {
     duration: Date
     complPercent: Int
   ): Topic!
-  updateTodoList(
+  updateCheckList(
     topicId: String!
-    todoListId: String!
+    checkListId: String!
     title: String!
     dueDate: Date
     duration: Date
     complPercent: Int
-  ): TodoList!
+  ): CheckList!
   updateTodo(
-    todoListId: String!
+    checkListId: String!
     todoId: String!
     title: String!
     dueDate: Date
@@ -101,8 +101,8 @@ type Mutation {
 
   deleteSpace(spaceId: String!): Boolean
   deleteTopic(spaceId: String!, topicId: String!): Boolean
-  deleteTodoList(topicId: String!, todoListId: String!): Boolean
-  deleteTodo(todoListId: String!, todoId: String!): Boolean
+  deleteCheckList(topicId: String!, checkListId: String!): Boolean
+  deleteTodo(checkListId: String!, todoId: String!): Boolean
 
   signup(username: String!, password: String!): AuthPayload
   login(username: String!, password: String!): AuthPayload
@@ -111,6 +111,6 @@ type Mutation {
 type Subscription {
   spacesUpdated: [Space!]!
   topicsUpdated: [Topic!]!
-  todoListsUpdated: [TodoList!]!
+  checkListsUpdated: [CheckList!]!
   todosUpdated: [Todo!]!
 }

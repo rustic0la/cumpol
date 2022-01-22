@@ -1,17 +1,17 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Space,
+  CheckList,
+  QueryGetCheckListsArgs,
+  QueryGetTodosArgs,
+  QueryGetTopicsArgs,
   QueryResolvers,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
-  QueryGetTopicsArgs,
-  Topic,
-  TodoList,
-  QueryGetTodoListsArgs,
-  QueryGetTodosArgs,
+  Space,
   Todo,
+  Topic,
 } from '../generated/types';
 import { Context } from '../interfaces';
 
@@ -42,15 +42,15 @@ const getTopics: ResolverFn<
   });
 };
 
-const getTodoLists: ResolverFn<
-  ResolverTypeWrapper<TodoList>[],
+const getCheckLists: ResolverFn<
+  ResolverTypeWrapper<CheckList>[],
   {},
   Context,
-  RequireFields<QueryGetTodoListsArgs, 'topicId'>
+  RequireFields<QueryGetCheckListsArgs, 'topicId'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.todoList.findMany({
+  return context.prisma.checkList.findMany({
     where: { topicId: args.topicId },
     orderBy: { createdAt: 'asc' },
   });
@@ -60,12 +60,12 @@ const getTodos: ResolverFn<
   ResolverTypeWrapper<Todo>[],
   {},
   Context,
-  RequireFields<QueryGetTodosArgs, 'todoListId'>
+  RequireFields<QueryGetTodosArgs, 'checkListId'>
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   return context.prisma.todo.findMany({
-    where: { todoListId: args.todoListId },
+    where: { checkListId: args.checkListId },
     orderBy: { createdAt: 'asc' },
   });
 };
@@ -77,8 +77,8 @@ const Query: QueryResolvers<Context, {}> = {
   getTopics: {
     resolve: getTopics,
   },
-  getTodoLists: {
-    resolve: getTodoLists,
+  getCheckLists: {
+    resolve: getCheckLists,
   },
   getTodos: {
     resolve: getTodos,
