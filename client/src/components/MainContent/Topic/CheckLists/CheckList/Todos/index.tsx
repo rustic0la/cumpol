@@ -19,15 +19,15 @@ const Todos: FC<TodosProps> = memo(({ checkListId }) => {
   const ref = useRef() as RefObject<HTMLDivElement>;
   const isVisible = useOnScreen(ref);
 
-  const [getTodos, { data, subscribeToMore }] = useGetTodosLazyQuery({
+  const [getTodos, { data, subscribeToMore, loading }] = useGetTodosLazyQuery({
     variables: { checkListId },
   });
 
   useEffect(() => {
-    if (isVisible && !data) {
+    if (isVisible && !data && !loading) {
       getTodos();
     }
-  }, [getTodos, isVisible, data]);
+  }, [getTodos, isVisible, data, loading]);
 
   useEffect(
     () =>
@@ -38,6 +38,7 @@ const Todos: FC<TodosProps> = memo(({ checkListId }) => {
           if (!newData) return prev;
           const { todosUpdated } = newData;
 
+          if (todosUpdated.length === 0) return { getTodos: [] };
           if (todosUpdated[0].checkListId === checkListId) {
             return {
               getTodos: todosUpdated,

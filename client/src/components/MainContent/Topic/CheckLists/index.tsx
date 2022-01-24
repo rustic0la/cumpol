@@ -7,8 +7,8 @@ import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
 import AddCheckList from './AddCheckList';
-import { CheckListsStyled } from './styles';
 import CheckList from './CheckList';
+import { CheckListsStyled } from './styles';
 
 interface CheckListsProps {
   topicId: string;
@@ -24,15 +24,15 @@ const CheckLists: FC<CheckListsProps> = memo(({ topicId }) => {
   const ref = useRef() as RefObject<HTMLDivElement>;
   const isVisible = useOnScreen(ref);
 
-  const [getCheckLists, { data, subscribeToMore }] = useGetCheckListsLazyQuery({
+  const [getCheckLists, { data, subscribeToMore, loading }] = useGetCheckListsLazyQuery({
     variables: { topicId },
   });
 
   useEffect(() => {
-    if (isVisible && !data) {
+    if (isVisible && !data && !loading) {
       getCheckLists();
     }
-  }, [getCheckLists, isVisible, data]);
+  }, [getCheckLists, isVisible, data, loading]);
 
   useEffect(
     () =>
@@ -44,6 +44,7 @@ const CheckLists: FC<CheckListsProps> = memo(({ topicId }) => {
           const { checkListsUpdated } = newData;
 
           if (checkListsUpdated[0].topicId === topicId) {
+            if (checkListsUpdated.length === 0) return { getCheckLists: [] };
             return {
               getCheckLists: checkListsUpdated,
             };

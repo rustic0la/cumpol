@@ -16,7 +16,7 @@ const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
     setInputValue(e.target.value);
   }, []);
 
-  const [updateTodo] = useUpdateTodoMutation({
+  const [updateTodo, { loading }] = useUpdateTodoMutation({
     variables: { todoId: id, title: inputValue, checkListId },
   });
 
@@ -24,7 +24,7 @@ const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateTodo();
+      if (inputValue !== title) updateTodo().then((res) => console.log('res', res));
     }
   }, [inputValue, title, updateTodo]);
 

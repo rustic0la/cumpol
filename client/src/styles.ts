@@ -7,7 +7,7 @@ export const LayoutStyled = styled.div`
 `;
 
 export const GridStyled = styled.div`
-  margin: 30px 4rem;
+  margin: 30px 2rem;
   display: flex;
   gap: 20px;
 `;

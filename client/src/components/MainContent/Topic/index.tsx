@@ -2,8 +2,8 @@ import { TopicFragment, useDeleteTopicMutation, useUpdateTopicMutation } from '@
 import React, { memo, useCallback, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
 
-import { Border, TopicStyled } from './styles';
 import CheckLists from './CheckLists';
+import { Border, TopicStyled } from './styles';
 
 interface TopicProps {
   topic: TopicFragment;
@@ -32,7 +32,7 @@ const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateTopic();
+      if (inputValue !== title) updateTopic();
     }
   }, [inputValue, title, updateTopic]);
 

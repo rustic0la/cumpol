@@ -1,6 +1,6 @@
 import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import AddSpace from './AddSpace';
 import Space from './Space';
@@ -32,11 +32,20 @@ const Sidebar: FC = memo(() => {
   );
 
   const navigate = useNavigate();
+  const { spaceId } = useParams();
+
+  useEffect(() => {
+    const firstId = data?.getSpaces[0].id;
+    if (!spaceId && firstId) {
+      navigate(`${firstId}`);
+    }
+  }, [data?.getSpaces, navigate, spaceId]);
+
   const handleSelectSpace = useCallback(
-    (spaceId: string) => {
-      navigate(`${spaceId}`);
+    (id: string) => {
+      if (spaceId !== id) navigate(`${id}`);
     },
-    [navigate],
+    [navigate, spaceId],
   );
 
   return (

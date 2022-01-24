@@ -29,7 +29,7 @@ const Space: FC<SpaceProps> = memo(({ space, onSelect }) => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateSpace();
+      if (inputValue !== title) updateSpace();
     }
   }, [inputValue, title, updateSpace]);
 

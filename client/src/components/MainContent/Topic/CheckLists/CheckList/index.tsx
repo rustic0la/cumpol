@@ -29,7 +29,7 @@ const CheckList: FC<CheckListProps> = memo(({ checkList, topicId }) => {
     if (!inputValue) {
       setInputValue(title);
     } else {
-      updateCheckList();
+      if (inputValue !== title) updateCheckList();
     }
   }, [inputValue, title, updateCheckList]);
 
