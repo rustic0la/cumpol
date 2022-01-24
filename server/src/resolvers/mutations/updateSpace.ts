@@ -22,10 +22,11 @@ const updateSpace: ResolverFn<
     data: { title: args.title },
   });
 
-  const updatedSpaces = await context.prisma.space.findMany({
-    where: { userId: context.userId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedSpaces = await context.prisma.user
+    .findUnique({
+      where: { id: context.userId },
+    })
+    .spaces({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
   return updatedSpace;

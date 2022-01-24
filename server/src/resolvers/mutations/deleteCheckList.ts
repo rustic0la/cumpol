@@ -23,9 +23,11 @@ const deleteCheckList: ResolverFn<
     where: { id: args.checkListId },
   });
 
-  const updatedCheckLists = await context.prisma.checkList.findMany({
-    where: { topicId: args.topicId },
-  });
+  const updatedCheckLists = await context.prisma.topic
+    .findUnique({
+      where: { id: args.topicId },
+    })
+    .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
   return !!deletedTodos && !!deletedCheckList;

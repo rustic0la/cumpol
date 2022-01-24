@@ -22,10 +22,11 @@ const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
 ) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.space.findMany({
-    where: { userId: context.userId },
-    orderBy: { createdAt: 'asc' },
-  });
+  return context.prisma.user
+    .findUnique({
+      where: { id: context.userId },
+    })
+    .spaces({ orderBy: { createdAt: 'asc' } });
 };
 
 const getTopics: ResolverFn<
@@ -36,10 +37,11 @@ const getTopics: ResolverFn<
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.topic.findMany({
-    where: { spaceId: args.spaceId },
-    orderBy: { createdAt: 'asc' },
-  });
+  return context.prisma.space
+    .findUnique({
+      where: { id: args.spaceId },
+    })
+    .topics({ orderBy: { createdAt: 'asc' } });
 };
 
 const getCheckLists: ResolverFn<
@@ -50,10 +52,11 @@ const getCheckLists: ResolverFn<
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.checkList.findMany({
-    where: { topicId: args.topicId },
-    orderBy: { createdAt: 'asc' },
-  });
+  return context.prisma.topic
+    .findUnique({
+      where: { id: args.topicId },
+    })
+    .checkLists({ orderBy: { createdAt: 'asc' } });
 };
 
 const getTodos: ResolverFn<
@@ -64,10 +67,11 @@ const getTodos: ResolverFn<
 > = (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.todo.findMany({
-    where: { checkListId: args.checkListId },
-    orderBy: { createdAt: 'asc' },
-  });
+  return context.prisma.checkList
+    .findUnique({
+      where: { id: args.checkListId },
+    })
+    .todos({ include: { meta: true }, orderBy: { createdAt: 'asc' } });
 };
 
 const Query: QueryResolvers<Context, {}> = {

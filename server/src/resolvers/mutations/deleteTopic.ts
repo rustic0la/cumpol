@@ -17,9 +17,11 @@ const deleteTopic: ResolverFn<
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
   const checkListsIds = (
-    await context.prisma.checkList.findMany({
-      where: { topicId: args.topicId },
-    })
+    await context.prisma.topic
+      .findUnique({
+        where: { id: args.topicId },
+      })
+      .checkLists({ select: { id: true } })
   ).map(({ id }) => id);
 
   const deletedTodos = await context.prisma.todo.deleteMany({
@@ -32,10 +34,11 @@ const deleteTopic: ResolverFn<
     where: { id: args.topicId },
   });
 
-  const updatedTopics = await context.prisma.topic.findMany({
-    where: { spaceId: args.spaceId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedTopics = await context.prisma.space
+    .findUnique({
+      where: { id: args.spaceId },
+    })
+    .topics({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
   return !!deletedTodos && !!deletedCheckLists && !!deletedTopic;

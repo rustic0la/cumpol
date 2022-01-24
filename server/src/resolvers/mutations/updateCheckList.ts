@@ -24,9 +24,11 @@ const updateCheckList: ResolverFn<
     data: { title: args.title },
   });
 
-  const updatedCheckLists = await context.prisma.checkList.findMany({
-    where: { topicId: args.topicId },
-  });
+  const updatedCheckLists = await context.prisma.topic
+    .findUnique({
+      where: { id: args.topicId },
+    })
+    .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
   return updatedCheckList;

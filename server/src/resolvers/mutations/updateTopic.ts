@@ -1,11 +1,11 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  Topic,
   MutationUpdateTopicArgs,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
+  Topic,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
@@ -22,10 +22,11 @@ const updateTopic: ResolverFn<
     data: { title: args.title },
   });
 
-  const updatedTopics = await context.prisma.topic.findMany({
-    where: { spaceId: args.spaceId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedTopics = await context.prisma.space
+    .findUnique({
+      where: { id: args.spaceId },
+    })
+    .topics({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
   return updatedTopic;

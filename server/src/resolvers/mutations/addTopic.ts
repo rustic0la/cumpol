@@ -21,10 +21,11 @@ const addTopic: ResolverFn<
     data: { title: args.title, space: { connect: { id: args.spaceId } } },
   });
 
-  const updatedTopics = await context.prisma.topic.findMany({
-    where: { spaceId: args.spaceId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedTopics = await context.prisma.space
+    .findUnique({
+      where: { id: args.spaceId },
+    })
+    .topics({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
   return addedTopic;

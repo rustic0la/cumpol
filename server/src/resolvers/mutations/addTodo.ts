@@ -24,10 +24,16 @@ const addTodo: ResolverFn<
     },
   });
 
-  const updatedTodos = await context.prisma.todo.findMany({
-    where: { checkListId: args.checkListId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedTodos = await context.prisma.checkList
+    .findUnique({
+      where: { id: args.checkListId },
+    })
+    .todos({
+      include: {
+        meta: true,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
   return addedTodo;

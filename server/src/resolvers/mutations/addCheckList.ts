@@ -24,10 +24,11 @@ const addCheckList: ResolverFn<
     },
   });
 
-  const updatedCheckLists = await context.prisma.checkList.findMany({
-    where: { topicId: args.topicId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedCheckLists = await context.prisma.topic
+    .findUnique({
+      where: { id: args.topicId },
+    })
+    .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
   return addedCheckList;

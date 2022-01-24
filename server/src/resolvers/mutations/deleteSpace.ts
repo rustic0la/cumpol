@@ -21,10 +21,11 @@ const deleteSpace: ResolverFn<
   });
   const deletedSpace = await context.prisma.space.delete({ where: { id: args.spaceId } });
 
-  const updatedSpaces = await context.prisma.space.findMany({
-    where: { userId: context.userId },
-    orderBy: { createdAt: 'asc' },
-  });
+  const updatedSpaces = await context.prisma.user
+    .findUnique({
+      where: { id: context.userId },
+    })
+    .spaces({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
   return !!deletedSpace && !!deletedTopics;
