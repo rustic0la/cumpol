@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
-import { AuthProvider, RequireAuth } from './AuthContext';
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Sidebar from './components/Sidebar';
 import Auth from './pages/Auth';
+import { AuthProvider, RequireAuth } from './providers/AuthProvider';
 import { GridStyled, LayoutStyled } from './styles';
 
 // TODO: themes
@@ -29,7 +29,6 @@ const App: FC = () => {
             <Route index element={<h1>Select Space</h1>} />
             <Route path=":spaceId" element={<MainContent />} />
           </Route>
-          <Route path="*" element={<h1>Not found</h1>} />
         </Route>
       </Routes>
     </AuthProvider>

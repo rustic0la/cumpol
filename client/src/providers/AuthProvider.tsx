@@ -11,7 +11,7 @@ import {
 import React, { createContext, ReactNode, useContext } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-import { AUTH_TOKEN } from './constants';
+import { AUTH_TOKEN } from '../constants';
 
 interface AuthContextType {
   username: Maybe<string>;
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (user) {
           localStorage.setItem('username', user.username);
           // TODO: fix username edit in url, '/' path redirect
-          navigate(`/${user.username}`);
+          navigate('/');
         }
       }
     },
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (user) {
           localStorage.setItem('username', user.username);
           // TODO: fix username edit in url, '/' path redirect
-          navigate(`/${user.username}`);
+          navigate('/');
         }
       }
     },

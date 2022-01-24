@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useAuth } from 'src/AuthContext';
+import { useAuth } from 'src/providers/AuthProvider';
 
 import { Wrapper } from './styles';
 

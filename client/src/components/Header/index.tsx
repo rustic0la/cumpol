@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuth } from 'src/AuthContext';
+import { useAuth } from 'src/providers/AuthProvider';
 
 import logo from '../../assets/logo.svg';
 import { HeaderStyled, LogoStyled } from './styles';
