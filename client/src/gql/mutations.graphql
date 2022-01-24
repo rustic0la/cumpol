@@ -12,64 +12,72 @@ mutation login($username: String!, $password: String!) {
 
 mutation addSpace($title: String!) {
   addSpace(title: $title) {
-    ...space
+    ...payload
   }
 }
 
 mutation updateSpace($spaceId: String!, $title: String!) {
   updateSpace(spaceId: $spaceId, title: $title) {
-    ...space
+    ...payload
   }
 }
 
 mutation deleteSpace($spaceId: String!) {
-  deleteSpace(spaceId: $spaceId)
+  deleteSpace(spaceId: $spaceId) {
+    ...payload
+  }
 }
 
 mutation deleteTopic($spaceId: String!, $topicId: String!) {
-  deleteTopic(spaceId: $spaceId, topicId: $topicId)
+  deleteTopic(spaceId: $spaceId, topicId: $topicId) {
+    ...payload
+  }
 }
 
 mutation updateTopic($spaceId: String!, $topicId: String!, $title: String!) {
   updateTopic(spaceId: $spaceId, topicId: $topicId, title: $title) {
-    ...topic
+    ...payload
   }
 }
 
 mutation addTopic($title: String!, $spaceId: String!) {
   addTopic(spaceId: $spaceId, title: $title) {
-    ...topic
+    ...payload
   }
 }
 
 mutation addCheckList($title: String!, $topicId: String!) {
   addCheckList(title: $title, topicId: $topicId) {
-    ...checkList
+    ...payload
   }
 }
 
 mutation updateCheckList($topicId: String!, $title: String!, $checkListId: String!) {
   updateCheckList(topicId: $topicId, title: $title, checkListId: $checkListId) {
-    ...checkList
+    ...payload
   }
 }
 
 mutation deleteCheckList($topicId: String!, $checkListId: String!) {
-  deleteCheckList(topicId: $topicId, checkListId: $checkListId)
+  deleteCheckList(topicId: $topicId, checkListId: $checkListId) {
+    ...payload
+  }
 }
 
 mutation addTodo($title: String!, $checkListId: String!) {
   addTodo(title: $title, checkListId: $checkListId) {
-    ...todo
+    ...payload
   }
 }
 
 mutation updateTodo($checkListId: String!, $title: String!, $todoId: String!) {
   updateTodo(checkListId: $checkListId, title: $title, todoId: $todoId) {
-    ...todo
+    ...payload
   }
 }
 
 mutation deleteTodo($checkListId: String!, $todoId: String!) {
-  deleteTodo(checkListId: $checkListId, todoId: $todoId)
+  deleteTodo(checkListId: $checkListId, todoId: $todoId) {
+    ...payload
+  }
 }

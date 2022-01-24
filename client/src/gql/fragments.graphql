@@ -26,3 +26,8 @@ fragment authPayload on AuthPayload {
     username
   }
 }
+
+fragment payload on Payload {
+  success
+  error
+}

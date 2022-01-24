@@ -35,10 +35,13 @@ type CheckList {
 }
 
 type Meta {
+  id: ID!
   url: String!
   title: String
   description: String
   img: String
+  hostname: String
+  favicon: String
 }
 
 type Todo {
@@ -66,13 +69,18 @@ type AuthPayload {
   error: String
 }
 
-type Mutation {
-  addSpace(title: String!): Space!
-  addTopic(title: String!, spaceId: String!): Topic!
-  addCheckList(title: String!, topicId: String!): CheckList!
-  addTodo(title: String!, checkListId: String!): Todo!
+type Payload {
+  success: Boolean
+  error: String
+}
 
-  updateSpace(spaceId: String!, title: String!): Space!
+type Mutation {
+  addSpace(title: String!): Payload!
+  addTopic(title: String!, spaceId: String!): Payload!
+  addCheckList(title: String!, topicId: String!): Payload!
+  addTodo(title: String!, checkListId: String!): Payload!
+
+  updateSpace(spaceId: String!, title: String!): Payload!
   updateTopic(
     spaceId: String!
     topicId: String!
@@ -80,7 +88,7 @@ type Mutation {
     dueDate: Date
     duration: Date
     complPercent: Int
-  ): Topic!
+  ): Payload!
   updateCheckList(
     topicId: String!
     checkListId: String!
@@ -88,7 +96,7 @@ type Mutation {
     dueDate: Date
     duration: Date
     complPercent: Int
-  ): CheckList!
+  ): Payload!
   updateTodo(
     checkListId: String!
     todoId: String!
@@ -97,15 +105,15 @@ type Mutation {
     duration: Date
     complPercent: Int
     isWatched: Boolean
-  ): Todo!
+  ): Payload!
 
-  deleteSpace(spaceId: String!): Boolean
-  deleteTopic(spaceId: String!, topicId: String!): Boolean
-  deleteCheckList(topicId: String!, checkListId: String!): Boolean
-  deleteTodo(checkListId: String!, todoId: String!): Boolean
+  deleteSpace(spaceId: String!): Payload!
+  deleteTopic(spaceId: String!, topicId: String!): Payload!
+  deleteCheckList(topicId: String!, checkListId: String!): Payload!
+  deleteTodo(checkListId: String!, todoId: String!): Payload!
 
-  signup(username: String!, password: String!): AuthPayload
-  login(username: String!, password: String!): AuthPayload
+  signup(username: String!, password: String!): AuthPayload!
+  login(username: String!, password: String!): AuthPayload!
 }
 
 type Subscription {

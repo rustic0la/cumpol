@@ -2,15 +2,15 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   MutationUpdateSpaceArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
-  Space,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
 const updateSpace: ResolverFn<
-  ResolverTypeWrapper<Space>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationUpdateSpaceArgs, 'spaceId' | 'title'>
@@ -29,7 +29,7 @@ const updateSpace: ResolverFn<
     .spaces({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
-  return updatedSpace;
+  return { success: !!updatedSpace, error: null };
 };
 
 export default updateSpace;

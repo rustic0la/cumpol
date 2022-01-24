@@ -1,8 +1,8 @@
 import { ForbiddenError } from 'apollo-server-express';
 
 import {
-  CheckList,
   MutationUpdateCheckListArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
@@ -10,7 +10,7 @@ import {
 import { Context } from '../../interfaces';
 
 const updateCheckList: ResolverFn<
-  ResolverTypeWrapper<CheckList>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationUpdateCheckListArgs, 'title' | 'checkListId' | 'topicId'>
@@ -31,7 +31,7 @@ const updateCheckList: ResolverFn<
     .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return updatedCheckList;
+  return { success: !!updatedCheckList, error: null };
 };
 
 export default updateCheckList;

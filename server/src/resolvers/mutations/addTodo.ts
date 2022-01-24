@@ -2,15 +2,15 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   MutationAddTodoArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
-  Todo,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
 const addTodo: ResolverFn<
-  ResolverTypeWrapper<Todo>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationAddTodoArgs, 'title' | 'checkListId'>
@@ -36,7 +36,7 @@ const addTodo: ResolverFn<
     });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
-  return addedTodo;
+  return { success: !!addedTodo, error: null };
 };
 
 export default addTodo;

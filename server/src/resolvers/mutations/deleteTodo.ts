@@ -2,6 +2,7 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   MutationDeleteTodoArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
@@ -9,7 +10,7 @@ import {
 import { Context } from '../../interfaces';
 
 const deleteTodo: ResolverFn<
-  ResolverTypeWrapper<boolean>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationDeleteTodoArgs, 'todoId'>
@@ -28,7 +29,7 @@ const deleteTodo: ResolverFn<
     .todos({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
-  return !!deletedMeta && !!deletedTodo;
+  return { success: !!deletedMeta && !!deletedTodo, error: null };
 };
 
 export default deleteTodo;

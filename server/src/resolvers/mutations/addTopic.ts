@@ -2,15 +2,15 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   MutationAddTopicArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
-  Topic,
 } from '../../generated/types';
 import { Context } from '../../interfaces';
 
 const addTopic: ResolverFn<
-  ResolverTypeWrapper<Topic>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationAddTopicArgs, 'spaceId' | 'title'>
@@ -28,7 +28,7 @@ const addTopic: ResolverFn<
     .topics({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
-  return addedTopic;
+  return { success: !!addedTopic, error: null };
 };
 
 export default addTopic;

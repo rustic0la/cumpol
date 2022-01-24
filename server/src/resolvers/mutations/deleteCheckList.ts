@@ -2,6 +2,7 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   MutationDeleteCheckListArgs,
+  Payload,
   RequireFields,
   ResolverFn,
   ResolverTypeWrapper,
@@ -9,7 +10,7 @@ import {
 import { Context } from '../../interfaces';
 
 const deleteCheckList: ResolverFn<
-  ResolverTypeWrapper<boolean>,
+  ResolverTypeWrapper<Payload>,
   {},
   Context,
   RequireFields<MutationDeleteCheckListArgs, 'checkListId' | 'topicId'>
@@ -30,7 +31,7 @@ const deleteCheckList: ResolverFn<
     .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return !!deletedTodos && !!deletedCheckList;
+  return { success: !!deletedTodos && !!deletedCheckList, error: null };
 };
 
 export default deleteCheckList;
