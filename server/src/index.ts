@@ -1,5 +1,4 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import { PrismaClient } from '@prisma/client';
 import { ApolloServer } from 'apollo-server-express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -12,6 +11,7 @@ import { join } from 'path';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import { Context } from './interfaces';
+import prisma from './prismaClient';
 import resolvers from './resolvers';
 import { getUserId } from './utils/getUserId';
 
@@ -52,8 +52,6 @@ const startServer = async () => {
       path: '/graphql',
     },
   );
-
-  const prisma = new PrismaClient();
 
   const server = new ApolloServer({
     schema,
