@@ -17,7 +17,6 @@ const deleteTodo: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedMeta = await context.prisma.meta.deleteMany({ where: { todoId: args.todoId } });
   const deletedTodo = await context.prisma.todo.delete({
     where: { id: args.todoId },
   });
@@ -29,7 +28,7 @@ const deleteTodo: ResolverFn<
     .todos({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
-  return { success: !!deletedMeta && !!deletedTodo, error: null };
+  return { success: !!deletedTodo, error: null };
 };
 
 export default deleteTodo;

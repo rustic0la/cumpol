@@ -21,7 +21,7 @@ model Space {
   createdAt    DateTime @default(now())
   complPercent Int      @default(0)
   userId       String
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   topics       Topic[]
 }
 
@@ -33,7 +33,7 @@ model Topic {
   duration     DateTime?
   complPercent Int         @default(0)
   spaceId      String
-  space        Space       @relation(fields: [spaceId], references: [id])
+  space        Space       @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   checkLists   CheckList[]
 }
 
@@ -45,7 +45,7 @@ model CheckList {
   duration     DateTime?
   title        String
   topicId      String
-  topic        Topic     @relation(fields: [topicId], references: [id])
+  topic        Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
   todos        Todo[]
 }
 
@@ -58,7 +58,7 @@ model Meta {
   favicon     String?
   img         String?
   todoId      String  @unique
-  todo        Todo    @relation(fields: [todoId], references: [id])
+  todo        Todo    @relation(fields: [todoId], references: [id], onDelete: Cascade)
 }
 
 model Todo {
@@ -70,6 +70,6 @@ model Todo {
   dueDate     DateTime?
   duration    DateTime?
   checkListId String
-  checkList   CheckList @relation(fields: [checkListId], references: [id])
+  checkList   CheckList @relation(fields: [checkListId], references: [id], onDelete: Cascade)
   meta        Meta?
 }

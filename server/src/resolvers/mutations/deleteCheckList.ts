@@ -17,9 +17,6 @@ const deleteCheckList: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedTodos = await context.prisma.todo.deleteMany({
-    where: { checkListId: args.checkListId },
-  });
   const deletedCheckList = await context.prisma.checkList.delete({
     where: { id: args.checkListId },
   });
@@ -31,7 +28,7 @@ const deleteCheckList: ResolverFn<
     .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return { success: !!deletedTodos && !!deletedCheckList, error: null };
+  return { success: !!deletedCheckList, error: null };
 };
 
 export default deleteCheckList;
