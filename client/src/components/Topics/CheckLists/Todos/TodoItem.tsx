@@ -36,7 +36,11 @@ const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
 
   return (
     <TodoStyled>
-      <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
+      <div>
+        {loading && <p>Loading...</p>}
+
+        <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
+      </div>
       <button onClick={handleDeleteTodoClick}>-</button>
     </TodoStyled>
   );

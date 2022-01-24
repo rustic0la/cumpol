@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import AddSpace from './AddSpace';
-import Space from './Space';
+import Space from './SpaceItem';
 import { SidebarStyled } from './styles';
 
 interface SubscriptionData {

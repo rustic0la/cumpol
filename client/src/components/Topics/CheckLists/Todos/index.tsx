@@ -3,7 +3,7 @@ import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
 import AddTodo from './AddTodo';
-import Todo from './Todo';
+import Todo from './TodoItem';
 
 interface TodosProps {
   checkListId: string;

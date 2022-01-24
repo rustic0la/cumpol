@@ -3,8 +3,8 @@ import React, { FC, memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import AddTopic from './AddTopic';
-import { MainContentStyled } from './styles';
-import Topic from './Topic';
+import { TopicsStyled } from './styles';
+import Topic from './TopicItem';
 
 interface SubscriptionData {
   subscriptionData: {
@@ -12,7 +12,7 @@ interface SubscriptionData {
   };
 }
 
-const MainContent: FC = memo(() => {
+const Topics: FC = memo(() => {
   const { spaceId = '' } = useParams();
 
   const { data, loading, subscribeToMore } = useGetTopicsQuery({
@@ -38,7 +38,7 @@ const MainContent: FC = memo(() => {
   );
 
   return (
-    <MainContentStyled>
+    <TopicsStyled>
       {/* TODO: add loader */}
       {loading ? (
         'Loading...'
@@ -50,10 +50,10 @@ const MainContent: FC = memo(() => {
           <AddTopic spaceId={spaceId} />
         </>
       )}
-    </MainContentStyled>
+    </TopicsStyled>
   );
 });
-MainContent.displayName = 'MainContent';
-MainContent.whyDidYouRender = true;
+Topics.displayName = 'Topics';
+Topics.whyDidYouRender = true;
 
-export default MainContent;
+export default Topics;

@@ -7,7 +7,7 @@ import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
 import AddCheckList from './AddCheckList';
-import CheckList from './CheckList';
+import CheckList from './CheckListItem';
 import { CheckListsStyled } from './styles';
 
 interface CheckListsProps {

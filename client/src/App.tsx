@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
 import Header from './components/Header';
-import MainContent from './components/MainContent';
 import Sidebar from './components/Sidebar';
+import MainContent from './components/Topics';
 import Auth from './pages/Auth';
 import { AuthProvider, RequireAuth } from './providers/AuthProvider';
 import { GridStyled, LayoutStyled } from './styles';
