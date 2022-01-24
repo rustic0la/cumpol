@@ -54,6 +54,8 @@ model Meta {
   url         String
   title       String?
   description String?
+  hostname    String?
+  favicon     String?
   img         String?
   todoId      String  @unique
   todo        Todo    @relation(fields: [todoId], references: [id])
