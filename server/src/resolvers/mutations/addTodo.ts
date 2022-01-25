@@ -17,16 +17,16 @@ const addTodo: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const addedTodo = await context.prisma.todo.create({
-    data: {
-      title: args.title,
-      checkList: { connect: { id: args.checkListId } },
-    },
-  });
-
   const updatedTodos = await context.prisma.checkList
-    .findUnique({
+    .update({
       where: { id: args.checkListId },
+      data: {
+        todos: {
+          create: {
+            title: args.title,
+          },
+        },
+      },
     })
     .todos({
       include: {
@@ -36,7 +36,7 @@ const addTodo: ResolverFn<
     });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
-  return { success: !!addedTodo, error: null };
+  return { success: !!updatedTodos, error: null };
 };
 
 export default addTodo;

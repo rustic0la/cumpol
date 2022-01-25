@@ -17,18 +17,21 @@ const deleteTodo: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedTodo = await context.prisma.todo.delete({
-    where: { id: args.todoId },
-  });
-
   const updatedTodos = await context.prisma.checkList
-    .findUnique({
+    .update({
       where: { id: args.checkListId },
+      data: {
+        todos: {
+          delete: {
+            id: args.todoId,
+          },
+        },
+      },
     })
     .todos({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('todosUpdated', updatedTodos);
 
-  return { success: !!deletedTodo, error: null };
+  return { success: !!updatedTodos, error: null };
 };
 
 export default deleteTodo;

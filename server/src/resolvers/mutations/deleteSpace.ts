@@ -17,16 +17,21 @@ const deleteSpace: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedSpace = await context.prisma.space.delete({ where: { id: args.spaceId } });
-
   const updatedSpaces = await context.prisma.user
-    .findUnique({
+    .update({
       where: { id: context.userId },
+      data: {
+        spaces: {
+          delete: {
+            id: args.spaceId,
+          },
+        },
+      },
     })
     .spaces({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('spacesUpdated', updatedSpaces);
 
-  return { success: !!deletedSpace, error: null };
+  return { success: !!updatedSpaces, error: null };
 };
 
 export default deleteSpace;

@@ -17,18 +17,21 @@ const deleteCheckList: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedCheckList = await context.prisma.checkList.delete({
-    where: { id: args.checkListId },
-  });
-
   const updatedCheckLists = await context.prisma.topic
-    .findUnique({
+    .update({
       where: { id: args.topicId },
+      data: {
+        checkLists: {
+          delete: {
+            id: args.checkListId,
+          },
+        },
+      },
     })
     .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return { success: !!deletedCheckList, error: null };
+  return { success: !!updatedCheckLists, error: null };
 };
 
 export default deleteCheckList;

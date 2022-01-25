@@ -17,21 +17,24 @@ const updateCheckList: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const updatedCheckList = await context.prisma.checkList.update({
-    where: {
-      id: args.checkListId,
-    },
-    data: { title: args.title },
-  });
-
   const updatedCheckLists = await context.prisma.topic
-    .findUnique({
+    .update({
       where: { id: args.topicId },
+      data: {
+        checkLists: {
+          update: {
+            where: {
+              id: args.checkListId,
+            },
+            data: { title: args.title },
+          },
+        },
+      },
     })
     .checkLists({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('checkListsUpdated', updatedCheckLists);
 
-  return { success: !!updatedCheckList, error: null };
+  return { success: !!updatedCheckLists, error: null };
 };
 
 export default updateCheckList;

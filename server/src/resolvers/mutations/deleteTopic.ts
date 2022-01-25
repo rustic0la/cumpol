@@ -17,18 +17,21 @@ const deleteTopic: ResolverFn<
 > = async (_root, args, context) => {
   if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  const deletedTopic = await context.prisma.topic.delete({
-    where: { id: args.topicId },
-  });
-
   const updatedTopics = await context.prisma.space
-    .findUnique({
+    .update({
       where: { id: args.spaceId },
+      data: {
+        topics: {
+          delete: {
+            id: args.topicId,
+          },
+        },
+      },
     })
     .topics({ orderBy: { createdAt: 'asc' } });
   context.pubsub.publish('topicsUpdated', updatedTopics);
 
-  return { success: !!deletedTopic, error: null };
+  return { success: !!updatedTopics, error: null };
 };
 
 export default deleteTopic;
