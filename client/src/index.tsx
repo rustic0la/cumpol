@@ -26,14 +26,12 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const PORT = process.env.PORT || 4000;
-
 const httpLink = createHttpLink({
-  uri: `http://localhost:${PORT}/graphql`,
+  uri: 'https://cumpol.herokuapp.com/graphql',
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:${PORT}/graphql`,
+  uri: 'ws://cumpol.herokuapp.com/graphql',
   options: {
     reconnect: true,
     connectionParams: {
