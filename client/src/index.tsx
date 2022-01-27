@@ -27,11 +27,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'http://cumpol.herokuapp.com/graphql',
+  uri: 'https://cumpol.herokuapp.com/graphql',
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://cumpol.herokuapp.com/graphql',
+  uri: 'wss://cumpol.herokuapp.com/graphql',
   options: {
     reconnect: true,
     connectionParams: {
