@@ -1,5 +1,5 @@
 import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
-import React, { FC, memo, useCallback, useEffect } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import AddSpace from './AddSpace';
@@ -31,21 +31,38 @@ const Sidebar: FC = memo(() => {
     [subscribeToMore],
   );
 
+  const spaces = useMemo(() => data?.getSpaces || [], [data?.getSpaces]);
+
   const navigate = useNavigate();
   const { spaceId } = useParams();
 
   useEffect(() => {
-    const firstId = data?.getSpaces[0].id;
+    const firstId = spaces[0]?.id || '';
     if (!spaceId && firstId) {
       navigate(`${firstId}`);
     }
-  }, [data?.getSpaces, navigate, spaceId]);
+  }, [spaces, navigate, spaceId]);
 
   const handleSelectSpace = useCallback(
     (id: string) => {
       if (spaceId !== id) navigate(`${id}`);
     },
     [navigate, spaceId],
+  );
+
+  // const handleAddSpace = useCallback(() => {
+  //   const newSpaceId = spaces[spaces.length - 1].id;
+  //   if (spaceId !== newSpaceId) navigate(`${newSpaceId}`);
+  // }, [navigate, spaceId, spaces]);
+
+  const handleDeleteSpace = useCallback(
+    (id: string) => {
+      if (spaceId === id) {
+        const currentIdIdx = spaces.map(({ id }) => id).indexOf(id);
+        navigate(`${spaces[currentIdIdx + 1]?.id || ''}`);
+      }
+    },
+    [navigate, spaceId, spaces],
   );
 
   return (
@@ -55,8 +72,14 @@ const Sidebar: FC = memo(() => {
         'Loading...'
       ) : (
         <>
-          {(data?.getSpaces || []).map((space) => (
-            <Space key={space.id} space={space} onSelect={handleSelectSpace} />
+          {spaces.map((space) => (
+            <Space
+              isCurrent={space.id === spaceId}
+              key={space.id}
+              space={space}
+              onSelect={handleSelectSpace}
+              onDelete={handleDeleteSpace}
+            />
           ))}
           <AddSpace />
         </>

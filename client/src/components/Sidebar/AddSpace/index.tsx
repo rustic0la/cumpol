@@ -1,9 +1,12 @@
 import { useAddSpaceMutation } from '@gql/types';
-import React, { memo, useCallback } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 
 import { AddSpaceStyled } from './styles';
 
-const AddSpace = memo(() => {
+// interface AddSpaceProps {
+//   onAdd: () => void;
+// }
+const AddSpace: FC = memo(() => {
   const [addSpace, { loading }] = useAddSpaceMutation({
     variables: {
       title: 'New Space',

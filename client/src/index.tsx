@@ -6,15 +6,12 @@ import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache, split } fr
 import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-// import LogRocket from 'logrocket';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import { AUTH_TOKEN } from './constants';
-
-// LogRocket.init('hu6ksc/cumpol-dev');
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem(AUTH_TOKEN);
@@ -27,11 +24,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'https://cumpol.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://cumpol.herokuapp.com/graphql',
+  uri: 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
@@ -55,10 +52,27 @@ const client = new ApolloClient({
     typePolicies: {
       Query: {
         fields: {
+          getSpaces: {
+            merge: (_ = [], incoming = []) => incoming,
+          },
           getTopics: {
-            merge(existing = [], incoming = []) {
-              return [...existing, ...incoming];
-            },
+            merge: (_ = [], incoming = []) => incoming,
+          },
+          getCheckLists: {
+            merge: (_ = [], incoming = []) => incoming,
+          },
+          getTodos: {
+            merge: (_ = [], incoming = []) => incoming,
+          },
+        },
+      },
+      Subscription: {
+        fields: {
+          spacesUpdated: {
+            merge: (_ = [], incoming = []) => incoming,
+          },
+          todosUpdated: {
+            merge: (_ = [], incoming = []) => incoming,
           },
         },
       },

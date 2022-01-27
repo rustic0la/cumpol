@@ -26,7 +26,7 @@ const App: FC = () => {
               </RequireAuth>
             }
           >
-            <Route index element={<h1>Select Space</h1>} />
+            <Route index element={<h1>Add first space</h1>} />
             <Route path=":spaceId" element={<MainContent />} />
           </Route>
         </Route>
