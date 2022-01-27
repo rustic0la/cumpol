@@ -1,3 +1,4 @@
+/// <reference types="@welldone-software/why-did-you-render" />
 import './wdyr';
 import './index.css';
 
@@ -50,7 +51,19 @@ const link = split(
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          getTopics: {
+            merge(existing = [], incoming = []) {
+              return [...existing, ...incoming];
+            },
+          },
+        },
+      },
+    },
+  }),
 });
 
 ReactDOM.render(

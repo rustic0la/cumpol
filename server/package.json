@@ -3,21 +3,24 @@
   "packageManager": "yarn@3.1.0",
   "main": ".src/index.js",
   "scripts": {
-    "dev": "nodemon --exec 'ts-node' src/index.ts",
+    "start": "nodemon --exec 'ts-node' src/index.ts",
     "lint": "eslint --ignore-path .gitignore \"**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@graphql-tools/schema": "^8.3.1",
-    "@prisma/client": "latest",
+    "@prisma/client": "^3.8.1",
     "apollo-server-express": "^3.5.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "graphql": "^16.0.1",
+    "graphql": "^16.2.0",
     "graphql-subscriptions": "patch:graphql-subscriptions@^2.0.0#../.yarn/patches/graphql-subscriptions-npm-2.0.0-53564d1c84",
     "jsonwebtoken": "^8.5.1",
-    "subscriptions-transport-ws": "^0.11.0"
+    "meta-fetcher": "^3.1.1",
+    "prisma": "^3.8.1",
+    "subscriptions-transport-ws": "^0.11.0",
+    "url-parse": "^1.5.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.3.0",
@@ -29,6 +32,7 @@
     "@types/graphql": "^14.5.0",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.12",
+    "@types/url-parse": "^1.4.6",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "^5.8.0",
     "eslint": "^7.32.0",
@@ -36,7 +40,6 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "nodemon": "^2.0.15",
-    "prisma": "latest",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.3"
   }

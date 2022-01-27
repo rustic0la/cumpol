@@ -12,11 +12,10 @@ interface Configuration extends WebpackConfiguration {
 }
 
 const config: Configuration = {
-  mode: 'development',
-  entry: './src/index.tsx',
+  entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[chunkhash].js',
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].[chunkhash].js',
     clean: true,
   },
   module: {
@@ -27,7 +26,18 @@ const config: Configuration = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              [
+                '@babel/preset-typescript',
+                {
+                  runtime: 'automatic',
+                  development: false,
+                  importSource: '@welldone-software/why-did-you-render',
+                },
+              ],
+            ],
           },
         },
       },
@@ -87,6 +97,20 @@ const config: Configuration = {
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'disabled' }),
   ],
+  optimization: {
+    moduleIds: 'deterministic',
+    usedExports: true,
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   devServer: {
     static: path.join(__dirname, 'build'),
     historyApiFallback: true,

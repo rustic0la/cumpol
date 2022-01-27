@@ -6,9 +6,13 @@
     "server"
   ],
   "scripts": {
-    "server": "cd server && yarn dev",
+    "server": "cd server && yarn start",
     "client": "cd client && yarn start",
-    "start": "concurrently -n 'server,client' -c 'red,green' \"yarn server\" \"yarn client\""
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"yarn server\" \"yarn client\"",
+    "install-client": "cd client && yarn",
+    "build": "cd client && yarn build",
+    "heroku-postbuild": "yarn install-client && yarn build",
+    "start": "yarn server"
   },
   "dependencies": {
     "concurrently": "^6.5.1"

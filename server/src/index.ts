@@ -7,7 +7,7 @@ import fs from 'fs';
 import { execute, subscribe } from 'graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { createServer } from 'http';
-import { join } from 'path';
+import path, { join } from 'path';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import { Context } from './interfaces';
@@ -23,6 +23,10 @@ const startServer = async () => {
   app.use(cors());
   app.use(express.json());
 
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, 'client', 'build', 'index.html')));
+  }
+
   const httpServer = createServer(app);
 
   const schema = makeExecutableSchema({
@@ -30,7 +34,7 @@ const startServer = async () => {
     resolvers,
   });
 
-  const PORT = 4000;
+  const PORT = process.env.PORT || 4000;
   const pubsub = new PubSub();
 
   const subscriptionServer = new SubscriptionServer(

@@ -4,8 +4,8 @@
   "author": "mpokrovsky",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve --config webpack.dev.config.ts",
-    "build": "webpack --mode development --config webpack.dev.config.ts",
+    "start": "webpack serve --mode development --config webpack.config.ts",
+    "build": "webpack --mode production --config webpack.config.ts",
     "prepare": "husky install",
     "lint": "eslint --ignore-path .gitignore \"**/*.{ts,tsx}\"",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
