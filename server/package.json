@@ -3,7 +3,7 @@
   "packageManager": "yarn@3.1.0",
   "main": ".src/index.js",
   "scripts": {
-    "start": "nodemon --exec 'ts-node' src/index.ts",
+    "start": "npx prisma generate && nodemon --exec 'ts-node' src/index.ts",
     "lint": "eslint --ignore-path .gitignore \"**/*.{ts,tsx}\""
   },
   "dependencies": {
