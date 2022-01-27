@@ -26,12 +26,14 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const PORT = process.env.PORT || 4000;
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `http://localhost:${PORT}/graphql`,
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: `ws://localhost:${PORT}/graphql`,
   options: {
     reconnect: true,
     connectionParams: {
