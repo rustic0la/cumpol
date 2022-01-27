@@ -1,4 +1,5 @@
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
@@ -98,6 +99,7 @@ const config: Configuration = {
     new BundleAnalyzerPlugin({ analyzerMode: 'disabled' }),
   ],
   optimization: {
+    minimizer: [new CssMinimizerPlugin()],
     moduleIds: 'deterministic',
     usedExports: true,
     runtimeChunk: 'single',
