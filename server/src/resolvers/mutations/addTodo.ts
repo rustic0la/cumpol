@@ -14,10 +14,10 @@ const addTodo: ResolverFn<
   {},
   Context,
   RequireFields<MutationAddTodoArgs, 'title' | 'checkListId'>
-> = async (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  const updatedTodos = await context.prisma.checkList
+  const updatedTodos = await prisma.checkList
     .update({
       where: { id: args.checkListId },
       data: {
@@ -34,7 +34,7 @@ const addTodo: ResolverFn<
       },
       orderBy: { createdAt: 'asc' },
     });
-  context.pubsub.publish('todosUpdated', updatedTodos);
+  pubsub.publish('todosUpdated', updatedTodos);
 
   return { success: !!updatedTodos, error: null };
 };

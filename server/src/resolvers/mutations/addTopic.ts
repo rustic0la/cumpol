@@ -14,10 +14,10 @@ const addTopic: ResolverFn<
   {},
   Context,
   RequireFields<MutationAddTopicArgs, 'spaceId' | 'title'>
-> = async (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  const updatedTopics = await context.prisma.space
+  const updatedTopics = await prisma.space
     .update({
       where: { id: args.spaceId },
       data: {
@@ -27,7 +27,7 @@ const addTopic: ResolverFn<
       },
     })
     .topics({ orderBy: { createdAt: 'asc' } });
-  context.pubsub.publish('topicsUpdated', updatedTopics);
+  pubsub.publish('topicsUpdated', updatedTopics);
 
   return { success: !!updatedTopics, error: null };
 };

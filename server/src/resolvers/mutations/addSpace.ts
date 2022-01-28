@@ -14,12 +14,12 @@ const addSpace: ResolverFn<
   {},
   Context,
   RequireFields<MutationAddSpaceArgs, 'title'>
-> = async (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  const updatedSpaces = await context.prisma.user
+  const updatedSpaces = await prisma.user
     .update({
-      where: { id: context.userId },
+      where: { id: userId },
       data: {
         spaces: {
           create: {
@@ -30,7 +30,7 @@ const addSpace: ResolverFn<
     })
     .spaces({ orderBy: { createdAt: 'asc' } });
 
-  context.pubsub.publish('spacesUpdated', updatedSpaces);
+  pubsub.publish('spacesUpdated', updatedSpaces);
 
   return { success: !!updatedSpaces, error: null };
 };

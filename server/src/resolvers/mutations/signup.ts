@@ -16,8 +16,8 @@ const signup: ResolverFn<
   {},
   Context,
   RequireFields<MutationSignupArgs, 'password' | 'username'>
-> = async (_root, args, context) => {
-  const doesUserExist = await context.prisma.user.findUnique({
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  const doesUserExist = await prisma.user.findUnique({
     where: { username: args.username },
   });
 
@@ -29,7 +29,7 @@ const signup: ResolverFn<
 
   const password = await bcrypt.hash(args.password, 10);
 
-  const user = await context.prisma.user.create({
+  const user = await prisma.user.create({
     data: { ...args, password },
   });
 

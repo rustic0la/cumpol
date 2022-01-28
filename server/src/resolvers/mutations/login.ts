@@ -16,8 +16,8 @@ const login: ResolverFn<
   {},
   Context,
   RequireFields<MutationLoginArgs, 'password' | 'username'>
-> = async (_root, args, context) => {
-  const user = await context.prisma.user.findUnique({
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  const user = await prisma.user.findUnique({
     where: { username: args.username },
   });
 

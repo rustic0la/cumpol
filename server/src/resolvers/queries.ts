@@ -18,13 +18,13 @@ import { Context } from '../interfaces';
 const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
   _root,
   _args,
-  context,
+  { userId, prisma, pubsub },
 ) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.user
+  return prisma.user
     .findUnique({
-      where: { id: context.userId },
+      where: { id: userId },
     })
     .spaces({ orderBy: { createdAt: 'asc' } });
 };
@@ -34,10 +34,10 @@ const getTopics: ResolverFn<
   {},
   Context,
   RequireFields<QueryGetTopicsArgs, 'spaceId'>
-> = (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.space
+  return prisma.space
     .findUnique({
       where: { id: args.spaceId },
     })
@@ -49,10 +49,10 @@ const getCheckLists: ResolverFn<
   {},
   Context,
   RequireFields<QueryGetCheckListsArgs, 'topicId'>
-> = (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.topic
+  return prisma.topic
     .findUnique({
       where: { id: args.topicId },
     })
@@ -64,10 +64,10 @@ const getTodos: ResolverFn<
   {},
   Context,
   RequireFields<QueryGetTodosArgs, 'checkListId'>
-> = (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return context.prisma.checkList
+  return prisma.checkList
     .findUnique({
       where: { id: args.checkListId },
     })

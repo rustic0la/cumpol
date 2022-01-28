@@ -21,8 +21,8 @@ const updateTodo: ResolverFn<
   {},
   Context,
   RequireFields<MutationUpdateTodoArgs, 'title' | 'todoId' | 'checkListId'>
-> = async (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
   let string = args.title;
   let meta;
@@ -42,7 +42,7 @@ const updateTodo: ResolverFn<
         favicon: res.favicons[0] || '',
       };
 
-      const todo = await context.prisma.todo.findUnique({
+      const todo = await prisma.todo.findUnique({
         where: { id: args.todoId },
         include: {
           meta: {
@@ -60,16 +60,16 @@ const updateTodo: ResolverFn<
       });
 
       if (todo?.meta) {
-        meta = await context.prisma.meta.update({ where: { todoId: todo.id }, data });
+        meta = await prisma.meta.update({ where: { todoId: todo.id }, data });
       } else {
-        meta = await context.prisma.meta.create({
+        meta = await prisma.meta.create({
           data: { ...data, todo: { connect: { id: todo?.id } } },
         });
       }
     }
   }
 
-  const updatedTodos = await context.prisma.checkList
+  const updatedTodos = await prisma.checkList
     .update({
       where: { id: args.checkListId },
       data: {
@@ -92,7 +92,7 @@ const updateTodo: ResolverFn<
       },
       orderBy: { createdAt: 'asc' },
     });
-  context.pubsub.publish('todosUpdated', updatedTodos);
+  pubsub.publish('todosUpdated', updatedTodos);
 
   return { success: !!updatedTodos, error: null };
 };

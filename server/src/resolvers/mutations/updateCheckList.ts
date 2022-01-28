@@ -14,10 +14,10 @@ const updateCheckList: ResolverFn<
   {},
   Context,
   RequireFields<MutationUpdateCheckListArgs, 'title' | 'checkListId' | 'topicId'>
-> = async (_root, args, context) => {
-  if (!context.userId) throw new ForbiddenError('you must be logged in');
+> = async (_root, args, { userId, prisma, pubsub }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
 
-  const updatedCheckLists = await context.prisma.topic
+  const updatedCheckLists = await prisma.topic
     .update({
       where: { id: args.topicId },
       data: {
@@ -32,7 +32,7 @@ const updateCheckList: ResolverFn<
       },
     })
     .checkLists({ orderBy: { createdAt: 'asc' } });
-  context.pubsub.publish('checkListsUpdated', updatedCheckLists);
+  pubsub.publish('checkListsUpdated', updatedCheckLists);
 
   return { success: !!updatedCheckLists, error: null };
 };

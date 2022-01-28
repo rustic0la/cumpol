@@ -3,23 +3,23 @@ import { Context } from '../interfaces';
 
 const Subscription: SubscriptionResolvers<Context, {}> = {
   spacesUpdated: {
-    subscribe: (_root: any, _args: any, context: Context) =>
-      context.pubsub.asyncIterator('spacesUpdated'),
+    subscribe: (_root: any, _args: any, { pubsub }: Context) =>
+      pubsub.asyncIterator('spacesUpdated'),
     resolve: (payload: Space[]) => payload,
   },
   topicsUpdated: {
-    subscribe: (_root: any, _args: any, context: Context) =>
-      context.pubsub.asyncIterator('topicsUpdated'),
+    subscribe: (_root: any, _args: any, { pubsub }: Context) =>
+      pubsub.asyncIterator('topicsUpdated'),
     resolve: (payload: Topic[]) => payload,
   },
   checkListsUpdated: {
-    subscribe: (_root: any, _args: any, context: Context) =>
-      context.pubsub.asyncIterator('checkListsUpdated'),
+    subscribe: (_root: any, _args: any, { pubsub }: Context) =>
+      pubsub.asyncIterator('checkListsUpdated'),
     resolve: (payload: CheckList[]) => payload,
   },
   todosUpdated: {
-    subscribe: (_root: any, _args: any, context: Context) =>
-      context.pubsub.asyncIterator('todosUpdated'),
+    subscribe: (_root: any, _args: any, { pubsub }: Context) =>
+      pubsub.asyncIterator('todosUpdated'),
     resolve: (payload: Todo[]) => payload,
   },
 };
