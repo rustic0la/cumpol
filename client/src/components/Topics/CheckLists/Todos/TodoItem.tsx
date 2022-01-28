@@ -9,7 +9,7 @@ interface TodoProps {
 }
 
 const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
-  const { id, title } = todo;
+  const { id, title, meta } = todo;
   const [inputValue, setInputValue] = useState(() => title);
 
   const handleChangeTodo = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +38,15 @@ const Todo: FC<TodoProps> = memo(({ todo, checkListId }) => {
     <TodoStyled>
       <div>
         {loading && <p>Loading...</p>}
-
-        <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
+        {meta ? (
+          <>
+            {meta?.hostname} {`${meta?.description?.slice(0, 30)}...`} {meta?.title}
+            {meta?.img && <img src={meta?.img} />}
+            {meta?.favicon && <img src={meta?.favicon} />}
+          </>
+        ) : (
+          <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
+        )}
       </div>
       <button onClick={handleDeleteTodoClick}>-</button>
     </TodoStyled>

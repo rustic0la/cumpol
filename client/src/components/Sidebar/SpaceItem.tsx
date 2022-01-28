@@ -1,5 +1,5 @@
-import { SpaceFragment, useDeleteSpaceMutation, useUpdateSpaceMutation } from '@gql/types';
-import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
+import { SpaceFragment, useDeleteSpaceMutation } from '@gql/types';
+import React, { FC, memo, useCallback } from 'react';
 
 import { SpaceStyled } from './styles';
 

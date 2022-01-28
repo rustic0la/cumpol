@@ -16,6 +16,19 @@ fragment checkList on CheckList {
 fragment todo on Todo {
   id
   title
+  meta {
+    ...meta
+  }
+}
+
+fragment meta on Meta {
+  id
+  url
+  title
+  description
+  img
+  hostname
+  favicon
 }
 
 fragment authPayload on AuthPayload {
