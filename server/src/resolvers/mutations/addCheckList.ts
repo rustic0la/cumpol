@@ -29,10 +29,10 @@ const addCheckList: ResolverFn<
       },
     })
     .checkLists({ select: { id: true }, orderBy: { createdAt: 'asc' } });
-  pubsub.publish(
-    'checkListsIdsUpdated',
-    updatedCheckLists.map(({ id }) => id),
-  );
+  pubsub.publish('checkListsIdsUpdated', {
+    checkListsIds: updatedCheckLists.map(({ id }) => id),
+    topicId: args.topicId,
+  });
 
   return { success: !!updatedCheckLists, error: null };
 };

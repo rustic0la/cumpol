@@ -32,10 +32,10 @@ const deleteTodo: ResolverFn<
       select: { id: true },
       orderBy: { createdAt: 'asc' },
     });
-  pubsub.publish(
-    'todosIdsUpdated',
-    updatedTodos.map(({ id }) => id),
-  );
+  pubsub.publish('todosIdsUpdated', {
+    todosIds: updatedTodos.map(({ id }) => id),
+    checkListId: args.checkListId,
+  });
 
   return { success: !!updatedTodos, error: null };
 };

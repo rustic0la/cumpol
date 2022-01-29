@@ -62,7 +62,9 @@ type Query {
   getSpaces: [Space!]!
   getTopicsIds(spaceId: ID!): [String!]!
   getTopicById(topicId: ID!): Topic
+  getCheckListsIds(topicId: ID!): [String!]!
   getCheckListById(checkListId: ID!): CheckList
+  getTodosIds(checkListId: ID!): [String!]!
   getTodoById(todoId: ID!): Todo
 }
 
@@ -119,9 +121,24 @@ type Mutation {
   login(username: String!, password: String!): AuthPayload!
 }
 
+type TopicsIdsUpdatedPayload {
+  topicsIds: [String!]!
+  spaceId: String!
+}
+
+type CheckListsIdsUpdatedPayload {
+  checkListsIds: [String!]!
+  topicId: String!
+}
+
+type TodosIdsUpdatedPayload {
+  todosIds: [String!]!
+  checkListId: String!
+}
+
 type Subscription {
   spacesUpdated: [Space!]!
-  topicsIdsUpdated: [String!]
-  checkListsIdsUpdated: [String!]!
-  todosIdsUpdated: [String!]!
+  topicsIdsUpdated: TopicsIdsUpdatedPayload!
+  checkListsIdsUpdated: CheckListsIdsUpdatedPayload!
+  todosIdsUpdated: TodosIdsUpdatedPayload!
 }

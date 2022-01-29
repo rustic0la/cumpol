@@ -27,10 +27,10 @@ const addTopic: ResolverFn<
       },
     })
     .topics({ select: { id: true }, orderBy: { createdAt: 'asc' } });
-  pubsub.publish(
-    'topicsIdsUpdated',
-    updatedTopics.map(({ id }) => id),
-  );
+  pubsub.publish('topicsIdsUpdated', {
+    topicsIds: updatedTopics.map(({ id }) => id),
+    spaceId: args.spaceId,
+  });
 
   return { success: !!updatedTopics, error: null };
 };
