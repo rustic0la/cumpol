@@ -28,8 +28,14 @@ const deleteTodo: ResolverFn<
         },
       },
     })
-    .todos({ orderBy: { createdAt: 'asc' } });
-  pubsub.publish('todosUpdated', updatedTodos);
+    .todos({
+      select: { id: true },
+      orderBy: { createdAt: 'asc' },
+    });
+  pubsub.publish(
+    'todosIdsUpdated',
+    updatedTodos.map(({ id }) => id),
+  );
 
   return { success: !!updatedTodos, error: null };
 };

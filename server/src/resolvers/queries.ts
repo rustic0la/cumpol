@@ -2,9 +2,11 @@ import { ForbiddenError } from 'apollo-server-express';
 
 import {
   CheckList,
-  QueryGetCheckListsArgs,
-  QueryGetTodosArgs,
-  QueryGetTopicsArgs,
+  Maybe,
+  QueryGetCheckListByIdArgs,
+  QueryGetTodoByIdArgs,
+  QueryGetTopicByIdArgs,
+  QueryGetTopicsIdsArgs,
   QueryResolvers,
   RequireFields,
   ResolverFn,
@@ -18,7 +20,7 @@ import { Context } from '../interfaces';
 const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
   _root,
   _args,
-  { userId, prisma, pubsub },
+  { userId, prisma },
 ) => {
   if (!userId) throw new ForbiddenError('you must be logged in');
 
@@ -29,63 +31,102 @@ const getSpaces: ResolverFn<ResolverTypeWrapper<Space>[], {}, Context, {}> = (
     .spaces({ orderBy: { createdAt: 'asc' } });
 };
 
-const getTopics: ResolverFn<
-  ResolverTypeWrapper<Topic>[],
+const getTopicsIds: ResolverFn<
+  ResolverTypeWrapper<string>[],
   {},
   Context,
-  RequireFields<QueryGetTopicsArgs, 'spaceId'>
-> = (_root, args, { userId, prisma, pubsub }) => {
-  if (!userId) throw new ForbiddenError('you must be logged in');
+  RequireFields<QueryGetTopicsIdsArgs, 'spaceId'>
+> = async (_root, args, context) => {
+  if (!context.userId) throw new ForbiddenError('you must be logged in');
 
-  return prisma.space
+  const topics = await context.prisma.space
     .findUnique({
       where: { id: args.spaceId },
     })
-    .topics({ orderBy: { createdAt: 'asc' } });
+    .topics({ select: { id: true }, orderBy: { createdAt: 'asc' } });
+
+  return topics.map(({ id }) => id);
 };
 
-const getCheckLists: ResolverFn<
-  ResolverTypeWrapper<CheckList>[],
+const getTopicById: ResolverFn<
+  Maybe<ResolverTypeWrapper<Topic>>,
   {},
   Context,
-  RequireFields<QueryGetCheckListsArgs, 'topicId'>
-> = (_root, args, { userId, prisma, pubsub }) => {
+  RequireFields<QueryGetTopicByIdArgs, 'topicId'>
+> = async (_root, args, { userId, prisma }) => {
   if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return prisma.topic
-    .findUnique({
-      where: { id: args.topicId },
-    })
-    .checkLists({ orderBy: { createdAt: 'asc' } });
+  const topic = await prisma.topic.findUnique({
+    where: {
+      id: args.topicId,
+    },
+    include: { checkLists: { select: { id: true } } },
+  });
+
+  if (topic) {
+    return {
+      ...topic,
+      checkListsIds: topic?.checkLists.map(({ id }) => id) || [],
+    };
+  }
+  return null;
 };
 
-const getTodos: ResolverFn<
-  ResolverTypeWrapper<Todo>[],
+const getCheckListById: ResolverFn<
+  Maybe<ResolverTypeWrapper<CheckList>>,
   {},
   Context,
-  RequireFields<QueryGetTodosArgs, 'checkListId'>
-> = (_root, args, { userId, prisma, pubsub }) => {
+  RequireFields<QueryGetCheckListByIdArgs, 'checkListId'>
+> = async (_root, args, { userId, prisma }) => {
   if (!userId) throw new ForbiddenError('you must be logged in');
 
-  return prisma.checkList
-    .findUnique({
-      where: { id: args.checkListId },
-    })
-    .todos({ include: { meta: true }, orderBy: { createdAt: 'asc' } });
+  const checkList = await prisma.checkList.findUnique({
+    where: {
+      id: args.checkListId,
+    },
+    include: { todos: { select: { id: true } } },
+  });
+
+  if (checkList) {
+    return {
+      ...checkList,
+      todosIds: checkList?.todos.map(({ id }) => id) || [],
+    };
+  }
+  return null;
+};
+
+const getTodoById: ResolverFn<
+  Maybe<ResolverTypeWrapper<Todo>>,
+  {},
+  Context,
+  RequireFields<QueryGetTodoByIdArgs, 'todoId'>
+> = async (_root, args, { userId, prisma }) => {
+  if (!userId) throw new ForbiddenError('you must be logged in');
+
+  return prisma.todo.findUnique({
+    where: {
+      id: args.todoId,
+    },
+    include: { meta: true },
+  });
 };
 
 const Query: QueryResolvers<Context, {}> = {
   getSpaces: {
     resolve: getSpaces,
   },
-  getTopics: {
-    resolve: getTopics,
+  getTopicsIds: {
+    resolve: getTopicsIds,
   },
-  getCheckLists: {
-    resolve: getCheckLists,
+  getTopicById: {
+    resolve: getTopicById,
   },
-  getTodos: {
-    resolve: getTodos,
+  getCheckListById: {
+    resolve: getCheckListById,
+  },
+  getTodoById: {
+    resolve: getTodoById,
   },
 };
 

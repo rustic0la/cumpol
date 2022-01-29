@@ -28,8 +28,11 @@ const deleteTopic: ResolverFn<
         },
       },
     })
-    .topics({ orderBy: { createdAt: 'asc' } });
-  pubsub.publish('topicsUpdated', updatedTopics);
+    .topics({ select: { id: true }, orderBy: { createdAt: 'asc' } });
+  pubsub.publish(
+    'topicsIdsUpdated',
+    updatedTopics.map(({ id }) => id),
+  );
 
   return { success: !!updatedTopics, error: null };
 };

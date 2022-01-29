@@ -28,8 +28,11 @@ const deleteCheckList: ResolverFn<
         },
       },
     })
-    .checkLists({ orderBy: { createdAt: 'asc' } });
-  pubsub.publish('checkListsUpdated', updatedCheckLists);
+    .checkLists({ select: { id: true }, orderBy: { createdAt: 'asc' } });
+  pubsub.publish(
+    'checkListsIdsUpdated',
+    updatedCheckLists.map(({ id }) => id),
+  );
 
   return { success: !!updatedCheckLists, error: null };
 };

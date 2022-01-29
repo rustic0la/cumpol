@@ -1,26 +1,26 @@
-import { CheckList, Space, SubscriptionResolvers, Todo, Topic } from '../generated/types';
+import { Space, SubscriptionResolvers } from '../generated/types';
 import { Context } from '../interfaces';
 
 const Subscription: SubscriptionResolvers<Context, {}> = {
   spacesUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('spacesUpdated'),
+      pubsub.asyncIterator('spacesIdsUpdated'),
     resolve: (payload: Space[]) => payload,
   },
-  topicsUpdated: {
+  topicsIdsUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('topicsUpdated'),
-    resolve: (payload: Topic[]) => payload,
+      pubsub.asyncIterator('topicsIdsUpdated'),
+    resolve: (payload: string[]) => payload,
   },
-  checkListsUpdated: {
+  checkListsIdsUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('checkListsUpdated'),
-    resolve: (payload: CheckList[]) => payload,
+      pubsub.asyncIterator('checkListsIdsUpdated'),
+    resolve: (payload: string[]) => payload,
   },
-  todosUpdated: {
+  todosIdsUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('todosUpdated'),
-    resolve: (payload: Todo[]) => payload,
+      pubsub.asyncIterator('todosIdsUpdated'),
+    resolve: (payload: string[]) => payload,
   },
 };
 

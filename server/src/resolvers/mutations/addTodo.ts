@@ -29,12 +29,13 @@ const addTodo: ResolverFn<
       },
     })
     .todos({
-      include: {
-        meta: true,
-      },
+      select: { id: true },
       orderBy: { createdAt: 'asc' },
     });
-  pubsub.publish('todosUpdated', updatedTodos);
+  pubsub.publish(
+    'todosIdsUpdated',
+    updatedTodos.map(({ id }) => id),
+  );
 
   return { success: !!updatedTodos, error: null };
 };
