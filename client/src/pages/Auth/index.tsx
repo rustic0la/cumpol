@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Button, Flex, Input } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useAuth } from 'src/providers/AuthProvider';
 
@@ -9,7 +9,7 @@ const Auth: FC = () => {
     password: '',
   });
 
-  const { login, signup } = useAuth();
+  const { login, signup, loading } = useAuth();
 
   const submitForm = () => {
     if (formState.login) {
@@ -20,10 +20,10 @@ const Auth: FC = () => {
   };
 
   return (
-    <Flex justifyContent="center" align="center">
+    <Flex flexFlow="column" justifyContent="center" align="center" gap={3}>
       <h4>{formState.login ? 'Login' : 'Sign Up'}</h4>
-      <div>
-        <input
+      <Flex flexFlow="column" gap={3}>
+        <Input
           value={formState.username}
           onChange={(e) =>
             setFormState({
@@ -32,10 +32,10 @@ const Auth: FC = () => {
             })
           }
           type="text"
-          placeholder="Your name"
+          placeholder="Username"
         />
 
-        <input
+        <Input
           value={formState.password}
           onChange={(e) =>
             setFormState({
@@ -44,12 +44,15 @@ const Auth: FC = () => {
             })
           }
           type="password"
-          placeholder="Choose a safe password"
+          placeholder="Password"
         />
-      </div>
-      <div>
-        <button onClick={submitForm}>{formState.login ? 'login' : 'create account'}</button>
-        <button
+      </Flex>
+      <Flex gap={3}>
+        <Button isLoading={loading} onClick={submitForm}>
+          {formState.login ? 'login' : 'create account'}
+        </Button>
+        <Button
+          variant="link"
           onClick={() =>
             setFormState({
               ...formState,
@@ -58,8 +61,8 @@ const Auth: FC = () => {
           }
         >
           {formState.login ? 'need to create an account?' : 'already have an account?'}
-        </button>
-      </div>
+        </Button>
+      </Flex>
     </Flex>
   );
 };

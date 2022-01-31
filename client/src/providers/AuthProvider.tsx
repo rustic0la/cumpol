@@ -15,6 +15,7 @@ import { AUTH_TOKEN } from '../constants';
 
 interface AuthContextType {
   username: Maybe<string>;
+  loading: boolean;
   login?: (args: MutationHookOptions<LoginMutation, LoginMutationVariables>) => void;
   signup?: (args: MutationHookOptions<SignupMutation, SignupMutationVariables>) => void;
   logout?: () => void;
@@ -31,7 +32,7 @@ const AuthContext = createContext<AuthContextType>(initialValue);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
-  const [login] = useLoginMutation({
+  const [login, { loading: loginLoading }] = useLoginMutation({
     onCompleted: ({ login }) => {
       if (login) {
         const { token, user } = login;
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     },
   });
 
-  const [signup] = useSignupMutation({
+  const [signup, { loading: signupLoading }] = useSignupMutation({
     onCompleted: ({ signup }) => {
       if (signup) {
         const { token, user } = signup;
@@ -69,8 +70,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const token = localStorage.getItem(AUTH_TOKEN);
   const username = localStorage.getItem('username');
+  const loading = loginLoading || signupLoading;
   return (
-    <AuthContext.Provider value={{ username, token, login, signup, logout }}>
+    <AuthContext.Provider value={{ username, loading, token, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
