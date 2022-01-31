@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Loading from 'src/components/common/Loading';
 import useOnScreen from 'src/hooks/useOnScreen';
 interface TodoWrapperProps {
   todoId: string;
@@ -74,7 +75,7 @@ const TodoInner: FC<TodoInnerProps> = memo(({ todoId, checkListId }) => {
   }, [deleteTodo]);
 
   return loading || !id ? (
-    <>LOADING TODO</>
+    <Loading />
   ) : (
     <>
       <div>

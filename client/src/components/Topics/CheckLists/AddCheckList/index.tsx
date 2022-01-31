@@ -2,6 +2,7 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import { useAddCheckListMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
+import Loading from 'src/components/common/Loading';
 interface AddCheckListProps {
   topicId: string;
 }
@@ -17,7 +18,7 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
 
   return (
     <>
-      {loading && 'LOADING'}
+      {loading && <Loading w={80} />}
       <Box
         w={80}
         h={400}

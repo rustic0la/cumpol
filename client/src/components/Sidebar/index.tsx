@@ -1,8 +1,9 @@
-import { Box, Flex, List } from '@chakra-ui/react';
+import { Box, List } from '@chakra-ui/react';
 import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import Loading from '../common/Loading';
 import AddSpace from './AddSpace';
 import Space from './SpaceItem';
 
@@ -60,9 +61,8 @@ const Sidebar: FC = memo(() => {
 
   return (
     <Box overflow="auto">
-      {/* TODO: add loader */}
       {loading ? (
-        'Loading...'
+        <Loading />
       ) : (
         <List>
           {spaces.map((space) => (

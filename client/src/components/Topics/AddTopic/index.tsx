@@ -1,5 +1,6 @@
 import { useAddTopicMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
+import Loading from 'src/components/common/Loading';
 
 interface AddTopicButtonProps {
   spaceId: string;
@@ -17,12 +18,7 @@ const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId }) => {
     addTopic();
   }, [addTopic]);
 
-  return loading ? (
-    // TODO: add loader
-    <p>Loading</p>
-  ) : (
-    <button onClick={handleAddTopicClick}>Add Topic</button>
-  );
+  return loading ? <Loading /> : <button onClick={handleAddTopicClick}>Add Topic</button>;
 });
 AddTopic.displayName = 'AddTopicButton';
 AddTopic.whyDidYouRender = true;

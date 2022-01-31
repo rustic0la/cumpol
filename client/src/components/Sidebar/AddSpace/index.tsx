@@ -1,5 +1,6 @@
 import { useAddSpaceMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
+import Loading from 'src/components/common/Loading';
 
 // interface AddSpaceProps {
 //   onAdd: () => void;
@@ -15,12 +16,7 @@ const AddSpace: FC = memo(() => {
     addSpace();
   }, [addSpace]);
 
-  return loading ? (
-    // TODO: add loader
-    <p>Loading</p>
-  ) : (
-    <button onClick={handleAddSpaceClick}>Add Space</button>
-  );
+  return loading ? <Loading /> : <button onClick={handleAddSpaceClick}>Add Space</button>;
 });
 
 AddSpace.displayName = 'AddSpace';

@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Input } from '@chakra-ui/react';
 import {
   useDeleteCheckListMutation,
   useGetCheckListByIdQuery,
@@ -14,6 +14,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Loading from 'src/components/common/Loading';
 import useOnScreen from 'src/hooks/useOnScreen';
 
 import Todos from './Todos';
@@ -87,16 +88,21 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
 
   return (
     <>
-      <input type="text" onChange={handleChangeCheckList} onBlur={applyChange} value={inputValue} />
-      <button onClick={handleDeleteCheckListClick}>-</button>
-      <div>
-        {loading || !id ? (
-          'LOADING CHECKLIST BY ID'
-        ) : (
+      {loading || !id ? (
+        <Loading />
+      ) : (
+        <>
+          <Input
+            variant="flushed"
+            onChange={handleChangeCheckList}
+            onBlur={applyChange}
+            value={inputValue}
+          />
+          <button onClick={handleDeleteCheckListClick}>-</button>
           <Todos checkListId={id} todosIds={todosIds} />
-        )}
-        <AddTodo checkListId={checkListId} />
-      </div>
+          <AddTodo checkListId={checkListId} />
+        </>
+      )}
     </>
   );
 });

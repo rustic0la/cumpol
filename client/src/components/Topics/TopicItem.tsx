@@ -4,6 +4,7 @@ import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from
 import { ChangeEvent, FC } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
+import Loading from '../common/Loading';
 import CheckLists from './CheckLists';
 import AddCheckList from './CheckLists/AddCheckList';
 interface TopicWrapperProps {
@@ -73,15 +74,15 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
         <input type="text" onChange={handleChangeTopic} onBlur={saveChange} value={inputValue} />
         <button onClick={handleDeleteTopicClick}>-</button>
       </div>
-      <Box bg="#364b60" h={3} mb="20px" opacity={0.5} />
-      <div style={{ display: '-webkit-box', overflowX: 'scroll', margin: '10px' }}>
+      <Box bg="#364b60" h={1} mb="20px" opacity={0.5} />
+      <Box style={{ display: '-webkit-box', overflowX: 'scroll', margin: '10px' }} h="100%">
         {loading || !id ? (
-          'Loading topic by id'
+          <Loading w={80} />
         ) : (
           <CheckLists topicId={id} checkListsIds={checkListsIds} />
         )}
         <AddCheckList topicId={topicId} />
-      </div>
+      </Box>
     </>
   );
 });

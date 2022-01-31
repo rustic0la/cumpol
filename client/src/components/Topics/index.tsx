@@ -7,6 +7,7 @@ import {
 import React, { FC, memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Loading from '../common/Loading';
 import AddTopic from './AddTopic';
 import Topic from './TopicItem';
 
@@ -47,9 +48,8 @@ const Topics: FC = memo(() => {
 
   return (
     <Flex flexDirection="column" gap={10} overflow="auto">
-      {/* TODO: add loader */}
       {loading ? (
-        'Loading topics ids...'
+        <Loading />
       ) : (
         <>
           {(data?.getTopicsIds || []).map((topicId) => (
