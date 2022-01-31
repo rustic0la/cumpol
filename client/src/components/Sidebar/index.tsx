@@ -1,15 +1,10 @@
-import {
-  SpaceFragment,
-  SpacesUpdatedDocument,
-  SpacesUpdatedSubscription,
-  useGetSpacesQuery,
-} from '@gql/types';
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Flex } from '@chakra-ui/react';
+import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
+import React, { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import AddSpace from './AddSpace';
 import Space from './SpaceItem';
-import { SidebarStyled } from './styles';
 
 interface SubscriptionData {
   subscriptionData: {
@@ -71,7 +66,7 @@ const Sidebar: FC = memo(() => {
   );
 
   return (
-    <SidebarStyled>
+    <Flex flexFlow="column" overflow="auto">
       {/* TODO: add loader */}
       {loading ? (
         'Loading...'
@@ -89,7 +84,7 @@ const Sidebar: FC = memo(() => {
           <AddSpace />
         </>
       )}
-    </SidebarStyled>
+    </Flex>
   );
 });
 Sidebar.displayName = 'Sidebar';

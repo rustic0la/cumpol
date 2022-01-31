@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import {
   TopicsIdsUpdatedDocument,
   TopicsIdsUpdatedSubscription,
@@ -7,7 +8,6 @@ import React, { FC, memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import AddTopic from './AddTopic';
-import { TopicsStyled } from './styles';
 import Topic from './TopicItem';
 
 interface SubscriptionData {
@@ -46,7 +46,7 @@ const Topics: FC = memo(() => {
   );
 
   return (
-    <TopicsStyled>
+    <Flex flexDirection="column" gap={10} overflow="auto">
       {/* TODO: add loader */}
       {loading ? (
         'Loading topics ids...'
@@ -58,7 +58,7 @@ const Topics: FC = memo(() => {
           <AddTopic spaceId={spaceId} />
         </>
       )}
-    </TopicsStyled>
+    </Flex>
   );
 });
 Topics.displayName = 'Topics';

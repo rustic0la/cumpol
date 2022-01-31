@@ -17,11 +17,11 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
     addCheckList();
   }, [addCheckList]);
 
-  return loading ? (
-    // TODO: add loader
-    <p>Loading</p>
-  ) : (
-    <AddCheckListStyled onClick={handleAddCheckList}>Add Todo List</AddCheckListStyled>
+  return (
+    <>
+      {loading && 'LOADING'}
+      <AddCheckListStyled onClick={handleAddCheckList}>Add Todo List</AddCheckListStyled>
+    </>
   );
 };
 

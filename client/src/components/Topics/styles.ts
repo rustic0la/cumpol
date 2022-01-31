@@ -1,12 +1,5 @@
 import styled from 'styled-components';
 
-export const TopicsStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  width: 100%;
-`;
-
 export const TopicWrapperStyled = styled.div`
   display: grid;
 `;

@@ -1,8 +1,6 @@
 import { useAddSpaceMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
 
-import { AddSpaceStyled } from './styles';
-
 // interface AddSpaceProps {
 //   onAdd: () => void;
 // }
@@ -21,7 +19,7 @@ const AddSpace: FC = memo(() => {
     // TODO: add loader
     <p>Loading</p>
   ) : (
-    <AddSpaceStyled onClick={handleAddSpaceClick}>Add Space</AddSpaceStyled>
+    <button onClick={handleAddSpaceClick}>Add Space</button>
   );
 });
 
