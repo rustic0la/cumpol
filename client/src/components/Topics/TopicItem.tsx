@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Input, Spinner } from '@chakra-ui/react';
 import { useDeleteTopicMutation, useGetTopicByIdQuery, useUpdateTopicMutation } from '@gql/types';
 import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
@@ -53,7 +53,7 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
   }, []);
 
   const [updateTopic] = useUpdateTopicMutation({
-    variables: { topicId: title, title: inputValue, spaceId },
+    variables: { topicId: id, title: inputValue, spaceId },
   });
 
   const saveChange = useCallback(() => {
@@ -64,23 +64,34 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
     }
   }, [inputValue, title, updateTopic]);
 
-  const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
+  const [deleteTopic, { loading: deleteLoading }] = useDeleteTopicMutation({
+    variables: { topicId: id, spaceId },
+  });
 
   const handleDeleteTopicClick = useCallback(() => {
     deleteTopic();
   }, [deleteTopic]);
+
   return (
     <>
-      <Flex align="center" justify="space-between">
+      <Flex align="center" justify="space-between" mr={3}>
         <Input
           variant="flushed"
           onChange={handleChangeTopic}
           onBlur={saveChange}
           value={inputValue}
         />
-        <DeleteIcon onClick={handleDeleteTopicClick} _hover={{ color: 'red' }} />
+        {deleteLoading ? (
+          <Spinner size="sm" />
+        ) : (
+          <DeleteIcon
+            onClick={handleDeleteTopicClick}
+            color="gray.400"
+            _hover={{ color: 'gray.600' }}
+            cursor="pointer"
+          />
+        )}
       </Flex>
-      {/* <Box bg="#364b60" h={1} mb="20px" opacity={0.5} /> */}
       <Box display="-webkit-box" overflowX="scroll" m="10px">
         {loading || !id ? (
           <Loading w={80} h={400} />

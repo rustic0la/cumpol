@@ -1,6 +1,7 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Input, Spinner } from '@chakra-ui/react';
 import {
+  CheckListFragment,
   useDeleteCheckListMutation,
   useGetCheckListByIdQuery,
   useUpdateCheckListMutation,
@@ -39,7 +40,7 @@ const CheckListWrapper: FC<CheckListWrapperProps> = memo((props) => {
   }, [isVisible]);
 
   return (
-    <Box ref={ref} w={80} h={400} bg="pink" m="0 20px" borderRadius="xl">
+    <Box ref={ref} w={80} h={400} bg="pink" m="0 10px" borderRadius="xl">
       {isVisibleState && <CheckListInner {...props} />}
     </Box>
   );
@@ -81,7 +82,9 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
     }
   }, [inputValue, title, updateCheckList]);
 
-  const [deleteCheckList] = useDeleteCheckListMutation({ variables: { checkListId: id, topicId } });
+  const [deleteCheckList, { loading: deleteLoading }] = useDeleteCheckListMutation({
+    variables: { checkListId: id, topicId },
+  });
 
   const handleDeleteCheckListClick = useCallback(() => {
     deleteCheckList();
@@ -101,12 +104,21 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
                 onBlur={applyChange}
                 value={inputValue}
               />
-              <DeleteIcon onClick={handleDeleteCheckListClick} _hover={{ color: 'red' }} />
+              {deleteLoading ? (
+                <Spinner size="sm" />
+              ) : (
+                <DeleteIcon
+                  onClick={handleDeleteCheckListClick}
+                  color="gray.400"
+                  _hover={{ color: 'gray.600' }}
+                  cursor="pointer"
+                />
+              )}
             </Flex>
 
-            <Box h={80} overflow="auto">
+            <Flex flexFlow="column" h={80} overflow="auto" align="center">
               <Todos checkListId={id} todos={todos} />
-            </Box>
+            </Flex>
           </Box>
           <AddTodo checkListId={checkListId} />
         </Flex>

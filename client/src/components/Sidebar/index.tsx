@@ -71,7 +71,7 @@ const Sidebar: FC = memo(() => {
       {loading ? (
         <Loading />
       ) : (
-        <Flex flexFlow="column" justify="center">
+        <Flex flexFlow="column" justify="center" mr={3}>
           <List>
             {spaces.map((space) => (
               <Space

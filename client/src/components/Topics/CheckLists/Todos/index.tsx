@@ -27,10 +27,10 @@ const Todos: FC<TodosProps> = memo(({ checkListId, todos }) => {
   }, [checkListId, data?.todosUpdated.checkListId, data?.todosUpdated.todos, loading]);
 
   return (
-    <Box overflow="auto">
+    <Box overflow="auto" w="100%">
       <List>
-        {todosState.map((todo) => (
-          <Todo key={todo.id} checkListId={checkListId} todo={todo} />
+        {todosState.map(({ id, title, meta }) => (
+          <Todo key={id} checkListId={checkListId} id={id} title={title} meta={meta} />
         ))}
       </List>
     </Box>

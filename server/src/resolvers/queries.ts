@@ -4,7 +4,6 @@ import {
   CheckList,
   Maybe,
   QueryGetCheckListByIdArgs,
-  QueryGetTodoByIdArgs,
   QueryGetTopicByIdArgs,
   QueryGetTopicsIdsArgs,
   QueryResolvers,
@@ -12,7 +11,6 @@ import {
   ResolverFn,
   ResolverTypeWrapper,
   Space,
-  Todo,
   Topic,
 } from '../generated/types';
 import { Context } from '../interfaces';
@@ -90,22 +88,6 @@ const getCheckListById: ResolverFn<
   return checkList;
 };
 
-const getTodoById: ResolverFn<
-  Maybe<ResolverTypeWrapper<Todo>>,
-  {},
-  Context,
-  RequireFields<QueryGetTodoByIdArgs, 'todoId'>
-> = async (_root, args, { userId, prisma }) => {
-  if (!userId) throw new ForbiddenError('you must be logged in');
-
-  return prisma.todo.findUnique({
-    where: {
-      id: args.todoId,
-    },
-    include: { meta: true },
-  });
-};
-
 const Query: QueryResolvers<Context, {}> = {
   getSpaces: {
     resolve: getSpaces,
@@ -118,9 +100,6 @@ const Query: QueryResolvers<Context, {}> = {
   },
   getCheckListById: {
     resolve: getCheckListById,
-  },
-  getTodoById: {
-    resolve: getTodoById,
   },
 };
 

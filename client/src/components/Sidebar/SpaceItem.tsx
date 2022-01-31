@@ -41,51 +41,70 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) =>
   );
 
   const initialFocusRef = useRef(null);
-
   const handleEditSpace = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     e.preventDefault();
     setInputValue(e.target.value);
   }, []);
 
+  const [shouldRenderPortal, setShouldRenderPortal] = useState(false);
   const saveChange = useCallback(() => {
     if (!inputValue) {
       setInputValue(title);
     } else {
       if (inputValue !== title) updateSpace();
     }
+    setShouldRenderPortal(false);
   }, [inputValue, title, updateSpace]);
 
+  const handleClickEditSpace = (e: MouseEvent) => {
+    e.stopPropagation();
+    setShouldRenderPortal(true);
+  };
+
   return (
-    <ListItem bg={isCurrent ? 'gray.300' : 'white'} p="5px 10px" cursor="pointer">
+    <ListItem
+      bg={isCurrent ? 'gray.300' : 'white'}
+      p="10px 15px"
+      cursor="pointer"
+      borderRadius="xl"
+      _hover={{ bg: isCurrent ? '' : 'gray.100' }}
+    >
       <Box onClick={() => onSelect(id)}>
         <Flex gap={3} align="center" justify="space-between">
           <Box color={isCurrent ? 'red' : 'black'}>{inputValue}</Box>
           <Flex gap={2}>
             <Popover initialFocusRef={initialFocusRef}>
               <PopoverTrigger>
-                <EditIcon onClick={(e) => e.stopPropagation()} _hover={{ color: 'red' }} />
+                <EditIcon onClick={(e) => handleClickEditSpace(e)} _hover={{ color: 'red' }} />
               </PopoverTrigger>
-              <Portal>
-                <PopoverContent>
-                  <PopoverArrow />
-                  <PopoverBody>
-                    <Input
-                      ref={initialFocusRef}
-                      onChange={handleEditSpace}
-                      onBlur={saveChange}
-                      size="xs"
-                      value={inputValue}
-                    />
-                  </PopoverBody>
-                </PopoverContent>
-              </Portal>
+              {shouldRenderPortal && (
+                <Portal>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverBody>
+                      <Input
+                        ref={initialFocusRef}
+                        onChange={handleEditSpace}
+                        onBlur={saveChange}
+                        size="xs"
+                        value={inputValue}
+                      />
+                    </PopoverBody>
+                  </PopoverContent>
+                </Portal>
+              )}
             </Popover>
 
             {loadingDelete ? (
               <Spinner size="sm" />
             ) : (
-              <DeleteIcon onClick={(e) => handleDeleteSpaceClick(e)} _hover={{ color: 'red' }} />
+              <DeleteIcon
+                onClick={(e) => handleDeleteSpaceClick(e)}
+                color="gray.400"
+                _hover={{ color: 'gray.600' }}
+                cursor="pointer"
+              />
             )}
           </Flex>
         </Flex>

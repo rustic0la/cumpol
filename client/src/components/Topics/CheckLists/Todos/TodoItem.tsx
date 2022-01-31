@@ -1,39 +1,16 @@
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Box, Checkbox, Flex, Input, Spinner } from '@chakra-ui/react';
-import {
-  TodoFragment,
-  useDeleteTodoMutation,
-  useGetTodoByIdQuery,
-  useUpdateTodoMutation,
-} from '@gql/types';
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import { Maybe, MetaFragment, useDeleteTodoMutation, useUpdateTodoMutation } from '@gql/types';
+import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
 import Loading from 'src/components/common/Loading';
-interface TodoWrapperProps {
-  todo: TodoFragment;
+interface TodoProps {
   checkListId: string;
+  id: string;
+  title: string;
+  meta?: Maybe<MetaFragment>;
 }
 
-// const TodoWrapper: FC<TodoWrapperProps> = memo((props) => {
-//   const ref = useRef() as RefObject<HTMLDivElement>;
-//   const isVisible = useOnScreen(ref);
-
-//   // prevent from dissappearing while scrolling
-//   const [isVisibleState, setIsVisibleState] = useState<boolean | undefined>();
-//   useEffect(() => {
-//     if (isVisible) {
-//       setIsVisibleState(isVisible);
-//     }
-//   }, [isVisible]);
-
-//   return <Box ref={ref}>{isVisibleState ? <TodoInner {...props} /> : null}</Box>;
-// });
-// TodoWrapper.displayName = 'TodoWrapper';
-// TodoWrapper.whyDidYouRender = true;
-
-type TodoInnerProps = TodoWrapperProps;
-
-const TodoInner: FC<TodoInnerProps> = memo(({ todo, checkListId }) => {
-  const { id, title, meta } = todo;
+const Todo: FC<TodoProps> = memo(({ checkListId, id, title, meta }) => {
   const [inputValue, setInputValue] = useState(() => title);
 
   const handleChangeTodo = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +38,7 @@ const TodoInner: FC<TodoInnerProps> = memo(({ todo, checkListId }) => {
   }, [deleteTodo]);
 
   return (
-    <Box bg="gray.200" borderRadius="sm" m={1} h="100%" p={2}>
+    <Box bg="gray.200" borderRadius="md" m={1} h="100%" p={2}>
       <Flex align="center" justify="space-between" w="100%" gap={1}>
         <Checkbox isChecked={true} />
         {updateLoading ? (
@@ -87,15 +64,20 @@ const TodoInner: FC<TodoInnerProps> = memo(({ todo, checkListId }) => {
           </>
         )}
         {deleteLoading ? (
-          <Spinner size="xs" />
+          <Spinner size="sm" />
         ) : (
-          <DeleteIcon onClick={handleDeleteTodoClick} _hover={{ color: 'red' }} />
+          <DeleteIcon
+            onClick={handleDeleteTodoClick}
+            color="gray.400"
+            _hover={{ color: 'gray.600' }}
+            cursor="pointer"
+          />
         )}
       </Flex>
     </Box>
   );
 });
-TodoInner.displayName = 'TodoInner';
-TodoInner.whyDidYouRender = true;
+Todo.displayName = 'Todo';
+Todo.whyDidYouRender = true;
 
-export default TodoInner;
+export default Todo;

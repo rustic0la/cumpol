@@ -19,9 +19,3 @@ query getCheckListById($checkListId: ID!) {
     ...checkList
   }
 }
-
-query getTodoById($todoId: ID!) {
-  getTodoById(todoId: $todoId) {
-    ...todo
-  }
-}

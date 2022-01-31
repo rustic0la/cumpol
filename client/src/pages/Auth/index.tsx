@@ -48,7 +48,11 @@ const Auth: FC = () => {
         />
       </Flex>
       <Flex gap={3}>
-        <Button isLoading={loading} onClick={submitForm}>
+        <Button
+          isLoading={loading}
+          onClick={submitForm}
+          disabled={!formState.username.trim() || !formState.password.trim()}
+        >
           {formState.login ? 'login' : 'create account'}
         </Button>
         <Button
