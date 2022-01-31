@@ -4,9 +4,7 @@ import {
   CheckList,
   Maybe,
   QueryGetCheckListByIdArgs,
-  QueryGetCheckListsIdsArgs,
   QueryGetTodoByIdArgs,
-  QueryGetTodosIdsArgs,
   QueryGetTopicByIdArgs,
   QueryGetTopicsIdsArgs,
   QueryResolvers,
@@ -74,23 +72,6 @@ const getTopicById: ResolverFn<
   return null;
 };
 
-const getCheckListsIds: ResolverFn<
-  ResolverTypeWrapper<string>[],
-  {},
-  Context,
-  RequireFields<QueryGetCheckListsIdsArgs, 'topicId'>
-> = async (_root, args, { userId, prisma }) => {
-  if (!userId) throw new ForbiddenError('you must be logged in');
-
-  const checkLists = await prisma.topic
-    .findUnique({
-      where: { id: args.topicId },
-    })
-    .checkLists({ select: { id: true }, orderBy: { createdAt: 'asc' } });
-
-  return checkLists.map(({ id }) => id);
-};
-
 const getCheckListById: ResolverFn<
   Maybe<ResolverTypeWrapper<CheckList>>,
   {},
@@ -113,23 +94,6 @@ const getCheckListById: ResolverFn<
     };
   }
   return null;
-};
-
-const getTodosIds: ResolverFn<
-  ResolverTypeWrapper<string>[],
-  {},
-  Context,
-  RequireFields<QueryGetTodosIdsArgs, 'checkListId'>
-> = async (_root, args, { userId, prisma }) => {
-  if (!userId) throw new ForbiddenError('you must be logged in');
-
-  const checkLists = await prisma.checkList
-    .findUnique({
-      where: { id: args.checkListId },
-    })
-    .todos({ select: { id: true }, orderBy: { createdAt: 'asc' } });
-
-  return checkLists.map(({ id }) => id);
 };
 
 const getTodoById: ResolverFn<
@@ -158,14 +122,8 @@ const Query: QueryResolvers<Context, {}> = {
   getTopicById: {
     resolve: getTopicById,
   },
-  getCheckListsIds: {
-    resolve: getCheckListsIds,
-  },
   getCheckListById: {
     resolve: getCheckListById,
-  },
-  getTodosIds: {
-    resolve: getTodosIds,
   },
   getTodoById: {
     resolve: getTodoById,

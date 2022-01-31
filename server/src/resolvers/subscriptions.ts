@@ -10,7 +10,7 @@ import { Context } from '../interfaces';
 const Subscription: SubscriptionResolvers<Context, {}> = {
   spacesUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('spacesIdsUpdated'),
+      pubsub.asyncIterator('spacesUpdated'),
     resolve: (payload: Space[]) => payload,
   },
   topicsIdsUpdated: {
