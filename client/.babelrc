@@ -12,7 +12,8 @@
     "production": {
       "compact": true,
       "comments": false,
-      "minified": true
+      "minified": true,
+      "plugins": ["react-remove-classname"]
     }
   }
 }

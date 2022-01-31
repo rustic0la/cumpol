@@ -1,14 +1,13 @@
+import { AddIcon } from '@chakra-ui/icons';
+import { Button } from '@chakra-ui/react';
 import { useAddSpaceMutation } from '@gql/types';
+import dayjs from 'dayjs';
 import React, { FC, memo, useCallback } from 'react';
-import Loading from 'src/components/common/Loading';
 
-// interface AddSpaceProps {
-//   onAdd: () => void;
-// }
 const AddSpace: FC = memo(() => {
   const [addSpace, { loading }] = useAddSpaceMutation({
     variables: {
-      title: 'New Space',
+      title: dayjs().format('ddd, MMM D, YYYY h:mm A'),
     },
   });
 
@@ -16,7 +15,11 @@ const AddSpace: FC = memo(() => {
     addSpace();
   }, [addSpace]);
 
-  return loading ? <Loading /> : <button onClick={handleAddSpaceClick}>Add Space</button>;
+  return (
+    <Button leftIcon={<AddIcon />} isLoading={loading} onClick={handleAddSpaceClick}>
+      Add Space
+    </Button>
+  );
 });
 
 AddSpace.displayName = 'AddSpace';

@@ -1,4 +1,4 @@
-import { Box, List } from '@chakra-ui/react';
+import { Box, Flex, List } from '@chakra-ui/react';
 import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
 import React, { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -59,22 +59,32 @@ const Sidebar: FC = memo(() => {
     [navigate, spaceId, spaces],
   );
 
+  const handleSelectSpace = useCallback(
+    (id: string) => {
+      if (spaceId !== id) navigate(`${id}`);
+    },
+    [navigate, spaceId],
+  );
+
   return (
     <Box overflow="auto">
       {loading ? (
         <Loading />
       ) : (
-        <List>
-          {spaces.map((space) => (
-            <Space
-              isCurrent={space.id === spaceId}
-              key={space.id}
-              space={space}
-              onDelete={handleDeleteSpace}
-            />
-          ))}
+        <Flex flexFlow="column" justify="center">
+          <List>
+            {spaces.map((space) => (
+              <Space
+                isCurrent={space.id === spaceId}
+                key={space.id}
+                space={space}
+                onDelete={handleDeleteSpace}
+                onSelect={handleSelectSpace}
+              />
+            ))}
+          </List>
           <AddSpace />
-        </List>
+        </Flex>
       )}
     </Box>
   );

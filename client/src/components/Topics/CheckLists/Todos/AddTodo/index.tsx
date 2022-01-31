@@ -1,7 +1,9 @@
+import { AddIcon } from '@chakra-ui/icons';
+import { Button } from '@chakra-ui/react';
 import { useAddTodoMutation } from '@gql/types';
+import dayjs from 'dayjs';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
-import Loading from 'src/components/common/Loading';
 
 interface AddTodoProps {
   checkListId: string;
@@ -9,14 +11,26 @@ interface AddTodoProps {
 
 const AddTodo: FC<AddTodoProps> = ({ checkListId }) => {
   const [addTodo, { loading }] = useAddTodoMutation({
-    variables: { checkListId, title: 'New Todo' },
+    variables: { checkListId, title: dayjs().format('ddd, MMM D, YYYY h:mm A') },
   });
 
   const handleAddTodo = useCallback(() => {
     addTodo();
   }, [addTodo]);
 
-  return loading ? <Loading h="auto" /> : <button onClick={handleAddTodo}>Add Todo</button>;
+  return (
+    <Button
+      isLoading={loading}
+      leftIcon={<AddIcon />}
+      onClick={handleAddTodo}
+      variant="ghost"
+      _hover={{ bg: 'none' }}
+      _focus={{ bg: 'none' }}
+      _visited={{ bg: 'none' }}
+    >
+      Add Todo
+    </Button>
+  );
 };
 
 export default AddTodo;

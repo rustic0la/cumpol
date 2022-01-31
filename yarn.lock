@@ -734,7 +734,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-syntax-jsx@npm:^7.12.13":
+"@babel/plugin-syntax-jsx@npm:^7.12.13, @babel/plugin-syntax-jsx@npm:^7.2.0":
   version: 7.16.7
   resolution: "@babel/plugin-syntax-jsx@npm:7.16.7"
   dependencies:
@@ -1758,6 +1758,19 @@ __metadata:
     "@chakra-ui/system": ">=1.0.0"
     react: ">=16.8.6"
   checksum: be48d81e18334124e357aa379104f4e40ff2bf20cd3edcdc656cb7b78b6caab48650022317a0a18e39bf15756be809162e7928c55a8568a85a50b410092a81f0
+  languageName: node
+  linkType: hard
+
+"@chakra-ui/icons@npm:^1.1.1":
+  version: 1.1.3
+  resolution: "@chakra-ui/icons@npm:1.1.3"
+  dependencies:
+    "@chakra-ui/icon": 2.0.1
+    "@types/react": ^17.0.15
+  peerDependencies:
+    "@chakra-ui/system": ">=1.0.0"
+    react: ">=16.8.6"
+  checksum: eded9cc98751cb7d27b3598068190770b658d1ac9eab6e16623e49d7fe59b1f2686bfc8f9351af2d2f2ff8af15a75f268e859f3aadf6f3dbc04bd7da72323f24
   languageName: node
   linkType: hard
 
@@ -3747,6 +3760,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:^17.0.15":
+  version: 17.0.38
+  resolution: "@types/react@npm:17.0.38"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 4079f4f959cd4a4bfaeda8b89fe8a1b1f8bdc9d87acfdc5f74a0b39cec9ec6a470724357c62778c0f063180b360c250e920c5a142f1dbcda67d9cc25a6d43a85
+  languageName: node
+  linkType: hard
+
 "@types/responselike@npm:^1.0.0":
   version: 1.0.0
   resolution: "@types/responselike@npm:1.0.0"
@@ -4929,6 +4953,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"babel-plugin-react-remove-classname@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "babel-plugin-react-remove-classname@npm:1.0.0"
+  dependencies:
+    "@babel/plugin-syntax-jsx": ^7.2.0
+  checksum: 2b3248eac159aade6ab90c2de21a53226889573f1b48b2c07b3433ca1c70b80f40270c3799a0b4a363ffddd2b0f13c2f5f972e4eb756eab39e62f982ddb3ce84
+  languageName: node
+  linkType: hard
+
 "babel-plugin-syntax-trailing-function-commas@npm:^7.0.0-beta.0":
   version: 7.0.0-beta.0
   resolution: "babel-plugin-syntax-trailing-function-commas@npm:7.0.0-beta.0"
@@ -5520,6 +5553,7 @@ __metadata:
     "@babel/preset-react": ^7.16.0
     "@babel/preset-typescript": ^7.16.0
     "@babel/runtime": ^7.16.3
+    "@chakra-ui/icons": ^1.1.1
     "@chakra-ui/react": ^1.8.1
     "@emotion/react": ^11
     "@emotion/styled": ^11
@@ -5537,9 +5571,11 @@ __metadata:
     "@typescript-eslint/parser": ^5.3.1
     "@welldone-software/why-did-you-render": ^6.2.3
     babel-loader: ^8.2.3
+    babel-plugin-react-remove-classname: ^1.0.0
     copy-webpack-plugin: ^9.1.0
     css-loader: ^6.5.1
     css-minimizer-webpack-plugin: ^3.4.1
+    dayjs: ^1.10.7
     eslint: ^8.2.0
     eslint-plugin-react: ^7.27.0
     eslint-plugin-react-hooks: ^4.3.0
@@ -6243,6 +6279,13 @@ __metadata:
   version: 2.28.0
   resolution: "date-fns@npm:2.28.0"
   checksum: a0516b2e4f99b8bffc6cc5193349f185f195398385bdcaf07f17c2c4a24473c99d933eb0018be4142a86a6d46cb0b06be6440ad874f15e795acbedd6fd727a1f
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.10.7":
+  version: 1.10.7
+  resolution: "dayjs@npm:1.10.7"
+  checksum: a0a4ca95abaa03d0702161dc2c35d16121188e342f5052b9c61cdf784dab68af766f477c04f87f71c6af666fd4d13db9b9853b87265850d6093b7b04e1bb1cd7
   languageName: node
   linkType: hard
 

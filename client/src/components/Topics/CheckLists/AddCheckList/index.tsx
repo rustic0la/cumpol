@@ -1,15 +1,18 @@
+import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { useAddCheckListMutation } from '@gql/types';
+import dayjs from 'dayjs';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 import Loading from 'src/components/common/Loading';
+
 interface AddCheckListProps {
   topicId: string;
 }
 
 const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
   const [addCheckList, { loading }] = useAddCheckListMutation({
-    variables: { topicId, title: 'New CheckList' },
+    variables: { topicId, title: dayjs().format('ddd, MMM D, YYYY h:mm A') },
   });
 
   const handleAddCheckList = useCallback(() => {
@@ -29,7 +32,9 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
         m="0 20px"
       >
         <Flex justifyContent="center" align="center" h="100%">
-          <Button onClick={handleAddCheckList}>Add checkList</Button>
+          <Button leftIcon={<AddIcon />} onClick={handleAddCheckList}>
+            Add checkList
+          </Button>
         </Flex>
       </Box>
     </>

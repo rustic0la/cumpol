@@ -1,4 +1,5 @@
-import { Box, Input } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Box, Flex, Input } from '@chakra-ui/react';
 import {
   useDeleteCheckListMutation,
   useGetCheckListByIdQuery,
@@ -74,11 +75,11 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
 
   const applyChange = useCallback(() => {
     if (!inputValue) {
-      setInputValue(id);
+      setInputValue(title);
     } else {
-      if (inputValue !== id) updateCheckList();
+      if (inputValue !== title) updateCheckList();
     }
-  }, [inputValue, id, updateCheckList]);
+  }, [inputValue, title, updateCheckList]);
 
   const [deleteCheckList] = useDeleteCheckListMutation({ variables: { checkListId: id, topicId } });
 
@@ -91,17 +92,24 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
       {loading || !id ? (
         <Loading />
       ) : (
-        <>
-          <Input
-            variant="flushed"
-            onChange={handleChangeCheckList}
-            onBlur={applyChange}
-            value={inputValue}
-          />
-          <button onClick={handleDeleteCheckListClick}>-</button>
-          <Todos checkListId={id} todosIds={todosIds} />
+        <Flex flexFlow="column" justify="space-between" h="100%" p="10px, 0">
+          <Box h="100%">
+            <Flex p="10px 15px" align="center">
+              <Input
+                variant="unstyled"
+                onChange={handleChangeCheckList}
+                onBlur={applyChange}
+                value={inputValue}
+              />
+              <DeleteIcon onClick={handleDeleteCheckListClick} _hover={{ color: 'red' }} />
+            </Flex>
+
+            <Box h={80} overflow="auto">
+              <Todos checkListId={id} todosIds={todosIds} />
+            </Box>
+          </Box>
           <AddTodo checkListId={checkListId} />
-        </>
+        </Flex>
       )}
     </>
   );

@@ -1,3 +1,4 @@
+import { DeleteIcon } from '@chakra-ui/icons';
 import { Box, Flex, ListItem } from '@chakra-ui/react';
 import { SpaceFragment, useDeleteSpaceMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
@@ -7,9 +8,10 @@ interface SpaceProps {
   space: SpaceFragment;
   onDelete: (id: string) => void;
   isCurrent: boolean;
+  onSelect: (id: string) => void;
 }
 
-const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent }) => {
+const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) => {
   const { id, title } = space;
   // const [inputValue, setInputValue] = useState(() => title);
 
@@ -35,19 +37,20 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent }) => {
   // }, [inputValue, title, updateSpace]);
 
   return (
-    // TODO: fix style
-    <ListItem bg={isCurrent ? 'gray.300' : 'white'} p="5px 10px" mb={5} cursor="pointer">
-      <Flex gap={3}>
-        <Box
-          color={isCurrent ? 'red' : 'black'}
-          // onChange={handleChangeSpace}
-          // onBlur={saveChange}
-          // value={inputValue}
-        >
-          {isCurrent ? <>{title}</> : <Link to={`/${id}`}>{title}</Link>}
-        </Box>
-        <button onClick={handleDeleteSpaceClick}>-</button>
-      </Flex>
+    <ListItem bg={isCurrent ? 'gray.300' : 'white'} p="5px 10px" cursor="pointer">
+      <Box onClick={() => onSelect(id)}>
+        <Flex gap={3} align="center">
+          <Box
+            color={isCurrent ? 'red' : 'black'}
+            // onChange={handleChangeSpace}
+            // onBlur={saveChange}
+            // value={inputValue}
+          >
+            {title}
+          </Box>
+          <DeleteIcon onClick={handleDeleteSpaceClick} _hover={{ color: 'red' }} />
+        </Flex>
+      </Box>
     </ListItem>
   );
 });

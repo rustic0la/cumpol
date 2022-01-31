@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Box, Checkbox, Flex, Input } from '@chakra-ui/react';
 import { useDeleteTodoMutation, useGetTodoByIdQuery, useUpdateTodoMutation } from '@gql/types';
 import React, {
   ChangeEvent,
@@ -74,25 +75,39 @@ const TodoInner: FC<TodoInnerProps> = memo(({ todoId, checkListId }) => {
     deleteTodo();
   }, [deleteTodo]);
 
-  return loading || !id ? (
-    <Loading />
-  ) : (
-    <>
-      <div>
-        {updateLoading && <p>Loading...</p>}
-        {/* remove to meta component */}
-        {meta ? (
-          <>
-            {meta?.hostname} {`${meta?.description?.slice(0, 30)}...`} {meta?.title}
-            {meta?.img && <img src={meta?.img} />}
-            {meta?.favicon && <img src={meta?.favicon} />}
-          </>
-        ) : (
-          <input type="text" onChange={handleChangeTodo} onBlur={saveChange} value={inputValue} />
-        )}
-      </div>
-      <button onClick={handleDeleteTodoClick}>-</button>
-    </>
+  return (
+    <Box bg="gray.200" borderRadius="sm" m={1} h="100%" p={2}>
+      {loading || !id ? (
+        <Loading />
+      ) : (
+        <Flex align="center" justify="space-between" w="100%" gap={1}>
+          <Checkbox isChecked={true} />
+          {updateLoading ? (
+            <Loading w="100%" />
+          ) : (
+            <>
+              {/* remove to meta component */}
+              {meta ? (
+                <>
+                  {meta?.hostname} {`${meta?.description?.slice(0, 30)}...`} {meta?.title}
+                  {meta?.img && <img src={meta?.img} />}
+                  {meta?.favicon && <img src={meta?.favicon} />}
+                </>
+              ) : (
+                <Input
+                  fontSize="sm"
+                  variant="unstyled"
+                  onChange={handleChangeTodo}
+                  onBlur={saveChange}
+                  value={inputValue}
+                />
+              )}
+            </>
+          )}
+          <DeleteIcon onClick={handleDeleteTodoClick} _hover={{ color: 'red' }} />
+        </Flex>
+      )}
+    </Box>
   );
 });
 TodoInner.displayName = 'TodoInner';

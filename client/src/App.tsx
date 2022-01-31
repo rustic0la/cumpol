@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Center, Grid } from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
@@ -29,10 +29,12 @@ const App: FC = () => {
             <Route
               index
               element={
-                <h1>
-                  select or create
-                  <br /> a new Space 🔮
-                </h1>
+                <Center>
+                  <h1>
+                    select or create
+                    <br /> a new Space 🔮
+                  </h1>
+                </Center>
               }
             />
             <Route path=":spaceId" element={<MainContent />} />

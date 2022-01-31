@@ -1,4 +1,4 @@
-import { Flex, Grid, Switch, useColorMode } from '@chakra-ui/react';
+import { Button, Flex, Grid, Switch, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { useAuth } from 'src/providers/AuthProvider';
 
@@ -25,7 +25,9 @@ const Header = () => {
       {token && (
         <>
           <p>{username}</p>
-          <button onClick={logout}>logout</button>
+          <Button size="sm" onClick={logout}>
+            logout
+          </Button>
         </>
       )}
     </Grid>

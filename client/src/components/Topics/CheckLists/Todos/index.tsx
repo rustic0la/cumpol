@@ -1,4 +1,5 @@
 import { useSubscription } from '@apollo/client';
+import { Box, Flex, List } from '@chakra-ui/react';
 import { TodosIdsUpdatedDocument, TodosIdsUpdatedSubscription } from '@gql/types';
 import React, { FC, memo, useEffect, useState } from 'react';
 
@@ -24,11 +25,13 @@ const Todos: FC<TodosProps> = memo(({ checkListId, todosIds }) => {
   }, [checkListId, data?.todosIdsUpdated.checkListId, data?.todosIdsUpdated.todosIds, loading]);
 
   return (
-    <>
-      {ids.map((todoId) => (
-        <Todo key={todoId} checkListId={checkListId} todoId={todoId} />
-      ))}
-    </>
+    <Box overflow="auto">
+      <List>
+        {ids.map((todoId) => (
+          <Todo key={todoId} checkListId={checkListId} todoId={todoId} />
+        ))}
+      </List>
+    </Box>
   );
 });
 Todos.displayName = 'Todos';

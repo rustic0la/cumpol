@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Box, Flex, Input } from '@chakra-ui/react';
 import { useDeleteTopicMutation, useGetTopicByIdQuery, useUpdateTopicMutation } from '@gql/types';
 import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
@@ -70,12 +71,17 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
   }, [deleteTopic]);
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <input type="text" onChange={handleChangeTopic} onBlur={saveChange} value={inputValue} />
-        <button onClick={handleDeleteTopicClick}>-</button>
-      </div>
-      <Box bg="#364b60" h={1} mb="20px" opacity={0.5} />
-      <Box style={{ display: '-webkit-box', overflowX: 'scroll', margin: '10px' }} h="100%">
+      <Flex align="center" justify="space-between">
+        <Input
+          variant="flushed"
+          onChange={handleChangeTopic}
+          onBlur={saveChange}
+          value={inputValue}
+        />
+        <DeleteIcon onClick={handleDeleteTopicClick} _hover={{ color: 'red' }} />
+      </Flex>
+      {/* <Box bg="#364b60" h={1} mb="20px" opacity={0.5} /> */}
+      <Box display="-webkit-box" overflowX="scroll" m="10px" h="100%">
         {loading || !id ? (
           <Loading w={80} />
         ) : (
