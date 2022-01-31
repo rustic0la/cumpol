@@ -1,64 +1,34 @@
-import { TodosUpdatedDocument, TodosUpdatedSubscription, useGetTodosLazyQuery } from '@gql/types';
-import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
-import useOnScreen from 'src/hooks/useOnScreen';
+import { useSubscription } from '@apollo/client';
+import { TodosIdsUpdatedDocument, TodosIdsUpdatedSubscription } from '@gql/types';
+import React, { FC, memo, useEffect, useState } from 'react';
 
-import AddTodo from './AddTodo';
 import Todo from './TodoItem';
 
 interface TodosProps {
   checkListId: string;
+  todosIds: string[];
 }
 
-interface SubscriptionData {
-  subscriptionData: {
-    data: TodosUpdatedSubscription;
-  };
-}
+const Todos: FC<TodosProps> = memo(({ checkListId, todosIds }) => {
+  const [ids, setIds] = useState<string[]>(() => todosIds);
 
-const Todos: FC<TodosProps> = memo(({ checkListId }) => {
-  const ref = useRef() as RefObject<HTMLDivElement>;
-  const isVisible = useOnScreen(ref);
-
-  const [getTodos, { data, subscribeToMore, loading }] = useGetTodosLazyQuery({
-    variables: { checkListId },
-  });
+  const { data, loading }: { data?: TodosIdsUpdatedSubscription; loading: boolean } =
+    useSubscription(TodosIdsUpdatedDocument, {
+      variables: { checkListId },
+    });
 
   useEffect(() => {
-    if (isVisible && !data && !loading) {
-      getTodos();
+    if (!loading && data?.todosIdsUpdated.checkListId === checkListId) {
+      setIds(data?.todosIdsUpdated.todosIds || []);
     }
-  }, [getTodos, isVisible, data, loading]);
-
-  useEffect(
-    () =>
-      subscribeToMore({
-        document: TodosUpdatedDocument,
-        updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
-          const newData = subscriptionData.data;
-          if (!newData) return prev;
-          const { todosUpdated } = newData;
-
-          if (todosUpdated.length === 0) return { getTodos: [] };
-          if (todosUpdated[0].checkListId === checkListId) {
-            return {
-              getTodos: todosUpdated,
-            };
-          }
-          return {
-            getTodos: prev.getTodos,
-          };
-        },
-      }),
-    [subscribeToMore, checkListId],
-  );
+  }, [checkListId, data?.todosIdsUpdated.checkListId, data?.todosIdsUpdated.todosIds, loading]);
 
   return (
-    <div ref={ref}>
-      {(data?.getTodos || []).map((todo) => (
-        <Todo key={todo.id} todo={todo} checkListId={checkListId} />
+    <>
+      {ids.map((todoId) => (
+        <Todo key={todoId} checkListId={checkListId} todoId={todoId} />
       ))}
-      <AddTodo checkListId={checkListId} />
-    </div>
+    </>
   );
 });
 Todos.displayName = 'Todos';

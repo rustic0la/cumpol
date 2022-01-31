@@ -6,11 +6,13 @@ fragment space on Space {
 fragment topic on Topic {
   id
   title
+  checkListsIds
 }
 
 fragment checkList on CheckList {
   id
   title
+  todosIds
 }
 
 fragment todo on Todo {

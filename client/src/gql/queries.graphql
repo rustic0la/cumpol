@@ -4,20 +4,24 @@ query getSpaces {
   }
 }
 
-query getTopics($spaceId: ID!) {
-  getTopics(spaceId: $spaceId) {
+query getTopicsIds($spaceId: ID!) {
+  getTopicsIds(spaceId: $spaceId)
+}
+
+query getTopicById($topicId: ID!) {
+  getTopicById(topicId: $topicId) {
     ...topic
   }
 }
 
-query getCheckLists($topicId: ID!) {
-  getCheckLists(topicId: $topicId) {
+query getCheckListById($checkListId: ID!) {
+  getCheckListById(checkListId: $checkListId) {
     ...checkList
   }
 }
 
-query getTodos($checkListId: ID!) {
-  getTodos(checkListId: $checkListId) {
+query getTodoById($todoId: ID!) {
+  getTodoById(todoId: $todoId) {
     ...todo
   }
 }

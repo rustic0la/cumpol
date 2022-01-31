@@ -1,26 +1,26 @@
 subscription spacesUpdated {
   spacesUpdated {
-    id
-    title
+    ...space
   }
 }
 
-subscription topicsUpdated {
-  topicsUpdated {
-    ...topic
+subscription topicsIdsUpdated {
+  topicsIdsUpdated {
+    topicsIds
+    spaceId
   }
 }
 
-subscription checkListsUpdated {
-  checkListsUpdated {
-    ...checkList
+subscription checkListsIdsUpdated {
+  checkListsIdsUpdated {
+    checkListsIds
     topicId
   }
 }
 
-subscription todosUpdated {
-  todosUpdated {
-    ...todo
+subscription todosIdsUpdated {
+  todosIdsUpdated {
+    todosIds
     checkListId
   }
 }

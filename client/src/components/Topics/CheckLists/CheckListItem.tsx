@@ -1,21 +1,67 @@
 import {
-  CheckListFragment,
   useDeleteCheckListMutation,
+  useGetCheckListByIdQuery,
   useUpdateCheckListMutation,
 } from '@gql/types';
-import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  memo,
+  RefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import useOnScreen from 'src/hooks/useOnScreen';
 
-import { CheckListStyled } from './styles';
+import { CheckListWrapperStyled } from './styles';
 import Todos from './Todos';
+import AddTodo from './Todos/AddTodo';
 
-interface CheckListProps {
-  checkList: CheckListFragment;
+interface CheckListWrapperProps {
+  checkListId: string;
   topicId: string;
 }
 
-const CheckList: FC<CheckListProps> = memo(({ checkList, topicId }) => {
-  const { id, title } = checkList;
-  const [inputValue, setInputValue] = useState(() => title);
+const CheckListWrapper: FC<CheckListWrapperProps> = memo((props) => {
+  const ref = useRef() as RefObject<HTMLDivElement>;
+  const isVisible = useOnScreen(ref);
+
+  // prevent from dissappearing while scrolling
+  const [isVisibleState, setIsVisibleState] = useState<boolean | undefined>();
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisibleState(isVisible);
+    }
+  }, [isVisible]);
+
+  return (
+    <CheckListWrapperStyled ref={ref}>
+      {isVisibleState && <CheckListInner {...props} />}
+    </CheckListWrapperStyled>
+  );
+});
+CheckListWrapper.displayName = 'CheckListWrapper';
+CheckListWrapper.whyDidYouRender = true;
+
+type CheckListInnerProps = CheckListWrapperProps;
+
+const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) => {
+  const { data, loading } = useGetCheckListByIdQuery({
+    variables: { checkListId },
+  });
+
+  const checkList = data?.getCheckListById;
+  const title = checkList?.title || '';
+  const id = checkList?.id || '';
+  const todosIds = checkList?.todosIds || [];
+
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    setInputValue(title);
+  }, [title]);
 
   const handleChangeCheckList = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -27,11 +73,11 @@ const CheckList: FC<CheckListProps> = memo(({ checkList, topicId }) => {
 
   const applyChange = useCallback(() => {
     if (!inputValue) {
-      setInputValue(title);
+      setInputValue(id);
     } else {
-      if (inputValue !== title) updateCheckList();
+      if (inputValue !== id) updateCheckList();
     }
-  }, [inputValue, title, updateCheckList]);
+  }, [inputValue, id, updateCheckList]);
 
   const [deleteCheckList] = useDeleteCheckListMutation({ variables: { checkListId: id, topicId } });
 
@@ -40,13 +86,21 @@ const CheckList: FC<CheckListProps> = memo(({ checkList, topicId }) => {
   }, [deleteCheckList]);
 
   return (
-    <CheckListStyled>
+    <>
       <input type="text" onChange={handleChangeCheckList} onBlur={applyChange} value={inputValue} />
       <button onClick={handleDeleteCheckListClick}>-</button>
-      <Todos checkListId={id} />
-    </CheckListStyled>
+      <div>
+        {loading || !id ? (
+          'LOADING CHECKLIST BY ID'
+        ) : (
+          <Todos checkListId={id} todosIds={todosIds} />
+        )}
+        <AddTodo checkListId={checkListId} />
+      </div>
+    </>
   );
 });
-CheckList.displayName = 'CheckList';
+CheckListInner.displayName = 'CheckListInner';
+CheckListInner.whyDidYouRender = true;
 
-export default CheckList;
+export default CheckListWrapper;

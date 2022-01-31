@@ -1,69 +1,39 @@
-import {
-  CheckListsUpdatedDocument,
-  CheckListsUpdatedSubscription,
-  useGetCheckListsLazyQuery,
-} from '@gql/types';
-import React, { FC, memo, RefObject, useEffect, useRef } from 'react';
-import useOnScreen from 'src/hooks/useOnScreen';
+import { useSubscription } from '@apollo/client';
+import { CheckListsIdsUpdatedDocument, CheckListsIdsUpdatedSubscription } from '@gql/types';
+import React, { FC, memo, useEffect, useState } from 'react';
 
-import AddCheckList from './AddCheckList';
 import CheckList from './CheckListItem';
-import { CheckListsStyled } from './styles';
 
 interface CheckListsProps {
   topicId: string;
+  checkListsIds: string[];
 }
 
-interface SubscriptionData {
-  subscriptionData: {
-    data: CheckListsUpdatedSubscription;
-  };
-}
+const CheckLists: FC<CheckListsProps> = memo(({ topicId, checkListsIds }) => {
+  const [ids, setIds] = useState<string[]>(() => checkListsIds);
 
-const CheckLists: FC<CheckListsProps> = memo(({ topicId }) => {
-  const ref = useRef() as RefObject<HTMLDivElement>;
-  const isVisible = useOnScreen(ref);
-
-  const [getCheckLists, { data, subscribeToMore, loading }] = useGetCheckListsLazyQuery({
-    variables: { topicId },
-  });
+  const { data, loading }: { data?: CheckListsIdsUpdatedSubscription; loading: boolean } =
+    useSubscription(CheckListsIdsUpdatedDocument, {
+      variables: { topicId },
+    });
 
   useEffect(() => {
-    if (isVisible && !data && !loading) {
-      getCheckLists();
+    if (!loading && data?.checkListsIdsUpdated.topicId === topicId) {
+      setIds(data?.checkListsIdsUpdated.checkListsIds || []);
     }
-  }, [getCheckLists, isVisible, data, loading]);
-
-  useEffect(
-    () =>
-      subscribeToMore({
-        document: CheckListsUpdatedDocument,
-        updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
-          const newData = subscriptionData.data;
-          if (!newData) return prev;
-          const { checkListsUpdated } = newData;
-
-          if (checkListsUpdated[0].topicId === topicId) {
-            if (checkListsUpdated.length === 0) return { getCheckLists: [] };
-            return {
-              getCheckLists: checkListsUpdated,
-            };
-          }
-          return {
-            getCheckLists: prev.getCheckLists,
-          };
-        },
-      }),
-    [subscribeToMore, topicId],
-  );
+  }, [
+    data?.checkListsIdsUpdated.checkListsIds,
+    data?.checkListsIdsUpdated.topicId,
+    loading,
+    topicId,
+  ]);
 
   return (
-    <CheckListsStyled ref={ref}>
-      {(data?.getCheckLists || []).map((checkList) => (
-        <CheckList key={checkList.id} checkList={checkList} topicId={topicId} />
+    <>
+      {ids.map((checkListId) => (
+        <CheckList key={checkListId} checkListId={checkListId} topicId={topicId} />
       ))}
-      <AddCheckList topicId={topicId} />
-    </CheckListsStyled>
+    </>
   );
 });
 

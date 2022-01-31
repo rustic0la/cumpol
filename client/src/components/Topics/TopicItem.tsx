@@ -1,24 +1,53 @@
-import { TopicFragment, useDeleteTopicMutation, useUpdateTopicMutation } from '@gql/types';
-import React, { memo, useCallback, useState } from 'react';
+import { useDeleteTopicMutation, useGetTopicByIdQuery, useUpdateTopicMutation } from '@gql/types';
+import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
+import useOnScreen from 'src/hooks/useOnScreen';
 
 import CheckLists from './CheckLists';
-import { Border, TopicStyled } from './styles';
+import AddCheckList from './CheckLists/AddCheckList';
+import { Border, TopicWrapperStyled } from './styles';
 
-interface TopicProps {
-  topic: TopicFragment;
+interface TopicWrapperProps {
+  topicId: string;
   spaceId: string;
 }
 
-const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
-  const { id, title } = topic;
-  const [inputValue, setInputValue] = useState(() => title);
+const TopicWrapper: FC<TopicWrapperProps> = memo((props) => {
+  const ref = useRef() as RefObject<HTMLDivElement>;
+  const isVisible = useOnScreen(ref);
 
-  const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
+  // prevent from dissappearing while scrolling
+  const [isVisibleState, setIsVisibleState] = useState<boolean | undefined>();
+  useEffect(() => {
+    if (isVisible) {
+      setIsVisibleState(isVisible);
+    }
+  }, [isVisible]);
 
-  const handleDeleteTopicClick = useCallback(() => {
-    deleteTopic();
-  }, [deleteTopic]);
+  return (
+    <TopicWrapperStyled ref={ref}>{isVisibleState && <TopicInner {...props} />}</TopicWrapperStyled>
+  );
+});
+TopicWrapper.displayName = 'TopicWrapper';
+TopicWrapper.whyDidYouRender = true;
+
+type TopicInnerProps = TopicWrapperProps;
+
+const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
+  const { data, loading } = useGetTopicByIdQuery({
+    variables: { topicId },
+  });
+
+  const topic = data?.getTopicById;
+  const title = topic?.title || '';
+  const id = topic?.id || '';
+  const checkListsIds = topic?.checkListsIds || [];
+
+  const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    setInputValue(title);
+  }, [title]);
 
   const handleChangeTopic = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -30,26 +59,36 @@ const Topic: FC<TopicProps> = memo(({ topic, spaceId }) => {
 
   const saveChange = useCallback(() => {
     if (!inputValue) {
-      setInputValue(title);
+      setInputValue(id);
     } else {
-      if (inputValue !== title) updateTopic();
+      if (inputValue !== id) updateTopic();
     }
-  }, [inputValue, title, updateTopic]);
+  }, [inputValue, id, updateTopic]);
 
+  const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
+
+  const handleDeleteTopicClick = useCallback(() => {
+    deleteTopic();
+  }, [deleteTopic]);
   return (
-    <TopicStyled>
-      {/* TODO: add styles */}
+    <>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <input type="text" onChange={handleChangeTopic} onBlur={saveChange} value={inputValue} />
         <button onClick={handleDeleteTopicClick}>-</button>
       </div>
       <Border />
-      <CheckLists topicId={id} />
-    </TopicStyled>
+      <div style={{ display: '-webkit-box', overflowX: 'scroll', margin: '10px' }}>
+        {loading || !id ? (
+          'Loading topic by id'
+        ) : (
+          <CheckLists topicId={id} checkListsIds={checkListsIds} />
+        )}
+        <AddCheckList topicId={topicId} />
+      </div>
+    </>
   );
 });
+TopicInner.displayName = 'TopicInner';
+TopicInner.whyDidYouRender = true;
 
-Topic.displayName = 'Topic';
-Topic.whyDidYouRender = true;
-
-export default Topic;
+export default TopicWrapper;

@@ -1,4 +1,8 @@
-import { TopicsUpdatedDocument, TopicsUpdatedSubscription, useGetTopicsQuery } from '@gql/types';
+import {
+  TopicsIdsUpdatedDocument,
+  TopicsIdsUpdatedSubscription,
+  useGetTopicsIdsQuery,
+} from '@gql/types';
 import React, { FC, memo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -8,44 +12,48 @@ import Topic from './TopicItem';
 
 interface SubscriptionData {
   subscriptionData: {
-    data: TopicsUpdatedSubscription;
+    data: TopicsIdsUpdatedSubscription;
   };
 }
 
 const Topics: FC = memo(() => {
   const { spaceId = '' } = useParams();
 
-  const { data, loading, subscribeToMore } = useGetTopicsQuery({
+  const { data, loading, subscribeToMore } = useGetTopicsIdsQuery({
     variables: { spaceId },
-    skip: !spaceId,
   });
 
   useEffect(
     () =>
       subscribeToMore({
-        document: TopicsUpdatedDocument,
+        document: TopicsIdsUpdatedDocument,
         updateQuery: (prev, { subscriptionData }: SubscriptionData) => {
           const newData = subscriptionData.data;
           if (!newData) return prev;
-          const { topicsUpdated } = newData;
+          const { topicsIdsUpdated } = newData;
 
+          if (spaceId === topicsIdsUpdated.spaceId) {
+            return {
+              getTopicsIds: topicsIdsUpdated.topicsIds || [],
+            };
+          }
           return {
-            getTopics: topicsUpdated,
+            getTopicsIds: prev.getTopicsIds,
           };
         },
       }),
-    [subscribeToMore],
+    [spaceId, subscribeToMore],
   );
 
   return (
     <TopicsStyled>
       {/* TODO: add loader */}
       {loading ? (
-        'Loading...'
+        'Loading topics ids...'
       ) : (
         <>
-          {(data?.getTopics || []).map((topic) => (
-            <Topic key={topic.id} topic={topic} spaceId={spaceId} />
+          {(data?.getTopicsIds || []).map((topicId) => (
+            <Topic key={topicId} topicId={topicId} spaceId={spaceId} />
           ))}
           <AddTopic spaceId={spaceId} />
         </>
