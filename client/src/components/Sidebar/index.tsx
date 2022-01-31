@@ -1,5 +1,10 @@
-import { SpacesUpdatedDocument, SpacesUpdatedSubscription, useGetSpacesQuery } from '@gql/types';
-import React, { FC, memo, useCallback, useEffect, useMemo } from 'react';
+import {
+  SpaceFragment,
+  SpacesUpdatedDocument,
+  SpacesUpdatedSubscription,
+  useGetSpacesQuery,
+} from '@gql/types';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import AddSpace from './AddSpace';

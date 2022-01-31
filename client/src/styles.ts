@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const LayoutStyled = styled.div`
-  background-color: #a0fffc;
-  padding-top: 20px;
+  padding: 20px;
   height: 100vh;
 `;
 

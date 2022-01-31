@@ -2,6 +2,8 @@ import { useAddCheckListMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 
+import { AddCheckListStyled } from './styles';
+
 interface AddCheckListProps {
   topicId: string;
 }
@@ -19,7 +21,7 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
     // TODO: add loader
     <p>Loading</p>
   ) : (
-    <button onClick={handleAddCheckList}>Add Todo List</button>
+    <AddCheckListStyled onClick={handleAddCheckList}>Add Todo List</AddCheckListStyled>
   );
 };
 

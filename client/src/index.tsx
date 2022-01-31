@@ -53,26 +53,26 @@ const client = new ApolloClient({
       Query: {
         fields: {
           getSpaces: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
           getTopics: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
           getCheckLists: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
           getTodos: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
         },
       },
       Subscription: {
         fields: {
           spacesUpdated: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
           todosUpdated: {
-            merge: (_ = [], incoming = []) => incoming,
+            merge: (_, incoming = []) => incoming,
           },
         },
       },

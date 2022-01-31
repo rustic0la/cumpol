@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Signika&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 
 body {
-  font-family: 'Signika', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #364b60;
+  background: #22242f;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #ffffff;
   margin: 0;
   padding: 0;
 }
 
 * {
-  font-family: 'Signika', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
 }
