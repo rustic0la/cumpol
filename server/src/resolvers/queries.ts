@@ -84,16 +84,10 @@ const getCheckListById: ResolverFn<
     where: {
       id: args.checkListId,
     },
-    include: { todos: { select: { id: true } } },
+    include: { todos: { include: { meta: true } } },
   });
 
-  if (checkList) {
-    return {
-      ...checkList,
-      todosIds: checkList?.todos.map(({ id }) => id) || [],
-    };
-  }
-  return null;
+  return checkList;
 };
 
 const getTodoById: ResolverFn<

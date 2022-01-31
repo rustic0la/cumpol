@@ -18,9 +18,11 @@ subscription checkListsIdsUpdated {
   }
 }
 
-subscription todosIdsUpdated {
-  todosIdsUpdated {
-    todosIds
+subscription todosUpdated {
+  todosUpdated {
+    todos {
+      ...todo
+    }
     checkListId
   }
 }

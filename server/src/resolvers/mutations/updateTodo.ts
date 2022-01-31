@@ -87,11 +87,11 @@ const updateTodo: ResolverFn<
       },
     })
     .todos({
-      select: { id: true },
+      include: { meta: true },
       orderBy: { createdAt: 'asc' },
     });
-  pubsub.publish('todosIdsUpdated', {
-    todosIds: updatedTodos.map(({ id }) => id),
+  pubsub.publish('todosUpdated', {
+    todos: updatedTodos,
     checkListId: args.checkListId,
   });
 

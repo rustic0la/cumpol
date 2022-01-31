@@ -12,7 +12,9 @@ fragment topic on Topic {
 fragment checkList on CheckList {
   id
   title
-  todosIds
+  todos {
+    ...todo
+  }
 }
 
 fragment todo on Todo {

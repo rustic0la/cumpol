@@ -2,7 +2,7 @@ import {
   CheckListsIdsUpdatedPayload,
   Space,
   SubscriptionResolvers,
-  TodosIdsUpdatedPayload,
+  TodosUpdatedPayload,
   TopicsIdsUpdatedPayload,
 } from '../generated/types';
 import { Context } from '../interfaces';
@@ -23,10 +23,10 @@ const Subscription: SubscriptionResolvers<Context, {}> = {
       pubsub.asyncIterator('checkListsIdsUpdated'),
     resolve: (payload: CheckListsIdsUpdatedPayload) => payload,
   },
-  todosIdsUpdated: {
+  todosUpdated: {
     subscribe: (_root: any, _args: any, { pubsub }: Context) =>
-      pubsub.asyncIterator('todosIdsUpdated'),
-    resolve: (payload: TodosIdsUpdatedPayload) => payload,
+      pubsub.asyncIterator('todosUpdated'),
+    resolve: (payload: TodosUpdatedPayload) => payload,
   },
 };
 

@@ -57,7 +57,7 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
   const checkList = data?.getCheckListById;
   const title = checkList?.title || '';
   const id = checkList?.id || '';
-  const todosIds = checkList?.todosIds || [];
+  const todos = checkList?.todos || [];
 
   const [inputValue, setInputValue] = useState('');
 
@@ -105,7 +105,7 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
             </Flex>
 
             <Box h={80} overflow="auto">
-              <Todos checkListId={id} todosIds={todosIds} />
+              <Todos checkListId={id} todos={todos} />
             </Box>
           </Box>
           <AddTodo checkListId={checkListId} />

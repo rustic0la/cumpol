@@ -53,16 +53,16 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
   }, []);
 
   const [updateTopic] = useUpdateTopicMutation({
-    variables: { topicId: id, title: inputValue, spaceId },
+    variables: { topicId: title, title: inputValue, spaceId },
   });
 
   const saveChange = useCallback(() => {
     if (!inputValue) {
-      setInputValue(id);
+      setInputValue(title);
     } else {
-      if (inputValue !== id) updateTopic();
+      if (inputValue !== title) updateTopic();
     }
-  }, [inputValue, id, updateTopic]);
+  }, [inputValue, title, updateTopic]);
 
   const [deleteTopic] = useDeleteTopicMutation({ variables: { topicId: id, spaceId } });
 

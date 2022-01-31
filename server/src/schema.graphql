@@ -33,7 +33,7 @@ type CheckList {
   topicId: String!
   duration: Date
   complPercent: Int!
-  todosIds: [String!]!
+  todos: [Todo!]!
 }
 
 type Meta {
@@ -129,8 +129,8 @@ type CheckListsIdsUpdatedPayload {
   topicId: String!
 }
 
-type TodosIdsUpdatedPayload {
-  todosIds: [String!]!
+type TodosUpdatedPayload {
+  todos: [Todo!]!
   checkListId: String!
 }
 
@@ -138,5 +138,5 @@ type Subscription {
   spacesUpdated: [Space!]!
   topicsIdsUpdated: TopicsIdsUpdatedPayload!
   checkListsIdsUpdated: CheckListsIdsUpdatedPayload!
-  todosIdsUpdated: TodosIdsUpdatedPayload!
+  todosUpdated: TodosUpdatedPayload!
 }
