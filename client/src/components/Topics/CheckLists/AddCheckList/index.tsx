@@ -1,9 +1,7 @@
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { useAddCheckListMutation } from '@gql/types';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
-
-import { AddCheckListStyled } from './styles';
-
 interface AddCheckListProps {
   topicId: string;
 }
@@ -20,7 +18,19 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
   return (
     <>
       {loading && 'LOADING'}
-      <AddCheckListStyled onClick={handleAddCheckList}>Add Todo List</AddCheckListStyled>
+      <Box
+        w={80}
+        h={400}
+        borderRadius="xl"
+        border="6px dashed pink"
+        bg="none"
+        color="pink"
+        m="0 20px"
+      >
+        <Flex justifyContent="center" align="center" h="100%">
+          <Button onClick={handleAddCheckList}>Add checkList</Button>
+        </Flex>
+      </Box>
     </>
   );
 };

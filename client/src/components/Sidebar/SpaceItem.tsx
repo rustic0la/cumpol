@@ -1,16 +1,15 @@
+import { Box, Flex, ListItem } from '@chakra-ui/react';
 import { SpaceFragment, useDeleteSpaceMutation } from '@gql/types';
 import React, { FC, memo, useCallback } from 'react';
-
-import { SpaceStyled } from './styles';
+import { Link } from 'react-router-dom';
 
 interface SpaceProps {
   space: SpaceFragment;
-  onSelect: (id: string) => void;
   onDelete: (id: string) => void;
   isCurrent: boolean;
 }
 
-const Space: FC<SpaceProps> = memo(({ space, onSelect, onDelete, isCurrent }) => {
+const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent }) => {
   const { id, title } = space;
   // const [inputValue, setInputValue] = useState(() => title);
 
@@ -37,18 +36,19 @@ const Space: FC<SpaceProps> = memo(({ space, onSelect, onDelete, isCurrent }) =>
 
   return (
     // TODO: fix style
-    <div style={{ display: 'flex' }}>
-      <SpaceStyled
-        isCurrent={isCurrent}
-        // onChange={handleChangeSpace}
-        // onBlur={saveChange}
-        // value={inputValue}
-        onClick={() => onSelect(id)}
-      >
-        {title}
-      </SpaceStyled>
-      <button onClick={handleDeleteSpaceClick}>-</button>
-    </div>
+    <ListItem bg={isCurrent ? 'gray.300' : 'white'} p="5px 10px" mb={5} cursor="pointer">
+      <Flex gap={3}>
+        <Box
+          color={isCurrent ? 'red' : 'black'}
+          // onChange={handleChangeSpace}
+          // onBlur={saveChange}
+          // value={inputValue}
+        >
+          {isCurrent ? <>{title}</> : <Link to={`/${id}`}>{title}</Link>}
+        </Box>
+        <button onClick={handleDeleteSpaceClick}>-</button>
+      </Flex>
+    </ListItem>
   );
 });
 

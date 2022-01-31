@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import {
   useDeleteCheckListMutation,
   useGetCheckListByIdQuery,
@@ -15,7 +16,6 @@ import React, {
 } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
 
-import { CheckListWrapperStyled } from './styles';
 import Todos from './Todos';
 import AddTodo from './Todos/AddTodo';
 
@@ -37,9 +37,9 @@ const CheckListWrapper: FC<CheckListWrapperProps> = memo((props) => {
   }, [isVisible]);
 
   return (
-    <CheckListWrapperStyled ref={ref}>
+    <Box ref={ref} w={80} h={400} bg="pink" m="0 20px" borderRadius="xl">
       {isVisibleState && <CheckListInner {...props} />}
-    </CheckListWrapperStyled>
+    </Box>
   );
 });
 CheckListWrapper.displayName = 'CheckListWrapper';

@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, useColorMode } from '@chakra-ui/react';
+import { Flex, Grid, Switch, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { useAuth } from 'src/providers/AuthProvider';
 
@@ -19,7 +19,9 @@ const Header = () => {
         <img src={logo} alt="logo" width="60px" />
         <h1>cumpol</h1>
       </Flex>
-      <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+      <div>
+        Toggle {colorMode === 'light' ? 'Dark' : 'Light'} <Switch onChange={toggleColorMode} />
+      </div>
       {token && (
         <>
           <p>{username}</p>

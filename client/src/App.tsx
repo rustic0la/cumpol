@@ -45,7 +45,7 @@ const App: FC = () => {
 
 const Layout: FC = () => {
   return (
-    <Grid templateRows="auto 1fr" gap={6} p={7} position="relative" h="100vh">
+    <Grid templateRows="auto 1fr" gap={6} position="relative" h="100vh">
       <Header />
       <Outlet />
     </Grid>
@@ -54,7 +54,7 @@ const Layout: FC = () => {
 
 const MainPage: FC = () => {
   return (
-    <Grid templateColumns="auto 1fr" gap={6} h="82vh" overflow="auto">
+    <Grid templateColumns="20% 75%" gap={6} overflow="auto">
       <Sidebar />
       <Outlet />
     </Grid>

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { useDeleteTopicMutation, useGetTopicByIdQuery, useUpdateTopicMutation } from '@gql/types';
 import React, { memo, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ChangeEvent, FC } from 'react';
@@ -5,8 +6,6 @@ import useOnScreen from 'src/hooks/useOnScreen';
 
 import CheckLists from './CheckLists';
 import AddCheckList from './CheckLists/AddCheckList';
-import { Border, TopicWrapperStyled } from './styles';
-
 interface TopicWrapperProps {
   topicId: string;
   spaceId: string;
@@ -24,9 +23,7 @@ const TopicWrapper: FC<TopicWrapperProps> = memo((props) => {
     }
   }, [isVisible]);
 
-  return (
-    <TopicWrapperStyled ref={ref}>{isVisibleState && <TopicInner {...props} />}</TopicWrapperStyled>
-  );
+  return <Box ref={ref}>{isVisibleState && <TopicInner {...props} />}</Box>;
 });
 TopicWrapper.displayName = 'TopicWrapper';
 TopicWrapper.whyDidYouRender = true;
@@ -76,7 +73,7 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
         <input type="text" onChange={handleChangeTopic} onBlur={saveChange} value={inputValue} />
         <button onClick={handleDeleteTopicClick}>-</button>
       </div>
-      <Border />
+      <Box bg="#364b60" h={3} mb="20px" opacity={0.5} />
       <div style={{ display: '-webkit-box', overflowX: 'scroll', margin: '10px' }}>
         {loading || !id ? (
           'Loading topic by id'

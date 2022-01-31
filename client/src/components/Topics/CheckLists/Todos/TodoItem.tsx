@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { useDeleteTodoMutation, useGetTodoByIdQuery, useUpdateTodoMutation } from '@gql/types';
 import React, {
   ChangeEvent,
@@ -10,9 +11,6 @@ import React, {
   useState,
 } from 'react';
 import useOnScreen from 'src/hooks/useOnScreen';
-
-import { TodoWrapperStyled } from './styles';
-
 interface TodoWrapperProps {
   todoId: string;
   checkListId: string;
@@ -30,11 +28,7 @@ const TodoWrapper: FC<TodoWrapperProps> = memo((props) => {
     }
   }, [isVisible]);
 
-  return (
-    <TodoWrapperStyled ref={ref}>
-      {isVisibleState ? <TodoInner {...props} /> : null}
-    </TodoWrapperStyled>
-  );
+  return <Box ref={ref}>{isVisibleState ? <TodoInner {...props} /> : null}</Box>;
 });
 TodoWrapper.displayName = 'TodoWrapper';
 TodoWrapper.whyDidYouRender = true;

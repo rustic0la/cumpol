@@ -1,7 +1,6 @@
+import { Flex } from '@chakra-ui/react';
 import React, { FC, useState } from 'react';
 import { useAuth } from 'src/providers/AuthProvider';
-
-import { Wrapper } from './styles';
 
 const Auth: FC = () => {
   const [formState, setFormState] = useState({
@@ -21,7 +20,7 @@ const Auth: FC = () => {
   };
 
   return (
-    <Wrapper>
+    <Flex justifyContent="center" align="center">
       <h4>{formState.login ? 'Login' : 'Sign Up'}</h4>
       <div>
         <input
@@ -61,7 +60,7 @@ const Auth: FC = () => {
           {formState.login ? 'need to create an account?' : 'already have an account?'}
         </button>
       </div>
-    </Wrapper>
+    </Flex>
   );
 };
 
