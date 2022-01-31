@@ -81,9 +81,9 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
         <DeleteIcon onClick={handleDeleteTopicClick} _hover={{ color: 'red' }} />
       </Flex>
       {/* <Box bg="#364b60" h={1} mb="20px" opacity={0.5} /> */}
-      <Box display="-webkit-box" overflowX="scroll" m="10px" h="100%">
+      <Box display="-webkit-box" overflowX="scroll" m="10px">
         {loading || !id ? (
-          <Loading w={80} />
+          <Loading w={80} h={400} />
         ) : (
           <CheckLists topicId={id} checkListsIds={checkListsIds} />
         )}

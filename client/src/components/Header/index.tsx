@@ -14,7 +14,7 @@ const Header = () => {
    */
 
   return (
-    <Grid gridTemplateColumns="repeat(4, auto)" alignItems="center" gap={5} p="10px 40px 20px">
+    <Grid gridTemplateColumns="repeat(4, auto)" alignItems="center" gap={5} p="20px 40px">
       <Flex align="center" gap={3}>
         <img src={logo} alt="logo" width="60px" />
         <h1>cumpol</h1>

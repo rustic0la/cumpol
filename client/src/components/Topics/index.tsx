@@ -47,7 +47,7 @@ const Topics: FC = memo(() => {
   );
 
   return (
-    <Flex flexDirection="column" gap={10} overflow="auto">
+    <Flex flexDirection="column" gap={10} overflow="auto" mb={5}>
       {loading ? (
         <Loading />
       ) : (
@@ -55,9 +55,9 @@ const Topics: FC = memo(() => {
           {(data?.getTopicsIds || []).map((topicId) => (
             <Topic key={topicId} topicId={topicId} spaceId={spaceId} />
           ))}
-          <AddTopic spaceId={spaceId} />
         </>
       )}
+      <AddTopic spaceId={spaceId} />
     </Flex>
   );
 });
