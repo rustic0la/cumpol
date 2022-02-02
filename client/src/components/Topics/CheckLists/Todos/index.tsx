@@ -29,8 +29,8 @@ const Todos: FC<TodosProps> = memo(({ checkListId, todos }) => {
   return (
     <Box overflow="auto" w="100%">
       <List>
-        {todosState.map(({ id, title, meta }) => (
-          <Todo key={id} checkListId={checkListId} id={id} title={title} meta={meta} />
+        {todosState.map((todo) => (
+          <Todo key={todo.id} checkListId={checkListId} {...todo} />
         ))}
       </List>
     </Box>

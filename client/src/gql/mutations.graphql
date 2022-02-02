@@ -70,8 +70,13 @@ mutation addTodo($title: String!, $checkListId: String!) {
   }
 }
 
-mutation updateTodo($checkListId: String!, $title: String!, $todoId: String!) {
-  updateTodo(checkListId: $checkListId, title: $title, todoId: $todoId) {
+mutation updateTodo(
+  $checkListId: String!
+  $title: String!
+  $isWatched: Boolean!
+  $todoId: String!
+) {
+  updateTodo(checkListId: $checkListId, title: $title, isWatched: $isWatched, todoId: $todoId) {
     ...payload
   }
 }
@@ -79,5 +84,11 @@ mutation updateTodo($checkListId: String!, $title: String!, $todoId: String!) {
 mutation deleteTodo($checkListId: String!, $todoId: String!) {
   deleteTodo(checkListId: $checkListId, todoId: $todoId) {
     ...payload
+  }
+}
+
+mutation addMeta($url: String!, $todoId: String!) {
+  addMeta(url: $url, todoId: $todoId) {
+    ...meta
   }
 }

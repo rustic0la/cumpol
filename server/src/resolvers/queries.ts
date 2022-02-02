@@ -58,7 +58,7 @@ const getTopicById: ResolverFn<
     where: {
       id: args.topicId,
     },
-    include: { checkLists: { select: { id: true } } },
+    include: { checkLists: { select: { id: true }, orderBy: { createdAt: 'asc' } } },
   });
 
   if (topic) {
@@ -82,7 +82,7 @@ const getCheckListById: ResolverFn<
     where: {
       id: args.checkListId,
     },
-    include: { todos: { include: { meta: true } } },
+    include: { todos: { include: { meta: true }, orderBy: { createdAt: 'asc' } } },
   });
 
   return checkList;

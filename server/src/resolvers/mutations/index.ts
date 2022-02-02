@@ -1,6 +1,7 @@
 import { MutationResolvers } from '../../generated/types';
 import { Context } from '../../interfaces';
 import addCheckList from './addCheckList';
+import addMeta from './addMeta';
 import addSpace from './addSpace';
 import addTodo from './addTodo';
 import addTopic from './addTopic';
@@ -57,6 +58,9 @@ const Mutation: MutationResolvers<Context, {}> = {
   },
   login: {
     resolve: login,
+  },
+  addMeta: {
+    resolve: addMeta,
   },
 };
 
