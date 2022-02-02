@@ -56,8 +56,8 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
     variables: { topicId: id, title: inputValue, spaceId },
   });
 
-  const saveChange = useCallback(() => {
-    if (!inputValue) {
+  const applyChange = useCallback(() => {
+    if (!inputValue.trim()) {
       setInputValue(title);
     } else {
       if (inputValue !== title) updateTopic();
@@ -74,11 +74,11 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
 
   return (
     <>
-      <Flex align="center" justify="space-between" mr={3}>
+      <Flex align="center" justify="space-between" pr={5} mb={5}>
         <Input
           variant="flushed"
           onChange={handleChangeTopic}
-          onBlur={saveChange}
+          onBlur={applyChange}
           value={inputValue}
         />
         {deleteLoading ? (
@@ -92,7 +92,7 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
           />
         )}
       </Flex>
-      <Box display="-webkit-box" overflowX="scroll" m="10px">
+      <Box display="-webkit-box" overflowX="scroll">
         {loading || !id ? (
           <Loading w={80} h={400} />
         ) : (

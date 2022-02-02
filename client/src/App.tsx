@@ -56,7 +56,7 @@ const Layout: FC = () => {
 
 const MainPage: FC = () => {
   return (
-    <Grid templateColumns="25% 71%" gap={6} overflow="auto" ml={3}>
+    <Grid templateColumns="25% auto" gap={6} overflow="auto" mr={3} ml={3}>
       <Sidebar />
       <Outlet />
     </Grid>

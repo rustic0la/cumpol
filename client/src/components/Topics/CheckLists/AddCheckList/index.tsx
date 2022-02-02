@@ -21,7 +21,7 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
 
   return (
     <>
-      {loading && <Loading w={80} />}
+      {loading && <Loading w={80} h="auto" />}
       <Box
         w={80}
         h={400}

@@ -16,7 +16,7 @@ const AddSpace: FC = memo(() => {
   }, [addSpace]);
 
   return (
-    <Button leftIcon={<AddIcon />} isLoading={loading} onClick={handleAddSpaceClick}>
+    <Button leftIcon={<AddIcon />} isLoading={loading} onClick={handleAddSpaceClick} w="100%">
       Add Space
     </Button>
   );

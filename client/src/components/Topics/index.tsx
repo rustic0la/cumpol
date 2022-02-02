@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import {
   TopicsIdsUpdatedDocument,
   TopicsIdsUpdatedSubscription,
@@ -47,7 +47,7 @@ const Topics: FC = memo(() => {
   );
 
   return (
-    <Flex flexDirection="column" gap={10} overflow="auto" mb={5}>
+    <Flex flexDirection="column" gap={7} overflow="auto" mb={5}>
       {loading ? (
         <Loading />
       ) : (
@@ -55,9 +55,12 @@ const Topics: FC = memo(() => {
           {(data?.getTopicsIds || []).map((topicId) => (
             <Topic key={topicId} topicId={topicId} spaceId={spaceId} />
           ))}
+
+          <Box w="100%">
+            <AddTopic spaceId={spaceId} />
+          </Box>
         </>
       )}
-      <AddTopic spaceId={spaceId} />
     </Flex>
   );
 });

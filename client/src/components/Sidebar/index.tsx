@@ -44,11 +44,6 @@ const Sidebar: FC = memo(() => {
     }
   }, [spaces, navigate, spaceId]);
 
-  // const handleAddSpace = useCallback(() => {
-  //   const newSpaceId = spaces[spaces.length - 1].id;
-  //   if (spaceId !== newSpaceId) navigate(`${newSpaceId}`);
-  // }, [navigate, spaceId, spaces]);
-
   const handleDeleteSpace = useCallback(
     (id: string) => {
       if (spaceId === id) {
@@ -71,8 +66,8 @@ const Sidebar: FC = memo(() => {
       {loading ? (
         <Loading />
       ) : (
-        <Flex flexFlow="column" justify="center" mr={3}>
-          <List>
+        <>
+          <Flex flexFlow="column" justify="center" gap={3} mb={5}>
             {spaces.map((space) => (
               <Space
                 isCurrent={space.id === spaceId}
@@ -82,9 +77,9 @@ const Sidebar: FC = memo(() => {
                 onSelect={handleSelectSpace}
               />
             ))}
-          </List>
+          </Flex>
           <AddSpace />
-        </Flex>
+        </>
       )}
     </Box>
   );

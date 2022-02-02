@@ -75,7 +75,7 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
   });
 
   const applyChange = useCallback(() => {
-    if (!inputValue) {
+    if (!inputValue.trim()) {
       setInputValue(title);
     } else {
       if (inputValue !== title) updateCheckList();

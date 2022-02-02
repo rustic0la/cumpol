@@ -21,7 +21,7 @@ const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId }) => {
   }, [addTopic]);
 
   return (
-    <Button leftIcon={<AddIcon />} isLoading={loading} onClick={handleAddTopicClick}>
+    <Button leftIcon={<AddIcon />} isLoading={loading} onClick={handleAddTopicClick} w="100%">
       Add Topic
     </Button>
   );
