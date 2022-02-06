@@ -3,7 +3,7 @@ import React, { FC, memo } from 'react';
 import Loading from 'src/components/common/Loading';
 
 import { useCheckListHandlers } from '../../hooks/useCheckListHandlers';
-import AddTodo from '../../Todos/AddTodo';
+import AddTodo from '../../Todos/components/AddTodo';
 import Content from './Content';
 import Header from './Header';
 import { CheckListInnerProps } from './interfaces';
