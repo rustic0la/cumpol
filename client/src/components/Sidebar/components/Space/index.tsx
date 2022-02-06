@@ -14,7 +14,7 @@ interface SpaceProps {
 }
 
 const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) => {
-  const { id, loadingDelete, handleDeleteClick } = useSpaceHandlers({
+  const { id, deleteLoading, handleDeleteClick } = useSpaceHandlers({
     space,
     onDelete,
   });
@@ -36,7 +36,7 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) =>
         </Box>
         <Flex gap={2}>
           <EditPopover space={space} value={inputValue} setInputValue={setInputValue} />
-          {loadingDelete ? (
+          {deleteLoading ? (
             <Spinner size="sm" />
           ) : (
             <DeleteIcon

@@ -9,7 +9,7 @@ interface UseSpaceHandlersOptions {
 export const useSpaceHandlers = ({ space, onDelete }: UseSpaceHandlersOptions) => {
   const { id } = space;
 
-  const [deleteSpace, { loading: loadingDelete }] = useDeleteSpaceMutation();
+  const [deleteSpace, { loading: deleteLoading }] = useDeleteSpaceMutation();
 
   const handleDeleteClick = useCallback(
     (e) => {
@@ -22,7 +22,7 @@ export const useSpaceHandlers = ({ space, onDelete }: UseSpaceHandlersOptions) =
 
   return {
     id,
-    loadingDelete,
+    deleteLoading,
     handleDeleteClick,
   };
 };
