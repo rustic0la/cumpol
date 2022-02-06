@@ -1,8 +1,7 @@
-import { useSubscription } from '@apollo/client';
-import { CheckListsIdsUpdatedDocument, CheckListsIdsUpdatedSubscription } from '@gql/types';
-import React, { FC, memo, useEffect, useState } from 'react';
+import React, { FC, memo } from 'react';
 
-import CheckList from './CheckListItem';
+import CheckList from './components/CheckList';
+import { useCheckListsHandlers } from './hooks/useCheckListsHandlers';
 
 interface CheckListsProps {
   topicId: string;
@@ -10,23 +9,7 @@ interface CheckListsProps {
 }
 
 const CheckLists: FC<CheckListsProps> = memo(({ topicId, checkListsIds }) => {
-  const [ids, setIds] = useState<string[]>(() => checkListsIds);
-
-  const { data, loading }: { data?: CheckListsIdsUpdatedSubscription; loading: boolean } =
-    useSubscription(CheckListsIdsUpdatedDocument, {
-      variables: { topicId },
-    });
-
-  useEffect(() => {
-    if (!loading && data?.checkListsIdsUpdated.topicId === topicId) {
-      setIds(data?.checkListsIdsUpdated.checkListsIds || []);
-    }
-  }, [
-    data?.checkListsIdsUpdated.checkListsIds,
-    data?.checkListsIdsUpdated.topicId,
-    loading,
-    topicId,
-  ]);
+  const { ids } = useCheckListsHandlers({ topicId, checkListsIds });
 
   return (
     <>

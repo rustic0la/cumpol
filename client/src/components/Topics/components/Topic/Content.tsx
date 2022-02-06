@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import Loading from 'src/components/common/Loading';
 
 import CheckLists from '../../CheckLists';
-import AddCheckList from '../../CheckLists/AddCheckList';
+import AddCheckList from '../../CheckLists/components/AddCheckList';
 import { useTopicHandlers } from '../../hooks/useTopicHandlers';
 import { ContentProps } from './interfaces';
 
