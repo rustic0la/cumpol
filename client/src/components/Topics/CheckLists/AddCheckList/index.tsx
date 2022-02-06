@@ -5,14 +5,13 @@ import dayjs from 'dayjs';
 import React, { useCallback } from 'react';
 import { FC } from 'react';
 import Loading from 'src/components/common/Loading';
-
 interface AddCheckListProps {
   topicId: string;
 }
 
 const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
   const [addCheckList, { loading }] = useAddCheckListMutation({
-    variables: { topicId, title: dayjs().format('ddd, MMM D, YYYY h:mm A') },
+    variables: { topicId, title: dayjs().format('MMM D, HH:mm') },
   });
 
   const handleAddCheckList = useCallback(() => {

@@ -11,7 +11,7 @@ interface AddTodoProps {
 
 const AddTodo: FC<AddTodoProps> = ({ checkListId }) => {
   const [addTodo, { loading }] = useAddTodoMutation({
-    variables: { checkListId, title: dayjs().format('ddd, MMM D, YYYY h:mm A') },
+    variables: { checkListId, title: dayjs().format('MMM D, HH:mm') },
   });
 
   const handleAddTodo = useCallback(() => {

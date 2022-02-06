@@ -12,7 +12,7 @@ const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId }) => {
   const [addTopic, { loading }] = useAddTopicMutation({
     variables: {
       spaceId,
-      title: dayjs().format('ddd, MMM D, YYYY h:mm A'),
+      title: dayjs().format('MMM D, HH:mm'),
     },
   });
 
