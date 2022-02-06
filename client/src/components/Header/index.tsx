@@ -1,4 +1,5 @@
-import { Button, Flex, Grid, Switch, useColorMode } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Button, Flex, IconButton, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import { useAuth } from 'src/providers/AuthProvider';
 
@@ -14,23 +15,29 @@ const Header = () => {
    */
 
   return (
-    <Grid gridTemplateColumns="repeat(4, auto)" alignItems="center" gap={5} p="20px 40px">
-      <Flex align="center" gap={3}>
-        <img src={logo} alt="logo" width="60px" />
-        <h1>cumpol</h1>
+    <Flex justify="space-between" alignItems="center" p="20px 40px">
+      <Flex align="center" gap={6}>
+        <Flex align="center" gap={3}>
+          <img src={logo} alt="logo" width="60px" />
+          <h1>cumpol</h1>
+        </Flex>
+        <IconButton
+          aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+          icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          onClick={toggleColorMode}
+          w="fit-content"
+        />
       </Flex>
-      <div>
-        Toggle {colorMode === 'light' ? 'Dark' : 'Light'} <Switch onChange={toggleColorMode} />
-      </div>
+
       {token && (
-        <>
+        <Flex align="center" gap={6}>
           <p>{username}</p>
           <Button size="sm" onClick={logout}>
             logout
           </Button>
-        </>
+        </Flex>
       )}
-    </Grid>
+    </Flex>
   );
 };
 
