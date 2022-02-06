@@ -36,6 +36,7 @@ const Todos: FC<TodosProps> = memo(({ checkListId, todos }) => {
     </Box>
   );
 });
+
 Todos.displayName = 'Todos';
 Todos.whyDidYouRender = true;
 

@@ -26,6 +26,7 @@ const AddTopic: FC<AddTopicButtonProps> = memo(({ spaceId }) => {
     </Button>
   );
 });
+
 AddTopic.displayName = 'AddTopicButton';
 AddTopic.whyDidYouRender = true;
 

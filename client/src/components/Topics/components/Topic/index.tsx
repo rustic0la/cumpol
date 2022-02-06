@@ -19,6 +19,7 @@ const TopicWrapper: FC<TopicWrapperProps> = memo((props) => {
 
   return <Box ref={ref}>{isVisibleState && <TopicInner {...props} />}</Box>;
 });
+
 TopicWrapper.displayName = 'TopicWrapper';
 TopicWrapper.whyDidYouRender = true;
 

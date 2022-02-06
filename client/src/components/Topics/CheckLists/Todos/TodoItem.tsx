@@ -137,6 +137,7 @@ const Todo: FC<TodoProps> = memo(({ checkListId, id, title, meta, isWatched }) =
     </Box>
   );
 });
+
 Todo.displayName = 'Todo';
 Todo.whyDidYouRender = true;
 

@@ -21,6 +21,7 @@ const AddSpace: FC = memo(() => {
     </Button>
   );
 });
+
 AddSpace.displayName = 'AddSpace';
 AddSpace.whyDidYouRender = true;
 

@@ -23,6 +23,7 @@ const CheckListWrapper: FC<CheckListWrapperProps> = memo((props) => {
     </Box>
   );
 });
+
 CheckListWrapper.displayName = 'CheckListWrapper';
 CheckListWrapper.whyDidYouRender = true;
 

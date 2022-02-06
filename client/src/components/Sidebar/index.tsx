@@ -32,6 +32,7 @@ const Sidebar: FC = memo(() => {
     </Box>
   );
 });
+
 Sidebar.displayName = 'Sidebar';
 Sidebar.whyDidYouRender = true;
 

@@ -13,6 +13,7 @@ const TopicInner: FC<TopicInnerProps> = memo(({ spaceId, topicId }) => {
     </>
   );
 });
+
 TopicInner.displayName = 'TopicInner';
 TopicInner.whyDidYouRender = true;
 

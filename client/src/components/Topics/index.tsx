@@ -27,6 +27,7 @@ const Topics: FC = memo(() => {
     </Flex>
   );
 });
+
 Topics.displayName = 'Topics';
 Topics.whyDidYouRender = true;
 

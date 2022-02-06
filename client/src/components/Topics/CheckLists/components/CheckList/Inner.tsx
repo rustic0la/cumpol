@@ -27,6 +27,7 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
     </>
   );
 });
+
 CheckListInner.displayName = 'CheckListInner';
 CheckListInner.whyDidYouRender = true;
 
