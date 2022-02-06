@@ -8,7 +8,7 @@ import {
   useDeleteTodoMutation,
   useUpdateTodoMutation,
 } from '@gql/types';
-import React, { ChangeEvent, FC, memo, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useRef, useState } from 'react';
 import Loading from 'src/components/common/Loading';
 import isValidURL from 'src/utils/isValidUrl';
 interface TodoProps extends TodoFragment {
@@ -62,9 +62,17 @@ const Todo: FC<TodoProps> = memo(({ checkListId, id, title, meta, isWatched }) =
     deleteTodo();
   }, [deleteTodo]);
 
+  const inputRef = useRef();
+  const handleSelect = () => {
+    if (inputRef && inputRef.current) {
+      // @ts-ignore
+      inputRef.current.select();
+    }
+  };
+
   return (
     <Box bg="gray.100" borderRadius="md" m={1} h="100%" p={2} _hover={{ bg: 'gray.200' }}>
-      <Flex align="center" justify="space-between" w="100%" gap={1}>
+      <Flex align="center" justify="space-between" w="100%" gap={2}>
         <Checkbox isChecked={isWatchedState} onChange={handleToggleCheckbox} />
         {updateLoading || addMetaLoading ? (
           <Loading w="100%" />
@@ -104,7 +112,10 @@ const Todo: FC<TodoProps> = memo(({ checkListId, id, title, meta, isWatched }) =
               <Input
                 fontSize="sm"
                 variant="unstyled"
-                onClick={(e) => e.target.select()}
+                /*
+      // @ts-ignore */
+                ref={inputRef}
+                onClick={handleSelect}
                 onChange={handleChangeTodo}
                 onBlur={applyChange}
                 value={inputValue}

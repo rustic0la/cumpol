@@ -90,6 +90,14 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
     deleteCheckList();
   }, [deleteCheckList]);
 
+  const inputRef = useRef();
+  const handleSelect = () => {
+    if (inputRef.current) {
+      // @ts-ignore
+      inputRef.current.select();
+    }
+  };
+
   return (
     <>
       {loading || !id ? (
@@ -103,6 +111,9 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
                 onChange={handleChangeCheckList}
                 onBlur={applyChange}
                 value={inputValue}
+                // @ts-ignore */
+                ref={inputRef}
+                onClick={handleSelect}
               />
               {deleteLoading ? (
                 <Spinner size="sm" />
