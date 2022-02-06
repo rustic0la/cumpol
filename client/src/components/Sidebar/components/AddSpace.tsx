@@ -7,7 +7,7 @@ import React, { FC, memo, useCallback } from 'react';
 const AddSpace: FC = memo(() => {
   const [addSpace, { loading }] = useAddSpaceMutation({
     variables: {
-      title: dayjs().format('ddd, MMM D, YYYY h:mm A'),
+      title: dayjs().format('MMM D, HH:mm'),
     },
   });
 
@@ -21,7 +21,6 @@ const AddSpace: FC = memo(() => {
     </Button>
   );
 });
-
 AddSpace.displayName = 'AddSpace';
 AddSpace.whyDidYouRender = true;
 
