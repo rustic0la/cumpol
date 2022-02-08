@@ -4,6 +4,7 @@
   "author": "mpokrovsky",
   "license": "MIT",
   "scripts": {
+    "generate:types": "yarn graphql-codegen",
     "start": "webpack serve --mode development --config webpack.config.ts",
     "build": "webpack --mode production --config webpack.config.ts",
     "prepare": "husky install",

@@ -6,11 +6,11 @@
     "server"
   ],
   "scripts": {
-    "server": "cd server && yarn start",
+    "server": "cd server && yarn generate:prisma && yarn generate:types && yarn start",
     "client": "cd client && yarn start",
-    "dev": "concurrently -n 'server,client' -c 'red,green' \"yarn server\" \"yarn client\"",
+    "dev": "concurrently -n 'server,client' -c 'red,green' \"cd server && yarn start\" \"yarn client\"",
     "install-client": "cd client && yarn",
-    "build": "cd client && yarn build",
+    "build": "cd client && yarn generate:types && yarn build",
     "heroku-postbuild": "yarn install-client && yarn build",
     "start": "yarn server"
   },

@@ -3,7 +3,9 @@
   "packageManager": "yarn@3.1.0",
   "main": ".src/index.js",
   "scripts": {
-    "start": "npx prisma generate && nodemon --exec 'ts-node' src/index.ts",
+    "generate:prisma": "npx prisma generate",
+    "generate:types": "yarn graphql-codegen",
+    "start": "nodemon --exec 'ts-node' src/index.ts",
     "lint": "eslint --ignore-path .gitignore \"**/*.{ts,tsx}\""
   },
   "dependencies": {
@@ -16,6 +18,7 @@
     "express": "^4.17.1",
     "graphql": "^16.2.0",
     "graphql-subscriptions": "patch:graphql-subscriptions@^2.0.0#../.yarn/patches/graphql-subscriptions-npm-2.0.0-53564d1c84",
+    "jsdom": "^19.0.0",
     "jsonwebtoken": "^8.5.1",
     "meta-fetcher": "^3.1.1",
     "prisma": "^3.8.1",
@@ -30,6 +33,7 @@
     "@types/dotenv-safe": "^8.1.2",
     "@types/express": "^4.17.13",
     "@types/graphql": "^14.5.0",
+    "@types/jsdom": "^16.2.14",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/node": "^16.11.12",
     "@types/url-parse": "^1.4.6",
