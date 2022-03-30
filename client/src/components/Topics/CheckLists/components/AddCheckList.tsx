@@ -22,8 +22,8 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
     <>
       {loading && <Loading w={80} h="auto" />}
       <Box
-        w={80}
-        h={400}
+        width="220px"
+        h={320}
         borderRadius="xl"
         border="6px dashed pink"
         bg="none"

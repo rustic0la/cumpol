@@ -18,7 +18,7 @@ export const useTodoHandlers = ({
   id,
   title,
   meta,
-  isWatched,
+  isWatched = false,
 }: UseTodoHandlersOptions) => {
   const [inputValue, setInputValue] = useState(() => title);
   const [isWatchedState, setIsWatched] = useState(() => isWatched);

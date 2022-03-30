@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import { SpaceFragment } from '@gql/types';
 import React, { FC, memo, useState } from 'react';
 
@@ -30,9 +30,23 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) =>
       _hover={{ bg: isCurrent ? '' : 'gray.100' }}
       onClick={() => onSelect(id)}
     >
-      <Flex gap={3} align="center" justify="space-between">
+      <Flex gap={1} align="center" justify="space-between">
         <Box color={isCurrent ? 'red' : 'black'} fontSize="13px">
-          {inputValue}
+          <Text
+            fontSize="12px"
+            overflow="hidden"
+            textOverflow="ellipsis"
+            display="-webkit-box"
+            lineHeight="1.2"
+            mt={1}
+            mb={1}
+            style={{
+              WebkitLineClamp: '1',
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {inputValue}
+          </Text>
         </Box>
         <Flex gap={2}>
           <EditPopover space={space} value={inputValue} setInputValue={setInputValue} />

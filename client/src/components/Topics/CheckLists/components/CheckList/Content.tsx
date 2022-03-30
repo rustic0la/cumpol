@@ -9,7 +9,7 @@ const Content: FC<ContentProps> = ({ checkListId, topicId }) => {
   const { id, todos } = useCheckListHandlers({ checkListId, topicId });
 
   return (
-    <Flex flexFlow="column" h={80} overflow="auto" align="center">
+    <Flex flexFlow="column" h={70} overflow="auto" align="center">
       <Todos checkListId={id} todos={todos} />
     </Flex>
   );
