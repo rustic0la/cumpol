@@ -18,7 +18,7 @@ const Header = () => {
     <Flex justify="space-between" alignItems="center" p="20px 40px">
       <Flex align="center" gap={6}>
         <Flex align="center" gap={3}>
-          <img src={logo} alt="logo" width="60px" />
+          <img src={logo} alt="logo" width="50px" />
           <h1>cumpol</h1>
         </Flex>
         <IconButton

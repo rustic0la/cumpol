@@ -25,9 +25,9 @@ const AddCheckList: FC<AddCheckListProps> = ({ topicId }) => {
         width="220px"
         h={320}
         borderRadius="xl"
-        border="6px dashed pink"
+        border="6px dashed #70ccd6"
         bg="none"
-        color="pink"
+        color="#70ccd6"
         m="0 20px"
       >
         <Flex justifyContent="center" align="center" h="100%">

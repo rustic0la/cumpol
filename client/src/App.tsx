@@ -1,4 +1,16 @@
-import { Center, Grid } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Center,
+  Grid,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  theme,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import React, { FC } from 'react';
 import { Outlet, Route, Routes } from 'react-router-dom';
 
@@ -7,10 +19,6 @@ import Sidebar from './components/Sidebar';
 import MainContent from './components/Topics';
 import Auth from './pages/Auth';
 import { AuthProvider, RequireAuth } from './providers/AuthProvider';
-
-// TODO: themes
-// ffffff-00fff6-1ba5ab-364b60
-// ffbda0-ffa780-ff7b40-ff4f00-ff0000-c00000-800000-400000-200000
 
 const App: FC = () => {
   return (
@@ -47,7 +55,7 @@ const App: FC = () => {
 
 const Layout: FC = () => {
   return (
-    <Grid templateRows="auto 1fr" gap={6} position="relative" h="100vh">
+    <Grid templateRows="auto 1fr" position="relative" h="100vh">
       <Header />
       <Outlet />
     </Grid>
@@ -56,7 +64,7 @@ const Layout: FC = () => {
 
 const MainPage: FC = () => {
   return (
-    <Grid templateColumns="25% auto" gap={6} overflow="auto" mr={3} ml={3}>
+    <Grid templateColumns={'15% auto'} gap={6} overflow="auto" mr={3} ml={3}>
       <Sidebar />
       <Outlet />
     </Grid>

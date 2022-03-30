@@ -31,7 +31,11 @@ const EditPopover: FC<PopoverProps> = ({ space, value, setInputValue }) => {
   return (
     <Popover initialFocusRef={initialFocusRef}>
       <PopoverTrigger>
-        <EditIcon onClick={(e) => handleClickEdit(e)} _hover={{ color: 'red' }} />
+        <EditIcon
+          onClick={(e) => handleClickEdit(e)}
+          color="gray.500"
+          _hover={{ color: 'black' }}
+        />
       </PopoverTrigger>
       {shouldRenderPortal && (
         <Portal>

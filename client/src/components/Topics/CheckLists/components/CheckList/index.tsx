@@ -18,7 +18,7 @@ const CheckListWrapper: FC<CheckListWrapperProps> = memo((props) => {
   }, [isVisible]);
 
   return (
-    <Box ref={ref} width="220px" h={320} bg="pink" m="0 10px" borderRadius="xl">
+    <Box ref={ref} width="220px" h={320} bg="#70ccd6" m="0 10px" borderRadius="xl">
       {isVisibleState && <CheckListInner {...props} />}
     </Box>
   );

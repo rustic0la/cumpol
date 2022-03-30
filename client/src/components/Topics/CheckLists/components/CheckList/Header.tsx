@@ -19,6 +19,7 @@ const Header: FC<HeaderProps> = ({ checkListId, topicId }) => {
   return (
     <Flex p="10px 15px" align="center">
       <Input
+        color="black"
         variant="unstyled"
         onChange={handleChange}
         onBlur={applyChange}

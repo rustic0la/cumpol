@@ -10,7 +10,7 @@ const Sidebar: FC = memo(() => {
   const { loading, spaces, spaceId, handleDeleteSpace, handleSelectSpace } = useSpacesHandlers();
 
   return (
-    <Box overflow="auto">
+    <Box overflow="auto" mt={3}>
       {loading ? (
         <Loading />
       ) : (

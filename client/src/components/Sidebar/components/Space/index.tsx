@@ -23,7 +23,7 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) =>
 
   return (
     <Box
-      bg={isCurrent ? 'gray.300' : 'white'}
+      bg={isCurrent ? '#70ccd6' : 'white'}
       p="10px 15px"
       cursor="pointer"
       borderRadius="xl"
@@ -31,7 +31,7 @@ const Space: FC<SpaceProps> = memo(({ space, onDelete, isCurrent, onSelect }) =>
       onClick={() => onSelect(id)}
     >
       <Flex gap={1} align="center" justify="space-between">
-        <Box color={isCurrent ? 'red' : 'black'} fontSize="13px">
+        <Box color="black" fontSize="13px">
           <Text
             fontSize="12px"
             overflow="hidden"

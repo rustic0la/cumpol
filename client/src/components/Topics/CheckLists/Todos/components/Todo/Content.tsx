@@ -28,6 +28,7 @@ const Content: FC<ContentProps> = ({ checkListId, id, title, meta, isWatched }) 
         <Input
           fontSize="sm"
           variant="unstyled"
+          color="black"
           /*
         // @ts-ignore */
           ref={inputRef}

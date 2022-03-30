@@ -16,7 +16,7 @@ const CheckListInner: FC<CheckListInnerProps> = memo(({ checkListId, topicId }) 
       {loading || !id ? (
         <Loading />
       ) : (
-        <Flex flexFlow="column" justify="space-between" h="100%" p="10px, 0">
+        <Flex flexFlow="column" justify="space-between" h="100%">
           <Box h="100%">
             <Header checkListId={checkListId} topicId={topicId} />
             <Content checkListId={checkListId} topicId={topicId} />

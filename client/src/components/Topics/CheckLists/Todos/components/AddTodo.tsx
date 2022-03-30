@@ -20,6 +20,7 @@ const AddTodo: FC<AddTodoProps> = ({ checkListId }) => {
 
   return (
     <Button
+      color="black"
       isLoading={loading}
       leftIcon={<AddIcon />}
       onClick={handleAddTodo}
