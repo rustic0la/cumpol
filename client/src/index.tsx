@@ -26,11 +26,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: `${process.env.URL}/graphql` || 'http://localhost:4000/graphql',
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: `ws://${process.env.URL}/graphql` || 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
