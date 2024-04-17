@@ -4,7 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import { Configuration as WebpackConfiguration, HotModuleReplacementPlugin } from 'webpack';
+import { Configuration as WebpackConfiguration, DefinePlugin, HotModuleReplacementPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 
@@ -80,6 +80,9 @@ const config: Configuration = {
     ],
   },
   plugins: [
+    new DefinePlugin({
+      'process.env.URL': JSON.stringify(process.env.URL),
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {
