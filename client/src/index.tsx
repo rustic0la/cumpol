@@ -7,6 +7,7 @@ import { setContext } from '@apollo/client/link/context';
 import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import dotenv from 'dotenv';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -14,6 +15,9 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AUTH_TOKEN } from './constants';
 import theme from './theme';
+
+
+dotenv.config()
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem(AUTH_TOKEN);
