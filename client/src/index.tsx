@@ -31,7 +31,7 @@ const httpLink = createHttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://cumpol.vercel.app/graphql` || 'ws://localhost:4000/graphql',
+  uri: `wss://cumpol.vercel.app/graphql` || 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
