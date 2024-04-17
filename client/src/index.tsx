@@ -30,11 +30,11 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: `http://${process.env.URL}/graphql` || 'http://localhost:4000/graphql',
+  uri: `http://cumpol.vercel.app/graphql` || 'http://localhost:4000/graphql',
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${process.env.URL}/graphql` || 'ws://localhost:4000/graphql',
+  uri: `ws://cumpol.vercel.app/graphql` || 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
