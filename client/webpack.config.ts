@@ -1,6 +1,5 @@
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import path from 'path';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
@@ -86,11 +85,12 @@ const config: Configuration = {
           context: path.resolve(__dirname, 'src', 'assets'),
           to: './assets',
         },
+        {
+          from: '**/*',
+          context: path.resolve(__dirname, 'public'),
+          to: './public',
+        },
       ],
-    }),
-    new HtmlWebpackPlugin({
-      template: 'public/index.html',
-      favicon: 'public/favicon.ico',
     }),
     new HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
