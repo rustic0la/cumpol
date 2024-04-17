@@ -68,6 +68,7 @@ const config: Configuration = {
     ],
   },
   resolve: {
+    fallback: {'path': false, 'os': false, 'crypto': false},
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [
       new TsconfigPathsPlugin({
